@@ -1,0 +1,24 @@
+abstract class ai
+-Abstract return attack method chooseMove(at least their poke object),
+-accessor method CheckTeam(para),
+-know which its poke is out and see its moves
+-know (your) poke (and moves if hard),
+-check status,
+
+
+
+Derived class = easy, normal , hard
+
+-easy
+random attacks,
+
+-Normal
+check for super effective,
+
+-Hard
+2d array to store info
+method for take info 
+checks info to see if need to switch 
+damage calculation
+
+?Memorize speed values?
