@@ -1,4 +1,5 @@
 import java.lang.Object;
+import java.util.*;
 abstract class AI {
   private ArrayList<Poke> PlayerPokeTeam = new ArrayList<Poke>();
   private ArrayList<Poke> AIPokeTeam = new ArrayList<Poke>();
@@ -24,11 +25,11 @@ abstract class AI {
     boolean check = PlayerPokeTeam.size() >= 1;
     if(check){
       Random rng = new Random();
-      if(rng.nextInt(3) = 0){
+      if(rng.nextInt(3) == 0){
       }
-      if(rng.nextInt(3) =1){
+      if(rng.nextInt(3) ==1){
       }
-      if(rng.nextInt(3) = 2){
+      if(rng.nextInt(3) == 2){
       }
     }
   }
@@ -44,7 +45,7 @@ abstract class AI {
     
   
   
-}
+
   
   
   
