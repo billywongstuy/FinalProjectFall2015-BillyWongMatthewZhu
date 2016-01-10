@@ -4,7 +4,18 @@ class Ai_easy extends AI{
     Attack planAttack = AIPokeTeam[0].geta1();
     if(PlayerPoke.getStatus()=="none"){
       if(moveNumber == 0){
-        planAttack = AIPo
+        planAttack = AIPokeTeam.geta1();
+      }
+       if(moveNumber == 1){
+        planAttack = AIPokeTeam.geta2();
+      }
+       if(moveNumber == 2){
+        planAttack = AIPokeTeam.geta3();
+      }
+       if(moveNumber == 3){
+        planAttack = AIPokeTeam.geta4();
+      }
+      
         
       
       
