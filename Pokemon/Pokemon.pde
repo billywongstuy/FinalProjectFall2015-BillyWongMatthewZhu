@@ -17,6 +17,7 @@ PFont font;
 String state;
 int slow = 0;
 int attackTransitionTime = 0;
+int critShowTime = 0;
 
 //added
 String speedWinner;
@@ -89,17 +90,40 @@ void draw() {
 
 void animateTurn() {
   //needs to add text box with attacks and side effects
+  
+  if (state.equals("turn-p1") || state.equals("turn-p2") || state.equals("crit-1") || state.equals("crit-2")) {
+    image(blankBox,0,0);  
+  }
+  
   if ((state.equals("turn-p1") && speedWinner.equals("opp")) || (state.equals("turn-p2") && speedWinner.equals("you"))) { 
     yourDropHealth();
-    image(blankBox,0,0);
     text("Enemy " + Raichu.getName(),50,475);
     text("used " + oppAttack.toString()+"!",50,535);
+    //pause
   }
+  
   if ((state.equals("turn-p1") && speedWinner.equals("you")) || (state.equals("turn-p2") && speedWinner.equals("opp"))) {
     oppDropHealth();
-    image(blankBox,0,0);
     text(Pikachu.getName(),50,475);
     text("used " + yourAttack.toString()+"!",50,535);
+  }
+  
+
+  if (state.equals("crit-1") && critShowTime < 60) {
+    text("A critical hit!",50,475);  
+    critShowTime++;
+  }
+  if (state.equals("crit-1") && critShowTime >= 60) {
+    state = "turn-p2";
+    critShowTime = 0;
+  }
+  if (state.equals("crit-2") && critShowTime < 60) {
+    text("A critical hit!",50,475);  
+    critShowTime++;
+  }
+  if (state.equals("crit-2") && critShowTime >= 60) {
+    state = "chooseOption";
+    critShowTime = 0;
   }
 
   noStroke();
@@ -178,7 +202,15 @@ void oppDropHealth() {
     }
   }
   else{
-    if (state.equals("turn-p1")) {
+    
+    if ((Pikachu.attackCrit) && state.equals("turn-p1")) {
+      state = "crit-1"; 
+    }
+    else if ((Pikachu.attackCrit) && state.equals("turn-p2")) {
+      state = "crit-2";  
+    }
+    
+    else if (state.equals("turn-p1")) {      
       state = "turn-p2"; 
     }
     else {
@@ -198,7 +230,15 @@ void yourDropHealth() {
     }
   }
   else{
-    if (state.equals("turn-p1")) {
+    
+    if ((Raichu.attackCrit) && state.equals("turn-p1")) {
+      state = "crit-1"; 
+    }
+    else if ((Raichu.attackCrit) && state.equals("turn-p2")) {
+      state = "crit-2";  
+    }
+    
+    else if (state.equals("turn-p1")) {
       state = "turn-p2"; 
     }
     else {

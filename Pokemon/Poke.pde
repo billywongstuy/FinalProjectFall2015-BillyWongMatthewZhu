@@ -18,6 +18,7 @@ abstract class Poke{
   private Attack a2;
   private Attack a3;
   private Attack a4;
+  private boolean attackCrit;
   
   Poke(String n, int i, String t, int bh, int ba, int bd, int bsp, int bs, int l) {
     lv = l;
@@ -102,9 +103,11 @@ abstract class Poke{
     //println(random);
     if (random < chance) {
       println("A critical hit!");
+      attackCrit = true;
       return 2.0;  
     }
     else {
+      attackCrit = false;
       return 1.0; 
     }
   }
