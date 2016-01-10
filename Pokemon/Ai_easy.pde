@@ -35,7 +35,7 @@ class Ai_easy extends AI{
       }
            
        
-      if (attacks.size() < 4) {
+      if (attacks.size() < 4 && attacks.size() >= 1) {
        planAttack = attacks.get((int)(Math.random()*attacks.size()));
       }
         
