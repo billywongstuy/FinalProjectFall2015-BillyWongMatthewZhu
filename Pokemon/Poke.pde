@@ -57,7 +57,7 @@ abstract class Poke{
   }
   
   String getName() {
-    return name;  
+    return name.toUpperCase();  
   }
   
   int attack(Poke opp, Attack attack) {

@@ -11,6 +11,8 @@ PImage move;
 PImage moveArrow;
 int mArrowY = 420;
 
+PImage blankBox;
+
 PFont font;
 String state;
 int slow = 0;
@@ -22,10 +24,12 @@ int hpToShow;
 String yourdisplayHP;
 
 
-//added damage variables
 Attack yourAttack;
+Attack oppAttack;
 int oppHealthLost = 0;
 int yourHealthLost = 0;
+
+
 //ArrayList<Poke>Pokemons = new ArrayList<Poke>(151);
 ArrayList<Poke>yourTeam = new ArrayList<Poke>();
 
@@ -49,9 +53,8 @@ void setup() {
   move = loadImage("choose-move-template.png");
   moveArrow = loadImage("arrow.png");
   
+  blankBox = loadImage("blank_box_bottom.png");
   
-  //Pokemons.add(new Bulbasaur());
-  //yourTeam.add(Pokemons.get(0));
   Pikachu.a1 = Surf;
   Pikachu.a2 = Thunder;
   Pikachu.a3 = Strength;
@@ -71,7 +74,7 @@ void draw() {
   if (state.equals("chooseMove")) {
     setupMoveChoice();
     //need something here to stop the instant press
-    if (attackTransitionTime >= 60) {
+    if (attackTransitionTime >= 25) {
       turnEvents(); 
     }
     else {
@@ -80,25 +83,23 @@ void draw() {
   }
   //added part
   animateTurn();
-  
 }
 
 
 
 void animateTurn() {
   //needs to add text box with attacks and side effects
-  
-  if (state.equals("turn-p1") && speedWinner.equals("opp")) { 
+  if ((state.equals("turn-p1") && speedWinner.equals("opp")) || (state.equals("turn-p2") && speedWinner.equals("you"))) { 
     yourDropHealth();
+    image(blankBox,0,0);
+    text("Enemy " + Raichu.getName(),50,475);
+    text("used " + oppAttack.toString()+"!",50,535);
   }
-  if (state.equals("turn-p1") && speedWinner.equals("you")) {
-    oppDropHealth();  
-  }
-  if (state.equals("turn-p2") && speedWinner.equals("opp")) { 
+  if ((state.equals("turn-p1") && speedWinner.equals("you")) || (state.equals("turn-p2") && speedWinner.equals("opp"))) {
     oppDropHealth();
-  }
-  if (state.equals("turn-p2") && speedWinner.equals("you")) {
-    yourDropHealth();  
+    image(blankBox,0,0);
+    text(Pikachu.getName(),50,475);
+    text("used " + yourAttack.toString()+"!",50,535);
   }
 
   noStroke();
@@ -145,12 +146,14 @@ void turnEvents() {
       speedWinner = "opp";  
     }
     
+    oppAttack = Tackle;
+    
     if (speedWinner.equals("you")) {
       Pikachu.attack(Raichu,yourAttack);
-      Raichu.attack(Pikachu,Tackle);
+      Raichu.attack(Pikachu,oppAttack);
     }
     else if (speedWinner.equals("opp")) {
-      Raichu.attack(Pikachu,Thunder);  
+      Raichu.attack(Pikachu,oppAttack);  
       Pikachu.attack(Raichu,yourAttack);  
     }
     
@@ -168,9 +171,9 @@ void oppDropHealth() {
   
   if ((Raichu.health - Raichu.hp > oppHealthLost)) {
     if (oppHealthLost < Raichu.health) {
-      println("HP: " + Raichu.hp);
-      println(oppHealthLost);
-      println(Raichu.health - Raichu.hp > oppHealthLost);
+      //println("HP: " + Raichu.hp);
+      //println(oppHealthLost);
+      //println(Raichu.health - Raichu.hp > oppHealthLost);
       oppHealthLost++;  
     }
   }
@@ -191,7 +194,7 @@ void yourDropHealth() {
     if (yourHealthLost < Pikachu.health) {
       yourHealthLost++; 
       hpToShow--;
-      println(yourHealthLost);
+      //println(yourHealthLost);
     }
   }
   else{
@@ -309,7 +312,7 @@ void displayBattlersInfo() {
  
   fill(color(0));
   
-  text(Pikachu.getName().toUpperCase(),319,252);  
+  text(Pikachu.getName(),319,252);  
   String yourdisplayHealth;
   yourdisplayHealth = " " + Pikachu.health;
   text(yourdisplayHealth.substring(yourdisplayHealth.length()-3),480,348);
@@ -331,7 +334,7 @@ void displayBattlersInfo() {
     text(Pikachu.getStatus(),430,285);
   }   
     
-  text(Raichu.getName().toUpperCase(),35,30);
+  text(Raichu.getName(),35,30);
   if (Raichu.getStatus().equals("none") || (Raichu.getStatus().equals("FNT") && oppHealthLost < Raichu.health)) {
     text(Raichu.lv,156,60);  
   }
