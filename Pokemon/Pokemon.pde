@@ -156,6 +156,13 @@ void turnEvents() {
     //determine who goes first
     int yourSpeed = Pikachu.speed;
     int oppSpeed = Raichu.speed;
+    if (Raichu.getStatus().equals("PRZ")) {
+      oppSpeed /= 4;
+    }
+    if (Pikachu.getStatus().equals("PRZ")) {
+      yourSpeed /= 4;
+    }
+    
     if (yourSpeed > oppSpeed) {
       speedWinner = "you";  
     }

@@ -1,43 +1,46 @@
-      class Ai_easy extends AI{
-        Attack chooseMove(Poke PlayerPoke){
-          int moveNumber = (int)Math.random()*4;
-          Attack planAttack = AIPokeTeam[0].geta1();
-          if(PlayerPoke.getStatus()=="none"){
-            if(moveNumber == 0){
-              planAttack = AIPokeTeam.geta1();
-            }
-             if(moveNumber == 1){
-              planAttack = AIPokeTeam.geta2();
-            }
-             if(moveNumber == 2){
-              planAttack = AIPokeTeam.geta3();
-            }
-             if(moveNumber == 3){
-              planAttack = AIPokeTeam.geta4();
-            }
-          }
-            else{
-              if(moveNumber == 0){
-              if (!AIPokeTeam.geta1().effect1.equals("") && AIPokeTeam.geta1().effect1Chance == 1){
-                planAttack = AIPokeTeam.geta1();
-              }
-              }
-              if(moveNumber == 1){
-              if (!AIPokeTeam.geta2().effect1.equals("") && AIPokeTeam.geta2().effect1Chance == 1){
-                planAttack = AIPokeTeam.geta2();
-              }
-            }
-              if(moveNumber == 2){
-              if (!AIPokeTeam.geta3().effect1.equals("") && AIPokeTeam.geta3().effect1Chance == 1){
-                planAttack = AIPokeTeam.geta3();
-              }
-            }
-              if(moveNumber == 3){
-              if (!AIPokeTeam.geta4().effect1.equals("") && AIPokeTeam.geta4().effect1Chance == 1){
-                planAttack = AIPokeTeam.geta4();
-              }
-            }
-              
-   
+//using Raichu as placeholder for opp pokemon currently out
+//using Pikachu as placeholder for your Pokemon out
+
+class Ai_easy extends AI{
+  
+  Attack chooseMove(Poke PlayerPoke){
+    ArrayList<Attack>attacks = new ArrayList<Attack>(4);
+    attacks.add(Raichu.a1);  
+    attacks.add(Raichu.a2);
+    attacks.add(Raichu.a3);
+    attacks.add(Raichu.a4);
+    
+    int moveNumber = (int)(Math.random()*4);
+    Attack planAttack = attacks.get(moveNumber);
+    if(!Pikachu.getStatus().equals("none")){
+      if(moveNumber == 0){
+        if (!attacks.get(0).effect1.equals("") && attacks.get(0).effect1Chance == 1){
+          attacks.remove(0);          
+        }
+      }
+      if(moveNumber == 1){
+        if (!attacks.get(1).effect1.equals("") && attacks.get(1).effect1Chance == 1){
+          attacks.remove(1);          
+        }
+      }
+      if(moveNumber == 2){
+        if (!attacks.get(2).effect1.equals("") && attacks.get(2).effect1Chance == 1){
+          attacks.remove(2);          
+        }
+      }
+      if(moveNumber == 3){
+        if (!attacks.get(3).effect1.equals("") && attacks.get(3).effect1Chance == 1){
+          attacks.remove(3);          
+        }
+      }
+           
+       
+      if (attacks.size() < 4) {
+       planAttack = attacks.get((int)(Math.random()*attacks.size()));
+      }
         
     }
+    
+    return planAttack;
+  }
+}

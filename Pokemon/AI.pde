@@ -20,7 +20,7 @@ abstract class AI {
     counter ++;
   }
   
-   abstract Attack chooseMove(Poke PlayersPoke)
+   abstract Attack chooseMove(Poke PlayersPoke);
  //  AddAI();
    // boolean check = PlayerPokeTeam.size() >= 1;
     //if(check){
