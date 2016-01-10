@@ -1,4 +1,6 @@
+PFont font;
 PImage battle;
+PImage blankBox;
 PImage options;
 PImage yourPoke;
 PImage oppPoke;
@@ -11,19 +13,14 @@ PImage move;
 PImage moveArrow;
 int mArrowY = 420;
 
-PImage blankBox;
-
-PFont font;
 String state;
 int slow = 0;
 int attackTransitionTime = 0;
 int textShowTime = 0;
 
-//added
 String speedWinner;
 int hpToShow;
 String yourdisplayHP;
-
 
 Attack yourAttack;
 Attack oppAttack;
@@ -31,9 +28,12 @@ int oppHealthLost = 0;
 int yourHealthLost = 0;
 
 ArrayList<Poke>yourTeam = new ArrayList<Poke>();
-ArrayList<Poke>oppTeam = new ArrayList<Poke>();
 Poke yourPokemonOut;
+
+ArrayList<Poke>oppTeam = new ArrayList<Poke>();
 Poke oppPokemonOut;
+AI OppTrainer;
+
 
 void setup() {
   background(255,255,255);
@@ -70,8 +70,7 @@ void setup() {
   
   hpToShow = yourTeam.get(0).hp;
   yourdisplayHP = " " + yourTeam.get(0).hp;
-  
-  
+   
 }
 
 void draw() {
@@ -90,17 +89,25 @@ void draw() {
     }
   }
   animateTurn();
+  showHPBar();
+  if (state.equals("chooseNext-you")) {
+      
+  }
 }
 
 
+//----------------------------------------------------------
+//THIS FUNCTION SCROLLS THE HP AND DISPLAY ALL ATTACK TEXT
+//----------------------------------------------------------
 
 void animateTurn() {
   //needs to add text box with attacks and side effects
   
-  if (state.equals("turn-p1") || state.equals("turn-p2") || state.equals("crit-1") || state.equals("crit-2")) {
+  if (state.equals("turn-p1") || state.equals("turn-p2") || state.equals("crit-1") || state.equals("crit-2") || state.equals("faintShow")) {
     image(blankBox,0,0);  
   }
   
+  //ANIMATE YOUR OPPONENT ATTACKING
   if ((state.equals("turn-p1") && speedWinner.equals("opp")) || (state.equals("turn-p2") && speedWinner.equals("you"))) { 
     yourDropHealth();
     if (oppTeam.get(0).turnParalyzed) {
@@ -113,7 +120,8 @@ void animateTurn() {
       text("used " + oppAttack.toString()+"!",50,535);
     }
   }
-  
+
+  //animate you attacking
   if ((state.equals("turn-p1") && speedWinner.equals("you")) || (state.equals("turn-p2") && speedWinner.equals("opp"))) {
     oppDropHealth();
     if (yourTeam.get(0).turnParalyzed) {
@@ -127,7 +135,7 @@ void animateTurn() {
     }
   }
   
-
+  //text for crits and transitioning to next phase
   if (state.equals("crit-1") && textShowTime < 45) {
     text("A critical hit!",50,475);  
     textShowTime++;
@@ -145,17 +153,48 @@ void animateTurn() {
     textShowTime = 0;
   }
   
-  //implement critical hit text into the above methods
-  //after drop health and crit check if the recipient has fainted. if so, change state to [faintedTextState] and text until
-  //textShowTime is 45, then set state to chooseOption and textShowTime to 0
+  //when your opponent faints
+  if (oppTeam.get(0).status.equals("FNT") && oppHealthLost == oppTeam.get(0).health && !state.equals("chooseNext-opp")) {
+    if (textShowTime < 60) {
+      state = "faintShow";
+      text("Enemy " + oppTeam.get(0).getName(),50,475);
+      text("fainted!",50,535);
+      textShowTime++;
+    }
+    else {
+      textShowTime = 0;  
+      state = "chooseNext-opp";
+    }
+  }
+  
+  //when you faint
+  if (yourTeam.get(0).status.equals("FNT") && yourHealthLost == yourTeam.get(0).health && !state.equals("chooseNext-you")) {
+    if (textShowTime < 60) {
+      state = "faintShow";
+      text(yourTeam.get(0).getName(),50,475);
+      text("fainted!",50,535);
+      textShowTime++;
+    }
+    else {
+      textShowTime = 0;  
+      state = "chooseNext-you";
+    }
+  }
+  
+  //chooseNext state is the switch screen. to be implemented
+  
+}
 
+//-----------------------
+//HP BAR DISPLAY
+//-----------------------
+void showHPBar() {
   noStroke();
   fill(color(255));
   rect(575-(yourHealthLost*190/yourTeam.get(0).health),300,(yourHealthLost*190/yourTeam.get(0).health),8);
-  rect(319-(oppHealthLost*190/oppTeam.get(0).health),76,(oppHealthLost*190/oppTeam.get(0).health),8);
+  rect(319-(oppHealthLost*190/oppTeam.get(0).health),76,(oppHealthLost*190/oppTeam.get(0).health),8);  
 }
 
-//added
 void turnEvents() {
   if (state.equals("chooseMove") && keyPressed && (key == 'Z' || key == 'z')) {
     state = "turn-p1";
@@ -176,9 +215,10 @@ void turnEvents() {
          break;
     }
     
-    //determine who goes first
     int yourSpeed = yourTeam.get(0).speed;
     int oppSpeed = oppTeam.get(0).speed;
+    
+    //paralysis hindrance
     if (oppTeam.get(0).getStatus().equals("PRZ")) {
       oppSpeed /= 4;
     }
@@ -186,6 +226,7 @@ void turnEvents() {
       yourSpeed /= 4;
     }
     
+    //who goes first
     if (yourSpeed > oppSpeed) {
       speedWinner = "you";  
     }
@@ -200,14 +241,15 @@ void turnEvents() {
       speedWinner = "opp";  
     }
     
-    oppAttack = Tackle;
+    //opponent chooses move
+    oppAttack = Tackle;   //should be oppAttack = OppTrainer.chooseMove(yourTeam.get(0));
     
     if (speedWinner.equals("you")) {
       yourTeam.get(0).attack(oppTeam.get(0),yourAttack);
       oppTeam.get(0).attack(yourTeam.get(0),oppAttack);
     }
     else if (speedWinner.equals("opp")) {
-      println(oppTeam.get(0).attack(yourTeam.get(0),oppAttack));  
+      oppTeam.get(0).attack(yourTeam.get(0),oppAttack);  
       yourTeam.get(0).attack(oppTeam.get(0),yourAttack);  
     }
     
@@ -216,18 +258,15 @@ void turnEvents() {
 }
 
 
-
-
-//added
+//-------------------------------------
+//DROP OPPONENT'S HEALTH BIT BY BIT
+//-------------------------------------
 void oppDropHealth() {
   
   //add some text display to be placed here: Pokemon used attack!
   
-  if ((oppTeam.get(0).health - oppTeam.get(0).hp > oppHealthLost)) {
+  if (oppTeam.get(0).health - oppTeam.get(0).hp > oppHealthLost) {
     if (oppHealthLost < oppTeam.get(0).health) {
-      //println("HP: " + oppTeam.get(0).hp);
-      //println(oppHealthLost);
-      //println(oppTeam.get(0).health - oppTeam.get(0).hp > oppHealthLost);
       oppHealthLost++;  
     }
   }
@@ -248,18 +287,18 @@ void oppDropHealth() {
     }
     else {
       state = "chooseOption";
-    }
-    //put here if crit occurred
-    
+    }    
   }  
 }
 
+//-------------------------------------
+//DROP YOUR HEALTH BIT BY BIT
+//-------------------------------------
 void yourDropHealth() {
-  if ((yourTeam.get(0).health - yourTeam.get(0).hp > yourHealthLost)) {
+  if (yourTeam.get(0).health - yourTeam.get(0).hp > yourHealthLost) {
     if (yourHealthLost < yourTeam.get(0).health && !oppTeam.get(0).turnParalyzed) {
       yourHealthLost++; 
       hpToShow--;
-      //println(yourHealthLost);
     }
   }
   else if (oppTeam.get(0).turnParalyzed && textShowTime < 45) {
@@ -279,14 +318,13 @@ void yourDropHealth() {
     }
     else {
       state = "chooseOption";
-    }
-    //put here if crit occurred
-    
-  }  
-  
+    }    
+  }    
 }
 
-
+//----------------------------------------
+//SETUP SCREEN WHERE YOU CHOOSE ATTACK
+//-----------------------------------------
 void setupMoveChoice() {
   image(move,0,0);
   text(yourTeam.get(0).a1.toString(),193,445);
@@ -357,6 +395,10 @@ void setupMoveChoice() {
   
 }
 
+
+//-----------------------------------------------------------
+//SETUP SCREEN WHERE YOU CHOOSE TO FIGHT, SWITCH, OR RUN
+//-----------------------------------------------------------
 void setupOptionScreen() {
   image(choiceArrow,cArrowX,cArrowY);
   if (keyPressed && key == CODED) {
@@ -379,6 +421,9 @@ void setupOptionScreen() {
   
 }
 
+//------------------------------------------------------
+//SETUP IMAGES FOR BATTLING POKEMON AND FULL HP BARS
+//------------------------------------------------------
 void displayBattlersInfo() {
   image(battle,0,0);
   

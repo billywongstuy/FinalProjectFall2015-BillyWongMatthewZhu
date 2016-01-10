@@ -29,24 +29,7 @@ class Attack {
     effect2Chance = eff2Chance;
     effect2Target = eff2t;
   }
-  
-  String toString() {
-    return name.toUpperCase();  
-  }
-  
-  String getType() {
-    return type.toUpperCase();  
-  }
-  
-  double getPower() {
-    return power;      
-  }
-  
-  String getCategory() {
-    return category;  
-  }
-  
-  
+    
   String generateEffect(String effect, double effectChance, String effectTarget, Poke opp, Poke self, int damage) {
     Poke target = opp;
     if (effectChance == 0 || effect.equals("")) {
@@ -106,6 +89,25 @@ class Attack {
     return generateEffect(effect1, effect1Chance, effect1Target, opp, self, damage) + "\n" + generateEffect(effect2, effect2Chance, effect2Target, opp, self, damage);
   }
   
+  
+  //----------------------------
+  //RETURN METHODS
+  //----------------------------
+    String toString() {
+    return name.toUpperCase();  
+  }
+  
+  String getType() {
+    return type.toUpperCase();  
+  }
+  
+  double getPower() {
+    return power;      
+  }
+  
+  String getCategory() {
+    return category;  
+  }
   
   
 }

@@ -52,38 +52,6 @@ abstract class Poke implements Cloneable{
     }
   }
   
-  Attack geta1(){
-    return a1;
-  }
-  Attack geta2(){
-    return a2;
-  }
-  Attack geta3(){
-    return a3;
-  }
-  Attack geta4(){
-    return a4;
-  }
-  int getDef() {
-    return def;  
-  }
-  
-  int getSpec() {
-    return spec;  
-  }
-  
-  String getType1() {
-    return type1;
-  }
-  
-  String getType2() {
-    return type2;  
-  }
-  
-  String getName() {
-    return name.toUpperCase();  
-  }
-  
   int attack(Poke opp, Attack attack) {
     //println(name + ": " + status);
     if (status.equals("FNT")) {
@@ -110,7 +78,6 @@ abstract class Poke implements Cloneable{
   }
   
   int calculateDamage(Poke opp, Attack attack) {
-    //first step
     double baseDmg;
     if (attack.getCategory().equals("Physical")) {
       baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical()+10)*atk*burned()*multipliers[statStatus[0]+6]*attack.getPower()/250)/opp.getDef())+2.0));
@@ -121,7 +88,6 @@ abstract class Poke implements Cloneable{
     else {
       baseDmg = 0;  
     }
-    //second step
     double random = (int)(Math.random()*16+85);
     //println("Random:" + random);
     double modifier = (random/100.0)*effective(attack,opp.getType1(),opp.getType2()); //includes STAB(above), random, effectiveness, and random (included above)
@@ -129,7 +95,6 @@ abstract class Poke implements Cloneable{
     int damage = (int)(Math.floor(baseDmg*modifier));
     
     addEffects = attack.generateFullEffect(opp,this,damage);
-    //println("modifier: " + modifier);
     if (opp.hp < damage) {
       return opp.hp;  
     }
@@ -193,15 +158,50 @@ abstract class Poke implements Cloneable{
     status = s;  
   }
   
-  String getStatus() {
-    return status;  
-  }
-  
   double burned() {
     if (status.equals("BRN")) {
       return 0.5;  
     }
     return 1;
+  }
+  
+  //----------------------------
+  //RETURN METHODS
+  //----------------------------
+  Attack geta1(){
+    return a1;
+  }
+  Attack geta2(){
+    return a2;
+  }
+  Attack geta3(){
+    return a3;
+  }
+  Attack geta4(){
+    return a4;
+  }
+  int getDef() {
+    return def;  
+  }
+  
+  int getSpec() {
+    return spec;  
+  }
+  
+  String getType1() {
+    return type1;
+  }
+  
+  String getType2() {
+    return type2;  
+  }
+  
+  String getName() {
+    return name.toUpperCase();  
+  }
+  
+  String getStatus() {
+    return status;  
   }
   
 }
