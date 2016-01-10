@@ -17,7 +17,7 @@ PFont font;
 String state;
 int slow = 0;
 int attackTransitionTime = 0;
-int critShowTime = 0;
+int textShowTime = 0;
 
 //added
 String speedWinner;
@@ -97,33 +97,46 @@ void animateTurn() {
   
   if ((state.equals("turn-p1") && speedWinner.equals("opp")) || (state.equals("turn-p2") && speedWinner.equals("you"))) { 
     yourDropHealth();
-    text("Enemy " + Raichu.getName(),50,475);
-    text("used " + oppAttack.toString()+"!",50,535);
-    //pause
+    if (Raichu.turnParalyzed) {
+      text("Enemy " + Raichu.getName()+"\'s",50,475);
+      text("paralyzed!",50,535);
+      textShowTime++;
+    }
+    else {
+      text("Enemy " + Raichu.getName(),50,475);
+      text("used " + oppAttack.toString()+"!",50,535);
+    }
   }
   
   if ((state.equals("turn-p1") && speedWinner.equals("you")) || (state.equals("turn-p2") && speedWinner.equals("opp"))) {
     oppDropHealth();
-    text(Pikachu.getName(),50,475);
-    text("used " + yourAttack.toString()+"!",50,535);
+    if (Pikachu.turnParalyzed) {
+      text(Pikachu.getName()+"\'s",50,475);
+      text("paralyzed!",50,535);
+      textShowTime++;
+    }
+    else {
+      text(Pikachu.getName(),50,475);
+      text("used " + yourAttack.toString()+"!",50,535);
+    }
   }
   
 
-  if (state.equals("crit-1") && critShowTime < 60) {
+  if (state.equals("crit-1") && textShowTime < 45) {
     text("A critical hit!",50,475);  
-    critShowTime++;
+    textShowTime++;
   }
-  if (state.equals("crit-1") && critShowTime >= 60) {
+  if (state.equals("crit-1") && textShowTime >= 45) {
     state = "turn-p2";
-    critShowTime = 0;
+    textShowTime = 0;
   }
-  if (state.equals("crit-2") && critShowTime < 60) {
+  if (state.equals("crit-2") && textShowTime < 45) {
     text("A critical hit!",50,475);  
-    critShowTime++;
+    textShowTime++;
   }
-  if (state.equals("crit-2") && critShowTime >= 60) {
+  if (state.equals("crit-2") && textShowTime >= 45) {
     state = "chooseOption";
-    critShowTime = 0;
+    textShowTime = 0;
   }
 
   noStroke();
@@ -179,12 +192,14 @@ void turnEvents() {
     
     oppAttack = Tackle;
     
+    Raichu.status = "PRZ";
+    
     if (speedWinner.equals("you")) {
       Pikachu.attack(Raichu,yourAttack);
       Raichu.attack(Pikachu,oppAttack);
     }
     else if (speedWinner.equals("opp")) {
-      Raichu.attack(Pikachu,oppAttack);  
+      println(Raichu.attack(Pikachu,oppAttack));  
       Pikachu.attack(Raichu,yourAttack);  
     }
     
@@ -208,8 +223,11 @@ void oppDropHealth() {
       oppHealthLost++;  
     }
   }
-  else{
+  else if (Pikachu.turnParalyzed && textShowTime < 45) {
     
+  }
+  else{
+    textShowTime = 0;
     if ((Pikachu.attackCrit) && state.equals("turn-p1")) {
       state = "crit-1"; 
     }
@@ -230,14 +248,17 @@ void oppDropHealth() {
 
 void yourDropHealth() {
   if ((Pikachu.health - Pikachu.hp > yourHealthLost)) {
-    if (yourHealthLost < Pikachu.health) {
+    if (yourHealthLost < Pikachu.health && !Raichu.turnParalyzed) {
       yourHealthLost++; 
       hpToShow--;
       //println(yourHealthLost);
     }
   }
-  else{
+  else if (Raichu.turnParalyzed && textShowTime < 45) {
     
+  }
+  else{
+    textShowTime = 0;
     if ((Raichu.attackCrit) && state.equals("turn-p1")) {
       state = "crit-1"; 
     }

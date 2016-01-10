@@ -19,6 +19,8 @@ abstract class Poke{
   private Attack a3;
   private Attack a4;
   private boolean attackCrit;
+  private boolean turnParalyzed;
+  private boolean frozen;
   
   Poke(String n, int i, String t, int bh, int ba, int bd, int bsp, int bs, int l) {
     lv = l;
@@ -76,8 +78,23 @@ abstract class Poke{
     if (status.equals("FNT")) {
       return 0;  
     }
-    attack.ppLeft--;
-    return opp.takeDamage(calculateDamage(opp, attack));
+    else if (status.equals("PRZ") && (int)(Math.random()*4) == 0) {
+      turnParalyzed = true;
+      println(name + " is paralyzed! It couldn't attack!");
+      return 0;  
+    }
+    else if (status.equals("FRZ")) {
+      frozen = true;
+      println(name + " is frozen and can't attack!");
+      return 0;
+    }
+    else {
+      println("t");
+      turnParalyzed =false;
+      frozen = false;
+      attack.ppLeft--;
+      return opp.takeDamage(calculateDamage(opp, attack));
+    }
   }
   
   int calculateDamage(Poke opp, Attack attack) {
@@ -154,6 +171,7 @@ abstract class Poke{
       faint();
     }
     else {
+      println(name + " took " + damage);
       hp -= damage;
     }
     return damage; 
