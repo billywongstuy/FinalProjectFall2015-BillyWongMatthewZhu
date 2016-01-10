@@ -14,8 +14,10 @@ int mArrowY = 420;
 PFont font;
 String state;
 int slow = 0;
+int attackTransitionTime = 0;
 
 //added
+String speedWinner;
 int hpToShow;
 String yourdisplayHP;
 
@@ -69,7 +71,12 @@ void draw() {
   if (state.equals("chooseMove")) {
     setupMoveChoice();
     //need something here to stop the instant press
-    turnEvents();  //added
+    if (attackTransitionTime >= 60) {
+      turnEvents(); 
+    }
+    else {
+      attackTransitionTime++;  
+    }
   }
   //added part
   animateTurn();
@@ -79,18 +86,31 @@ void draw() {
 
 
 void animateTurn() {
-
-  oppDropHealth();
+  //needs to add text box with attacks and side effects
+  
+  if (state.equals("turn-p1") && speedWinner.equals("opp")) { 
+    yourDropHealth();
+  }
+  if (state.equals("turn-p1") && speedWinner.equals("you")) {
+    oppDropHealth();  
+  }
+  if (state.equals("turn-p2") && speedWinner.equals("opp")) { 
+    oppDropHealth();
+  }
+  if (state.equals("turn-p2") && speedWinner.equals("you")) {
+    yourDropHealth();  
+  }
 
   noStroke();
   fill(color(255));
+  rect(575-(yourHealthLost*190/Pikachu.health),300,(yourHealthLost*190/Pikachu.health),8);
   rect(319-(oppHealthLost*190/Raichu.health),76,(oppHealthLost*190/Raichu.health),8);
 }
 
 //added
 void turnEvents() {
-  if (state.equals("chooseMove") && keyPressed && key == 'A' || key == 'a') {
-    state = "turn";
+  if (state.equals("chooseMove") && keyPressed && (key == 'Z' || key == 'z')) {
+    state = "turn-p1";
     
     //incorporate speed and turns
     switch(mArrowY) {
@@ -106,9 +126,35 @@ void turnEvents() {
        case 516:
          yourAttack = Pikachu.a4;
          break;
-    }    
-      println(Pikachu.attack(Raichu,yourAttack));
-      println(Raichu.hp);
+    }
+    
+    //determine who goes first
+    int yourSpeed = Pikachu.speed;
+    int oppSpeed = Raichu.speed;
+    if (yourSpeed > oppSpeed) {
+      speedWinner = "you";  
+    }
+    else if (oppSpeed > yourSpeed) {
+      speedWinner = "opp";  
+    }
+    //speedtie
+    else if ((int)(Math.random()*2) == 0) {
+      speedWinner = "you";  
+    }
+    else {
+      speedWinner = "opp";  
+    }
+    
+    if (speedWinner.equals("you")) {
+      Pikachu.attack(Raichu,yourAttack);
+      Raichu.attack(Pikachu,Tackle);
+    }
+    else if (speedWinner.equals("opp")) {
+      Raichu.attack(Pikachu,Thunder);  
+      Pikachu.attack(Raichu,yourAttack);  
+    }
+    
+    attackTransitionTime = 0;
   }
 }
 
@@ -122,19 +168,43 @@ void oppDropHealth() {
   
   if ((Raichu.health - Raichu.hp > oppHealthLost)) {
     if (oppHealthLost < Raichu.health) {
-      //println("HP: " + Raichu.hp);
-      //println(oppHealthLost);
-      //println(Raichu.health - Raichu.hp > oppHealthLost);
+      println("HP: " + Raichu.hp);
+      println(oppHealthLost);
+      println(Raichu.health - Raichu.hp > oppHealthLost);
       oppHealthLost++;  
     }
   }
   else{
-    if (state.equals("turn")) {
+    if (state.equals("turn-p1")) {
+      state = "turn-p2"; 
+    }
+    else {
       state = "chooseOption";
     }
     //put here if crit occurred
     
   }  
+}
+
+void yourDropHealth() {
+  if ((Pikachu.health - Pikachu.hp > yourHealthLost)) {
+    if (yourHealthLost < Pikachu.health) {
+      yourHealthLost++; 
+      hpToShow--;
+      println(yourHealthLost);
+    }
+  }
+  else{
+    if (state.equals("turn-p1")) {
+      state = "turn-p2"; 
+    }
+    else {
+      state = "chooseOption";
+    }
+    //put here if crit occurred
+    
+  }  
+  
 }
 
 
@@ -146,35 +216,35 @@ void setupMoveChoice() {
   text(Pikachu.a4.toString(),193,541);
   image(moveArrow,160,mArrowY);
  
- switch(mArrowY) {
-   case 420:
-     text(Pikachu.a1.getType(),65,349);
-     text(Pikachu.a1.ppLeft,160,381);
-     text(Pikachu.a1.pp,255,381);
-     break;
-   case 452:
-     text(Pikachu.a2.getType(),65,349);
-     text(Pikachu.a2.ppLeft,160,381);
-     text(Pikachu.a2.pp,255,381);
-     break;
-   case 485:
-     text(Pikachu.a3.getType(),65,349);
-     text(Pikachu.a3.ppLeft,160,381);
-     text(Pikachu.a3.pp,255,381);
-     break;
-   case 516:
-     text(Pikachu.a4.getType(),65,349);
-     text(Pikachu.a4.ppLeft,160,381);
-     text(Pikachu.a4.pp,255,381);
-     break;
- }
+  switch(mArrowY) {
+    case 420:
+      text(Pikachu.a1.getType(),65,349);
+      text(Pikachu.a1.ppLeft,160,381);
+      text(Pikachu.a1.pp,255,381);
+      break;
+    case 452:
+      text(Pikachu.a2.getType(),65,349);
+      text(Pikachu.a2.ppLeft,160,381);
+      text(Pikachu.a2.pp,255,381);
+      break;
+    case 485:
+      text(Pikachu.a3.getType(),65,349);
+      text(Pikachu.a3.ppLeft,160,381);
+      text(Pikachu.a3.pp,255,381);
+      break;
+    case 516:
+      text(Pikachu.a4.getType(),65,349);
+      text(Pikachu.a4.ppLeft,160,381);
+      text(Pikachu.a4.pp,255,381);
+      break;
+   }
  
- if (slow == 0) {
-   slow = 1;  
- }
- else {
-   slow = 0;
- }
+  if (slow == 0) {
+    slow = 1;  
+  }
+  else {
+    slow = 0;
+   }
  
   if (keyPressed && key == CODED && slow == 0) {
     frameRate(10);
