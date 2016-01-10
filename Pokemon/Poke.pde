@@ -1,6 +1,6 @@
 private static final float [] multipliers = {0.25, 0.28, 0.33, .40, .50, 0.66, 1.0, 2.0, 2.5, 3.0, 3.5, 4.0};
 
-abstract class Poke{
+abstract class Poke implements Cloneable{
   private String name;
   private int index;
   private String type1; String type2;
@@ -42,6 +42,16 @@ abstract class Poke{
     this(n,i,t1,bh,ba,bd,bsp,bs,l);
     type2 = t2;
   }
+  
+  public Object clone() {
+    try{
+      return super.clone();  
+    }
+    catch(CloneNotSupportedException e) {
+      return null;  
+    }
+  }
+  
   Attack geta1(){
     return a1;
   }
@@ -75,7 +85,9 @@ abstract class Poke{
   }
   
   int attack(Poke opp, Attack attack) {
+    //println(name + ": " + status);
     if (status.equals("FNT")) {
+      //println(name + " is fainted!");
       return 0;  
     }
     else if (status.equals("PRZ") && (int)(Math.random()*4) == 0) {
@@ -166,21 +178,16 @@ abstract class Poke{
   }
   
   int takeDamage(int damage) {
-    if (damage > hp) {
+    if (damage >= hp) {
       hp = 0;
-      faint();
+      setStatus("FNT");
     }
     else {
       println(name + " took " + damage);
       hp -= damage;
     }
     return damage; 
-  }
-  
-  String faint() {
-    setStatus("FNT");
-    return "";  
-  }
+  }  
   
   void setStatus(String s) {
     status = s;  

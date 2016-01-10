@@ -5,10 +5,10 @@ class Ai_easy extends AI{
   
   Attack chooseMove(Poke PlayerPoke){
     ArrayList<Attack>attacks = new ArrayList<Attack>(4);
-    attacks.add(Raichu.a1);  
-    attacks.add(Raichu.a2);
-    attacks.add(Raichu.a3);
-    attacks.add(Raichu.a4);
+    attacks.add(Raichu.geta1());  
+    attacks.add(Raichu.geta2());
+    attacks.add(Raichu.geta3());
+    attacks.add(Raichu.geta4());
     
     int moveNumber = (int)(Math.random()*4);
     Attack planAttack = attacks.get(moveNumber);
