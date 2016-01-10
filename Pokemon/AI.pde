@@ -20,19 +20,19 @@ abstract class AI {
     counter ++;
   }
   
-  void start(){
-    AddAI();
-    boolean check = PlayerPokeTeam.size() >= 1;
-    if(check){
-      Random rng = new Random();
-      if(rng.nextInt(3) == 0){
-      }
-      if(rng.nextInt(3) ==1){
-      }
-      if(rng.nextInt(3) == 2){
-      }
-    }
-  }
+   abstract Attack chooseMove(Poke PlayersPoke)
+ //  AddAI();
+   // boolean check = PlayerPokeTeam.size() >= 1;
+    //if(check){
+    //  Random rng = new Random();
+    //  if(rng.nextInt(3) == 0){
+     // }
+     // if(rng.nextInt(3) ==1){
+     // }
+     // if(rng.nextInt(3) == 2){
+     // }
+  //  }
+ // }
 }
       
       

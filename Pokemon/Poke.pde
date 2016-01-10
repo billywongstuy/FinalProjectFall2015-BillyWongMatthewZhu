@@ -40,7 +40,18 @@ abstract class Poke{
     this(n,i,t1,bh,ba,bd,bsp,bs,l);
     type2 = t2;
   }
-  
+  Attack geta1(){
+    return a1;
+  }
+  Attack geta2(){
+    return a2;
+  }
+  Attack geta3(){
+    return a3;
+  }
+  Attack geta4(){
+    return a4;
+  }
   int getDef() {
     return def;  
   }
