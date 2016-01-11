@@ -3,6 +3,10 @@
 
 class Ai_easy extends AI{
   
+  public Ai_easy(Poke p1, Poke p2, Poke p3) {
+    super(p1,p2,p3);  
+  }
+  
   Attack chooseMove(Poke PlayerPoke){
     ArrayList<Attack>attacks = new ArrayList<Attack>(4);
     attacks.add(Raichu.geta1());  

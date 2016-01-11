@@ -45,11 +45,12 @@ void setup() {
   setupPokeSet();
   yourTeam.add(Pokemons.get(24)); 
   oppTeam.add((Poke)(Pokemons.get(18).clone()));
-  
+  yourPokemonOut = yourTeam.get(0);
+  oppPokemonOut = oppTeam.get(0);
   
   battle = loadImage("battlers-info-template.png");  
-  yourPoke = loadImage("Sprites/Back/" + yourTeam.get(0).index+".PNG"); 
-  oppPoke = loadImage("Sprites/Front/" + oppTeam.get(0).index+".PNG");
+  yourPoke = loadImage("Sprites/Back/" + yourPokemonOut.index+".PNG"); 
+  oppPoke = loadImage("Sprites/Front/" + oppPokemonOut.index+".PNG");
  
   yourPoke.resize(230,230);
   oppPoke.resize(225,225);
@@ -63,13 +64,13 @@ void setup() {
   blankBox = loadImage("blank_box_bottom.png");
   
   
-  yourTeam.get(0).a1 = Surf;
-  yourTeam.get(0).a2 = Thunder;
-  yourTeam.get(0).a3 = Strength;
-  yourTeam.get(0).a4 = Thunderbolt;
+  yourPokemonOut.a1 = Surf;
+  yourPokemonOut.a2 = Thunder;
+  yourPokemonOut.a3 = Strength;
+  yourPokemonOut.a4 = Thunderbolt;
   
-  hpToShow = yourTeam.get(0).hp;
-  yourdisplayHP = " " + yourTeam.get(0).hp;
+  hpToShow = yourPokemonOut.hp;
+  yourdisplayHP = " " + yourPokemonOut.hp;
    
 }
 
@@ -93,6 +94,9 @@ void draw() {
   if (state.equals("chooseNext-you")) {
       
   }
+  if (state.equals("chooseNext-opp")) {
+    
+  }
 }
 
 
@@ -110,13 +114,13 @@ void animateTurn() {
   //ANIMATE YOUR OPPONENT ATTACKING
   if ((state.equals("turn-p1") && speedWinner.equals("opp")) || (state.equals("turn-p2") && speedWinner.equals("you"))) { 
     yourDropHealth();
-    if (oppTeam.get(0).turnParalyzed) {
-      text("Enemy " + oppTeam.get(0).getName()+"\'s",50,475);
+    if (oppPokemonOut.turnParalyzed) {
+      text("Enemy " + oppPokemonOut.getName()+"\'s",50,475);
       text("paralyzed!",50,535);
       textShowTime++;
     }
     else {
-      text("Enemy " + oppTeam.get(0).getName(),50,475);
+      text("Enemy " + oppPokemonOut.getName(),50,475);
       text("used " + oppAttack.toString()+"!",50,535);
     }
   }
@@ -124,13 +128,13 @@ void animateTurn() {
   //animate you attacking
   if ((state.equals("turn-p1") && speedWinner.equals("you")) || (state.equals("turn-p2") && speedWinner.equals("opp"))) {
     oppDropHealth();
-    if (yourTeam.get(0).turnParalyzed) {
-      text(yourTeam.get(0).getName()+"\'s",50,475);
+    if (yourPokemonOut.turnParalyzed) {
+      text(yourPokemonOut.getName()+"\'s",50,475);
       text("paralyzed!",50,535);
       textShowTime++;
     }
     else {
-      text(yourTeam.get(0).getName(),50,475);
+      text(yourPokemonOut.getName(),50,475);
       text("used " + yourAttack.toString()+"!",50,535);
     }
   }
@@ -154,10 +158,10 @@ void animateTurn() {
   }
   
   //when your opponent faints
-  if (oppTeam.get(0).status.equals("FNT") && oppHealthLost == oppTeam.get(0).health && !state.equals("chooseNext-opp")) {
+  if (oppPokemonOut.status.equals("FNT") && oppHealthLost == oppPokemonOut.health && !state.equals("chooseNext-opp")) {
     if (textShowTime < 60) {
       state = "faintShow";
-      text("Enemy " + oppTeam.get(0).getName(),50,475);
+      text("Enemy " + oppPokemonOut.getName(),50,475);
       text("fainted!",50,535);
       textShowTime++;
     }
@@ -168,10 +172,10 @@ void animateTurn() {
   }
   
   //when you faint
-  if (yourTeam.get(0).status.equals("FNT") && yourHealthLost == yourTeam.get(0).health && !state.equals("chooseNext-you")) {
+  if (yourPokemonOut.status.equals("FNT") && yourHealthLost == yourPokemonOut.health && !state.equals("chooseNext-you")) {
     if (textShowTime < 60) {
       state = "faintShow";
-      text(yourTeam.get(0).getName(),50,475);
+      text(yourPokemonOut.getName(),50,475);
       text("fainted!",50,535);
       textShowTime++;
     }
@@ -191,8 +195,8 @@ void animateTurn() {
 void showHPBar() {
   noStroke();
   fill(color(255));
-  rect(575-(yourHealthLost*190/yourTeam.get(0).health),300,(yourHealthLost*190/yourTeam.get(0).health),8);
-  rect(319-(oppHealthLost*190/oppTeam.get(0).health),76,(oppHealthLost*190/oppTeam.get(0).health),8);  
+  rect(575-(yourHealthLost*190/yourPokemonOut.health),300,(yourHealthLost*190/yourPokemonOut.health),8);
+  rect(319-(oppHealthLost*190/oppPokemonOut.health),76,(oppHealthLost*190/oppPokemonOut.health),8);  
 }
 
 void turnEvents() {
@@ -202,27 +206,27 @@ void turnEvents() {
     //incorporate speed and turns
     switch(mArrowY) {
        case 420:
-         yourAttack = yourTeam.get(0).a1;
+         yourAttack = yourPokemonOut.a1;
          break;
        case 452:
-         yourAttack = yourTeam.get(0).a2;
+         yourAttack = yourPokemonOut.a2;
          break;
        case 485:
-         yourAttack = yourTeam.get(0).a3;
+         yourAttack = yourPokemonOut.a3;
          break;
        case 516:
-         yourAttack = yourTeam.get(0).a4;
+         yourAttack = yourPokemonOut.a4;
          break;
     }
     
-    int yourSpeed = yourTeam.get(0).speed;
-    int oppSpeed = oppTeam.get(0).speed;
+    int yourSpeed = yourPokemonOut.speed;
+    int oppSpeed = oppPokemonOut.speed;
     
     //paralysis hindrance
-    if (oppTeam.get(0).getStatus().equals("PRZ")) {
+    if (oppPokemonOut.getStatus().equals("PRZ")) {
       oppSpeed /= 4;
     }
-    if (yourTeam.get(0).getStatus().equals("PRZ")) {
+    if (yourPokemonOut.getStatus().equals("PRZ")) {
       yourSpeed /= 4;
     }
     
@@ -242,15 +246,15 @@ void turnEvents() {
     }
     
     //opponent chooses move
-    oppAttack = Tackle;   //should be oppAttack = OppTrainer.chooseMove(yourTeam.get(0));
+    oppAttack = Tackle;   //should be oppAttack = OppTrainer.chooseMove(yourPokemonOut);
     
     if (speedWinner.equals("you")) {
-      yourTeam.get(0).attack(oppTeam.get(0),yourAttack);
-      oppTeam.get(0).attack(yourTeam.get(0),oppAttack);
+      yourPokemonOut.attack(oppPokemonOut,yourAttack);
+      oppPokemonOut.attack(yourPokemonOut,oppAttack);
     }
     else if (speedWinner.equals("opp")) {
-      oppTeam.get(0).attack(yourTeam.get(0),oppAttack);  
-      yourTeam.get(0).attack(oppTeam.get(0),yourAttack);  
+      oppPokemonOut.attack(yourPokemonOut,oppAttack);  
+      yourPokemonOut.attack(oppPokemonOut,yourAttack);  
     }
     
     attackTransitionTime = 0;
@@ -265,20 +269,20 @@ void oppDropHealth() {
   
   //add some text display to be placed here: Pokemon used attack!
   
-  if (oppTeam.get(0).health - oppTeam.get(0).hp > oppHealthLost) {
-    if (oppHealthLost < oppTeam.get(0).health) {
+  if (oppPokemonOut.health - oppPokemonOut.hp > oppHealthLost) {
+    if (oppHealthLost < oppPokemonOut.health) {
       oppHealthLost++;  
     }
   }
-  else if (yourTeam.get(0).turnParalyzed && textShowTime < 45) {
+  else if (yourPokemonOut.turnParalyzed && textShowTime < 45) {
     
   }
   else{
     textShowTime = 0;
-    if ((yourTeam.get(0).attackCrit) && state.equals("turn-p1")) {
+    if ((yourPokemonOut.attackCrit) && state.equals("turn-p1")) {
       state = "crit-1"; 
     }
-    else if ((yourTeam.get(0).attackCrit) && state.equals("turn-p2")) {
+    else if ((yourPokemonOut.attackCrit) && state.equals("turn-p2")) {
       state = "crit-2";  
     }
     
@@ -295,21 +299,21 @@ void oppDropHealth() {
 //DROP YOUR HEALTH BIT BY BIT
 //-------------------------------------
 void yourDropHealth() {
-  if (yourTeam.get(0).health - yourTeam.get(0).hp > yourHealthLost) {
-    if (yourHealthLost < yourTeam.get(0).health && !oppTeam.get(0).turnParalyzed) {
+  if (yourPokemonOut.health - yourPokemonOut.hp > yourHealthLost) {
+    if (yourHealthLost < yourPokemonOut.health && !oppPokemonOut.turnParalyzed) {
       yourHealthLost++; 
       hpToShow--;
     }
   }
-  else if (oppTeam.get(0).turnParalyzed && textShowTime < 45) {
+  else if (oppPokemonOut.turnParalyzed && textShowTime < 45) {
     
   }
   else{
     textShowTime = 0;
-    if ((oppTeam.get(0).attackCrit) && state.equals("turn-p1")) {
+    if ((oppPokemonOut.attackCrit) && state.equals("turn-p1")) {
       state = "crit-1"; 
     }
-    else if ((oppTeam.get(0).attackCrit) && state.equals("turn-p2")) {
+    else if ((oppPokemonOut.attackCrit) && state.equals("turn-p2")) {
       state = "crit-2";  
     }
     
@@ -327,32 +331,32 @@ void yourDropHealth() {
 //-----------------------------------------
 void setupMoveChoice() {
   image(move,0,0);
-  text(yourTeam.get(0).a1.toString(),193,445);
-  text(yourTeam.get(0).a2.toString(),193,477);
-  text(yourTeam.get(0).a3.toString(),193,510);
-  text(yourTeam.get(0).a4.toString(),193,541);
+  text(yourPokemonOut.a1.toString(),193,445);
+  text(yourPokemonOut.a2.toString(),193,477);
+  text(yourPokemonOut.a3.toString(),193,510);
+  text(yourPokemonOut.a4.toString(),193,541);
   image(moveArrow,160,mArrowY);
  
   switch(mArrowY) {
     case 420:
-      text(yourTeam.get(0).a1.getType(),65,349);
-      text(yourTeam.get(0).a1.ppLeft,160,381);
-      text(yourTeam.get(0).a1.pp,255,381);
+      text(yourPokemonOut.a1.getType(),65,349);
+      text(yourPokemonOut.a1.ppLeft,160,381);
+      text(yourPokemonOut.a1.pp,255,381);
       break;
     case 452:
-      text(yourTeam.get(0).a2.getType(),65,349);
-      text(yourTeam.get(0).a2.ppLeft,160,381);
-      text(yourTeam.get(0).a2.pp,255,381);
+      text(yourPokemonOut.a2.getType(),65,349);
+      text(yourPokemonOut.a2.ppLeft,160,381);
+      text(yourPokemonOut.a2.pp,255,381);
       break;
     case 485:
-      text(yourTeam.get(0).a3.getType(),65,349);
-      text(yourTeam.get(0).a3.ppLeft,160,381);
-      text(yourTeam.get(0).a3.pp,255,381);
+      text(yourPokemonOut.a3.getType(),65,349);
+      text(yourPokemonOut.a3.ppLeft,160,381);
+      text(yourPokemonOut.a3.pp,255,381);
       break;
     case 516:
-      text(yourTeam.get(0).a4.getType(),65,349);
-      text(yourTeam.get(0).a4.ppLeft,160,381);
-      text(yourTeam.get(0).a4.pp,255,381);
+      text(yourPokemonOut.a4.getType(),65,349);
+      text(yourPokemonOut.a4.ppLeft,160,381);
+      text(yourPokemonOut.a4.pp,255,381);
       break;
    }
  
@@ -433,9 +437,9 @@ void displayBattlersInfo() {
  
   fill(color(0));
   
-  text(yourTeam.get(0).getName(),319,252);  
+  text(yourPokemonOut.getName(),319,252);  
   String yourdisplayHealth;
-  yourdisplayHealth = " " + yourTeam.get(0).health;
+  yourdisplayHealth = " " + yourPokemonOut.health;
   text(yourdisplayHealth.substring(yourdisplayHealth.length()-3),480,348);
   
   yourdisplayHP = " "+hpToShow;
@@ -444,27 +448,27 @@ void displayBattlersInfo() {
   }
   text(yourdisplayHP.substring(yourdisplayHP.length()-3),350,348);
   
-  if (yourTeam.get(0).getStatus().equals("none") || (yourTeam.get(0).getStatus().equals("FNT") && yourHealthLost < yourTeam.get(0).health)) {
-    text(yourTeam.get(0).lv,480,285);
+  if (yourPokemonOut.getStatus().equals("none") || (yourPokemonOut.getStatus().equals("FNT") && yourHealthLost < yourPokemonOut.health)) {
+    text(yourPokemonOut.lv,480,285);
   }
   else {
     fill(color(255,255,255));
     noStroke();
     rect(445,254,32,32);
     fill(color(0));
-    text(yourTeam.get(0).getStatus(),430,285);
+    text(yourPokemonOut.getStatus(),430,285);
   }   
     
-  text(oppTeam.get(0).getName(),35,30);
-  if (oppTeam.get(0).getStatus().equals("none") || (oppTeam.get(0).getStatus().equals("FNT") && oppHealthLost < oppTeam.get(0).health)) {
-    text(oppTeam.get(0).lv,156,60);  
+  text(oppPokemonOut.getName(),35,30);
+  if (oppPokemonOut.getStatus().equals("none") || (oppPokemonOut.getStatus().equals("FNT") && oppHealthLost < oppPokemonOut.health)) {
+    text(oppPokemonOut.lv,156,60);  
   }
   else {
     fill(color(255,255,255));
     noStroke();
     rect(125,29,32,32);
     fill(color(0));
-    text(oppTeam.get(0).getStatus(),126,60);
+    text(oppPokemonOut.getStatus(),126,60);
   }
   
   
