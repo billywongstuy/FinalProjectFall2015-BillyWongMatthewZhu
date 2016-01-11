@@ -18,7 +18,7 @@ int slow = 0;
 int attackTransitionTime = 0;
 int textShowTime = 0;
 
-String speedWinner;
+String speedWinner = "you";
 int hpToShow;
 String yourdisplayHP;
 
@@ -44,7 +44,7 @@ void setup() {
   
   setupPokeSet();
   yourTeam.add(Pokemons.get(24)); 
-  oppTeam.add((Poke)(Pokemons.get(18).clone()));
+  oppTeam.add((Poke)(Pokemons.get(25).clone()));
   yourPokemonOut = yourTeam.get(0);
   oppPokemonOut = oppTeam.get(0);
   
@@ -127,6 +127,13 @@ void animateTurn() {
     else {
       text("Enemy " + oppPokemonOut.getName(),50,475);
       text("used " + oppAttack.toString()+"!",50,535);
+      
+      if (oppPokemonOut.attackEffectiveness != 1) {
+        if (!oppPokemonOut.attackCrit) {
+          state = "type-effect-opp";  
+        }
+      }
+      
     }
   }
 
@@ -146,6 +153,14 @@ void animateTurn() {
     else {
       text(yourPokemonOut.getName(),50,475);
       text("used " + yourAttack.toString()+"!",50,535);
+      
+      if (oppPokemonOut.attackEffectiveness != 1) {
+        if (!oppPokemonOut.attackCrit) {
+          state = "type-effect-opp";  
+        }
+      }
+      
+      
     }
   }
   
@@ -157,6 +172,14 @@ void animateTurn() {
   if (state.equals("crit-1") && textShowTime >= 45) {
     state = "turn-p2";
     textShowTime = 0;
+    
+    if (yourPokemonOut.attackEffectiveness != 1 && !state.equals("type-effect-opp")) {
+      state = "type-effect-you";  
+    }
+    if (oppPokemonOut.attackEffectiveness != 1&& !state.equals("type-effect-you")) {
+      state = "type-effect-you";  
+    } 
+    
   }
   if (state.equals("crit-2") && textShowTime < 45) {
     text("A critical hit!",50,475);  
@@ -165,25 +188,56 @@ void animateTurn() {
   if (state.equals("crit-2") && textShowTime >= 45) {
     state = "chooseOption";
     textShowTime = 0;
+    
+    if (yourPokemonOut.attackEffectiveness != 1 && !state.equals("type-effect-opp")) {
+      state = "type-effect-you";  
+    }
+    if (oppPokemonOut.attackEffectiveness != 1&& !state.equals("type-effect-you")) {
+      state = "type-effect-you";  
+    }
+    
   }
   
   if (state.equals("type-effect-opp") && textShowTime <= 45) {
     if (oppPokemonOut.attackEffectiveness == 0.5) {
-        
+      text("It's not very effective!",50,475);
     }
     if (oppPokemonOut.attackEffectiveness == 2) {
-      
+      text("It's super effective!",50,475);
     }
     textShowTime++;
   }
-  else {
-    //state =
+  if (state.equals("type-effect-opp") && textShowTime > 45) {
+    if (speedWinner.equals("opp")) {
+      state = "turn-p2";  
+    }
+    else {
+      state = "chooseOption";  
+    }
+    textShowTime = 0;  
+  }
+
+  
+  
+  if (state.equals("type-effect-you") && textShowTime <= 45) {
+    if (yourPokemonOut.attackEffectiveness == 0.5) {
+      text("It's not very effective!",50,475);
+    }
+    if (yourPokemonOut.attackEffectiveness == 2) {
+      text("It's super effective!",50,475);  
+    }
+    textShowTime++;
+  }
+  if (state.equals("type-effect-you") && textShowTime > 45) {
+    if (speedWinner.equals("you")) {
+      state = "turn-p2";  
+    }
+    else {
+      state = "chooseOption";  
+    }
     textShowTime = 0;  
   }
   
-  if (state.equals("type-effect-you")) {
-    
-  }
   
   
   //when your opponent faints
