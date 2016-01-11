@@ -6,7 +6,7 @@ Attack Vine_Whip = new Attack("Vine Whip",35,"Grass","Special",100,10,"",0,"",""
 Attack Flamethrower = new Attack("Flamethrower",95,"Fire","Special",100,15,"burn",0.1,"o","",0,"");
 Attack Surf = new Attack("Surf",95,"Water","Special",100,15,"",0,"","",0,"");
 Attack Strength = new Attack("Strength",80,"Normal","Physical",100,15,"",0,"","",0,"");
-
+Attack Thunder_Wave = new Attack("Thunder Wave",0,"Electric","Special",100,20,"paralysis",1,"o","",0,"");
 
 //Attack test = new Attack(120,"Fire",85,5,"multi(2,5)",1,"o","",0,"");
 
