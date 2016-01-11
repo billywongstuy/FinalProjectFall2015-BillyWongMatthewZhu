@@ -19,6 +19,7 @@ abstract class Poke implements Cloneable{
   private Attack a3;
   private Attack a4;
   private boolean attackCrit;
+  private float attackEffectiveness = 1;
   private boolean turnParalyzed;
   private boolean frozen;
   
@@ -130,6 +131,7 @@ abstract class Poke implements Cloneable{
   
   float effective(Attack attack, String t1, String t2) { 
     float result = checkEffectiveness(attack.type, t1) * checkEffectiveness(attack.type,t2);
+    attackEffectiveness = result;
     if (result == 0.5) {
       println("It's not very effective.");  
     }

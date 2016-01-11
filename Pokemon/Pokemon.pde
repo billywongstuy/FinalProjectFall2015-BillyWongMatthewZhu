@@ -119,19 +119,29 @@ void animateTurn() {
       text("paralyzed!",50,535);
       textShowTime++;
     }
+    else if (oppPokemonOut.frozen) {
+      text("Enemy " + oppPokemonOut.getName()+"\'s",50,475);
+      text("frozen!",50,535);
+      textShowTime++;    
+    }
     else {
       text("Enemy " + oppPokemonOut.getName(),50,475);
       text("used " + oppAttack.toString()+"!",50,535);
     }
   }
 
-  //animate you attacking
+  //ANIMATE YOU ATTACKING
   if ((state.equals("turn-p1") && speedWinner.equals("you")) || (state.equals("turn-p2") && speedWinner.equals("opp"))) {
     oppDropHealth();
     if (yourPokemonOut.turnParalyzed) {
       text(yourPokemonOut.getName()+"\'s",50,475);
       text("paralyzed!",50,535);
       textShowTime++;
+    }
+    else if (yourPokemonOut.frozen) {
+      text(yourPokemonOut.getName()+"\'s",50,475);
+      text("frozen!",50,535);
+      textShowTime++;  
     }
     else {
       text(yourPokemonOut.getName(),50,475);
@@ -156,6 +166,25 @@ void animateTurn() {
     state = "chooseOption";
     textShowTime = 0;
   }
+  
+  if (state.equals("type-effect-opp") && textShowTime <= 45) {
+    if (oppPokemonOut.attackEffectiveness == 0.5) {
+        
+    }
+    if (oppPokemonOut.attackEffectiveness == 2) {
+      
+    }
+    textShowTime++;
+  }
+  else {
+    //state =
+    textShowTime = 0;  
+  }
+  
+  if (state.equals("type-effect-you")) {
+    
+  }
+  
   
   //when your opponent faints
   if (oppPokemonOut.status.equals("FNT") && oppHealthLost == oppPokemonOut.health && !state.equals("chooseNext-opp")) {
@@ -274,7 +303,7 @@ void oppDropHealth() {
       oppHealthLost++;  
     }
   }
-  else if (yourPokemonOut.turnParalyzed && textShowTime < 45) {
+  else if ((yourPokemonOut.turnParalyzed || yourPokemonOut.frozen) && textShowTime < 45) {
     
   }
   else{
@@ -305,7 +334,7 @@ void yourDropHealth() {
       hpToShow--;
     }
   }
-  else if (oppPokemonOut.turnParalyzed && textShowTime < 45) {
+  else if ((oppPokemonOut.turnParalyzed || oppPokemonOut.frozen) && textShowTime < 45) {
     
   }
   else{
