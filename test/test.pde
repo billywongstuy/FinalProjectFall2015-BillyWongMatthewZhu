@@ -397,7 +397,7 @@ void turnEvents() {
     }
     
     //opponent chooses move
-    oppAttack = Thundershock;   //should be oppAttack = OppTrainer.chooseMove(yourPokemonOut);
+    oppAttack = OppTrainer.chooseMove(yourPokemonOut);
     
     if (speedWinner.equals("you")) {
       yourPokemonOut.attack(oppPokemonOut,yourAttack);
