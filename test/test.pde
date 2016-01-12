@@ -19,6 +19,13 @@ int attackTransitionTime = 0;
 int textShowTime = 0;
 
 String speedWinner;
+//Poke speedWinner     
+/*if I want to evetually use this, replace all:
+  -.equals("you") with  ==yourPokemonOut
+  -.equals("opp") with  ==oppPokemonOut
+  -"opp" with oppPokemonOut
+  -"you" with yourPokemonOut
+*/
 int hpToShow;
 String yourdisplayHP;
 
@@ -40,16 +47,15 @@ void setup() {
   size(640,576);
   font = loadFont("PokemonGB-32.vlw");
   textFont(font, 32);
-  state = "chooseOption";  
+  state = "chooseOption";
+  
   setupPokeSet();
-  yourTeam.add(Pokemons.get(24)); 
+  yourTeam.add(Pokemons.get(25)); 
   
-  
-  OppTrainer = new AI_Normal(Electrode, Ekans, Arbok);
-  oppTeam = OppTrainer.AI_Team;
+OppTrainer = new AI_Normal(Electrode, Ekans, Arbok);
+oppTeam = OppTrainer.AI_Team;
   yourPokemonOut = yourTeam.get(0);
   oppPokemonOut = oppTeam.get(0);
-  
   
   battle = loadImage("battlers-info-template.png");  
   yourPoke = loadImage("Sprites/Back/" + yourPokemonOut.index+".PNG"); 
@@ -74,15 +80,15 @@ void setup() {
   
   hpToShow = yourPokemonOut.hp;
   yourdisplayHP = " " + yourPokemonOut.hp;
-  
- 
   oppPokemonOut.a1 = Thunder_Wave;
-  oppPokemonOut.a2 = Thunder_Wave;
-  oppPokemonOut.a3 = Thunder_Wave;
-  oppPokemonOut.a4 = Thunder_Wave;;  
+oppPokemonOut.a2 = Tackle;
+oppPokemonOut.a3 = Thunder_Wave;
+oppPokemonOut.a4 = Thunder_Wave;
+   
 }
 
 void draw() {
+  println(state);
   frameRate(30);
   displayBattlersInfo();
   if (state.equals("chooseOption")) {
@@ -107,7 +113,6 @@ void draw() {
   }
 }
 
-
 //----------------------------------------------------------
 //THIS FUNCTION SCROLLS THE HP AND DISPLAY ALL ATTACK TEXT
 //----------------------------------------------------------
@@ -115,38 +120,88 @@ void draw() {
 void animateTurn() {
   //needs to add text box with attacks and side effects
   
-  if (state.equals("turn-p1") || state.equals("turn-p2") || state.equals("crit-1") || state.equals("crit-2") || state.equals("faintShow")) {
+  if (state.equals("turn-p1") || state.equals("turn-p2") || state.equals("crit-1") || state.equals("crit-2") || state.equals("faintShow") || state.equals("type-effect-you") || state.equals("type-effect-opp")) {
     image(blankBox,0,0);  
   }
   
+  if (state.equals("pauseYou") || state.equals("pauseOpp")) {
+    image(blankBox,0,0);  
+  }  
+  
   //ANIMATE YOUR OPPONENT ATTACKING
   if ((state.equals("turn-p1") && speedWinner.equals("opp")) || (state.equals("turn-p2") && speedWinner.equals("you"))) { 
-    yourDropHealth();
-    if (oppPokemonOut.turnParalyzed) {
+    if (oppPokemonOut.attackEffectiveness == 0 || oppAttack.getPower() == 0) {
+        if (textShowTime < 45) {
+          text("Enemy " + oppPokemonOut.getName(),50,475);
+          text("used " + oppAttack.toString()+"!",50,535); 
+          textShowTime++;
+        }
+        else {
+          textShowTime = 0;
+          state = "type-effect-opp";
+        }
+    }
+    else if (oppPokemonOut.turnParalyzed) {
       text("Enemy " + oppPokemonOut.getName()+"\'s",50,475);
       text("paralyzed!",50,535);
       textShowTime++;
     }
+    else if (oppPokemonOut.frozen) {
+      text("Enemy " + oppPokemonOut.getName()+"\'s",50,475);
+      text("frozen!",50,535);
+      textShowTime++;    
+    }
     else {
       text("Enemy " + oppPokemonOut.getName(),50,475);
       text("used " + oppAttack.toString()+"!",50,535);
+      yourDropHealth();
     }
   }
 
-  //animate you attacking
-  if ((state.equals("turn-p1") && speedWinner.equals("you")) || (state.equals("turn-p2") && speedWinner.equals("opp"))) {
-    oppDropHealth();
-    if (yourPokemonOut.turnParalyzed) {
+  //ANIMATE YOU ATTACKING
+  else if ((state.equals("turn-p1") && speedWinner.equals("you")) || (state.equals("turn-p2") && speedWinner.equals("opp"))) {
+    
+    if (yourPokemonOut.attackEffectiveness == 0 || yourAttack.getPower() == 0) {
+        
+        if (textShowTime < 45) {
+          text(yourPokemonOut.getName(),50,475);
+          text("used " + yourAttack.toString()+"!",50,535); 
+          textShowTime++;
+        }
+        else {
+          textShowTime = 0;
+          state = "type-effect-you";
+        }
+    }  
+    else if (yourPokemonOut.turnParalyzed) {
       text(yourPokemonOut.getName()+"\'s",50,475);
       text("paralyzed!",50,535);
       textShowTime++;
     }
+    else if (yourPokemonOut.frozen) {
+      text(yourPokemonOut.getName()+"\'s",50,475);
+      text("frozen!",50,535);
+      textShowTime++;  
+    }
     else {
       text(yourPokemonOut.getName(),50,475);
-      text("used " + yourAttack.toString()+"!",50,535);
+      text("used " + yourAttack.toString()+"!",50,535); 
+      oppDropHealth();
     }
   }
   
+  if (oppPokemonOut.attackEffectiveness != 1 && oppPokemonOut.attackEffectiveness != 0 && !oppPokemonOut.attackCrit && yourHPFinish()) {
+    if ((speedWinner.equals("opp") && state.equals("turn-p1")) || (speedWinner.equals("you") && state.equals("turn-p2"))) {  
+      state = "type-effect-opp";  
+    }
+  }
+  
+  if (yourPokemonOut.attackEffectiveness != 1 && yourPokemonOut.attackEffectiveness != 0 && !yourPokemonOut.attackCrit && oppHPFinish()) {
+    if ((speedWinner.equals("you") && state.equals("turn-p1")) || (speedWinner.equals("opp") && state.equals("turn-p2"))) { 
+      state = "type-effect-you";  
+    }
+  }
+    
   //text for crits and transitioning to next phase
   if (state.equals("crit-1") && textShowTime < 45) {
     text("A critical hit!",50,475);  
@@ -155,6 +210,14 @@ void animateTurn() {
   if (state.equals("crit-1") && textShowTime >= 45) {
     state = "turn-p2";
     textShowTime = 0;
+    
+    if (yourPokemonOut.attackEffectiveness != 1 && !state.equals("type-effect-opp")) {
+      state = "type-effect-you";  
+    }
+    if (oppPokemonOut.attackEffectiveness != 1 && !state.equals("type-effect-you")) {
+      state = "type-effect-opp";  
+    } 
+    
   }
   if (state.equals("crit-2") && textShowTime < 45) {
     text("A critical hit!",50,475);  
@@ -163,7 +226,68 @@ void animateTurn() {
   if (state.equals("crit-2") && textShowTime >= 45) {
     state = "chooseOption";
     textShowTime = 0;
+    
+    if (yourPokemonOut.attackEffectiveness != 1 && !state.equals("type-effect-opp")) {
+      state = "type-effect-you";  
+    }
+    if (oppPokemonOut.attackEffectiveness != 1&& !state.equals("type-effect-you")) {
+      state = "type-effect-opp";  
+    }
+    
   }
+  
+  if (state.equals("type-effect-opp") && textShowTime <= 45) {
+    if (oppAttack.getPower() == 0) {
+        textShowTime = 45;
+    }
+    else if (oppPokemonOut.attackEffectiveness == 0.5 || oppPokemonOut.attackEffectiveness == 0.25) {
+      text("It's not very effective!",50,475);
+    }
+    else if (oppPokemonOut.attackEffectiveness == 2) {
+      text("It's super effective!",50,475);
+    }
+    else if (oppPokemonOut.attackEffectiveness == 0) {
+      text("It had no effect!",50,475);
+    }
+    textShowTime++;
+  }
+  if (state.equals("type-effect-opp") && textShowTime > 45) {
+    if (speedWinner.equals("opp")) {
+      state = "turn-p2";  
+    }
+    else {
+      state = "chooseOption";  
+    }
+    textShowTime = 0;  
+  }
+
+  
+  if (state.equals("type-effect-you") && textShowTime <= 45) {
+    if (yourAttack.getPower() == 0) {
+      textShowTime = 45;
+    }
+    else if (yourPokemonOut.attackEffectiveness == 0.5 || oppPokemonOut.attackEffectiveness == 0.25) {
+      text("It's not very effective!",50,475);
+    }
+    else if (yourPokemonOut.attackEffectiveness == 2) {
+      text("It's super effective!",50,475);  
+    }
+    else if (yourPokemonOut.attackEffectiveness == 0) {
+      text("It had no effect!",50,475);
+    }
+    textShowTime++;
+  }
+  if (state.equals("type-effect-you") && textShowTime > 45) {
+    if (speedWinner.equals("you")) {
+      state = "turn-p2";  
+    }
+    else {
+      state = "chooseOption";  
+    }
+    textShowTime = 0;  
+  }
+  
+  
   
   //when your opponent faints
   if (oppPokemonOut.status.equals("FNT") && oppHealthLost == oppPokemonOut.health && !state.equals("chooseNext-opp")) {
@@ -196,6 +320,25 @@ void animateTurn() {
   //chooseNext state is the switch screen. to be implemented
   
 }
+
+//-----------------------------------
+//CHECK WHEN HP DROP IS DONE
+//-----------------------------------
+
+boolean yourHPFinish() {
+  if (yourHealthLost >= yourPokemonOut.health - yourPokemonOut.hp) {
+    return true;  
+  }
+  return false;
+}
+
+boolean oppHPFinish() {
+  if (oppHealthLost >= oppPokemonOut.health - oppPokemonOut.hp) {
+    return true;  
+  }
+  return false;
+}
+
 
 //-----------------------
 //HP BAR DISPLAY
@@ -252,8 +395,7 @@ void turnEvents() {
     else {
       speedWinner = "opp";  
     }
-    //setStatustesting
-    //yourPokemonOut.setStatus("PRZ");
+    
     //opponent chooses move
     oppAttack = OppTrainer.chooseMove(yourPokemonOut);
     
@@ -283,22 +425,23 @@ void oppDropHealth() {
       oppHealthLost++;  
     }
   }
-  else if (yourPokemonOut.turnParalyzed && textShowTime < 45) {
+  else if ((yourPokemonOut.turnParalyzed || yourPokemonOut.frozen) && textShowTime < 45) {
     
   }
   else{
     textShowTime = 0;
-    if ((yourPokemonOut.attackCrit) && state.equals("turn-p1")) {
+    if (yourPokemonOut.attackCrit && state.equals("turn-p1") && yourPokemonOut.attackEffectiveness != 0) {
       state = "crit-1"; 
     }
-    else if ((yourPokemonOut.attackCrit) && state.equals("turn-p2")) {
+    else if (yourPokemonOut.attackCrit && state.equals("turn-p2") && yourPokemonOut.attackEffectiveness != 0) {
       state = "crit-2";  
     }
     
     else if (state.equals("turn-p1")) {      
       state = "turn-p2"; 
+      println("hi");
     }
-    else {
+    else if (state.equals("turn-p2") && !(yourPokemonOut.attackEffectiveness == 0 || yourAttack.getPower() == 0)) {
       state = "chooseOption";
     }    
   }  
@@ -314,22 +457,23 @@ void yourDropHealth() {
       hpToShow--;
     }
   }
-  else if (oppPokemonOut.turnParalyzed && textShowTime < 45) {
+  else if ((oppPokemonOut.turnParalyzed || oppPokemonOut.frozen) && textShowTime < 45) {
     
   }
   else{
     textShowTime = 0;
-    if ((oppPokemonOut.attackCrit) && state.equals("turn-p1")) {
+    if (oppPokemonOut.attackCrit && state.equals("turn-p1") && oppPokemonOut.attackEffectiveness != 0) {
       state = "crit-1"; 
     }
-    else if ((oppPokemonOut.attackCrit) && state.equals("turn-p2")) {
+    else if (oppPokemonOut.attackCrit && state.equals("turn-p2") && oppPokemonOut.attackEffectiveness != 0) {
       state = "crit-2";  
     }
     
     else if (state.equals("turn-p1")) {
       state = "turn-p2"; 
+      println("ho");
     }
-    else {
+    else if (state.equals("turn-p2") && !(oppPokemonOut.attackEffectiveness == 0 || oppAttack.getPower() == 0)){
       state = "chooseOption";
     }    
   }    
