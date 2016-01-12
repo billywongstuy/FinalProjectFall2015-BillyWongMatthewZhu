@@ -81,10 +81,10 @@ abstract class Poke implements Cloneable{
   int calculateDamage(Poke opp, Attack attack) {
     double baseDmg;
     if (attack.getCategory().equals("Physical")) {
-      baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical()+10)*atk*burned()*multipliers[statStatus[0]+6]*attack.getPower()/250)/opp.getDef())+2.0));
+      baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical()+10)*atk*burned()*multipliers[statStatus[0]+6]*attack.getPower()/250)/(opp.getDef()*multipliers[opp.statStatus[1]+6]))+2.0));
     }
     else if (attack.getCategory().equals("Special")) {
-      baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical()+10)*spec*multipliers[statStatus[2]+6]*attack.getPower()/250)/opp.getSpec())+2.0));
+      baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical()+10)*spec*multipliers[statStatus[2]+6]*attack.getPower()/250)/(opp.getSpec()*multipliers[opp.statStatus[3]+6]))+2.0));
     }
     else {
       baseDmg = 0;  
