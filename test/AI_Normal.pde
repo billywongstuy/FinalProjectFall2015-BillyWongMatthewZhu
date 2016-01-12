@@ -1,30 +1,25 @@
 class AI_Normal extends AI{
+    ArrayList<Integer> EffectiveMove = new ArrayList<Integer>();
     public AI_Normal(Poke p1, Poke p2, Poke p3){
                 super(p1,p2,p3);
               }
              Attack chooseMove(Poke PlayerPoke){
-              ArrayList<Attack>attacks = new ArrayList<Attack>(4);
-              attacks.add(oppPokemonOut.geta1());  
-              attacks.add(oppPokemonOut.geta2());
-              attacks.add(oppPokemonOut.geta3());
-              attacks.add(oppPokemonOut.geta4());
+              ArrayList<Attack>attacks = new ArrayList<Attack>();
+              int strongestEffectiveness = 2;
               int moveNumber = 0;
-              Attack planAttack = attacks.get(moveNumber); 
+              int powerCompare = 0;
+              Attack planAttack = attacks.get(moveNumber);
+              //check if the typeffectiveness of each attack >= strongestEffectiveness if so, add it to arraylist then set strongest
+              //at end remove any elements with effectiveness < strongest
                 for(int i = 0; i < attacks.size(); i ++){
                   if(i < attacks.size()){
-                  if(yourPokemonOut.getType2().equals("")){
-                    if(checkEffectiveness(attacks.get(i).getType(),yourPokemonOut.getType1()) == 2.0 ){
-                   moveNumber = i;
-                    }
-                    else{
-                      if(checkEffectiveness(attacks.get(i).getType(),yourPokemonOut.getType1()) == 2.0 || checkEffectiveness(attacks.get(i).getType(),yourPokemonOut.getType2()) == 2.0  ){
-                   moveNumber = i;
-                      }
+                    if(effective(attacks.get(i), attacks.get(i).getType1(), attacks.get(i).getType2()) == 2){
+                   EffectiveMove.add(i);
                     }
                   }
-                  }
-                
-                else{
+                }
+              if(EffectiveMove.size() == 0){
+ 
                    moveNumber = (int)(Math.random()*4);
                    planAttack = attacks.get(moveNumber); 
                   if(!yourPokemonOut.getStatus().equals("none")){
@@ -54,11 +49,22 @@ class AI_Normal extends AI{
                  planAttack = attacks.get((int)(Math.random()*attacks.size()));
                 }
                   }
-                }
-              }
-            
+   
+
               return planAttack;
              }
+             else{
+               Attack HiDamage = EffectiveMove.get(0);
+               for(int j = 0; j < EffectiveMove.size(); j ++){
+                 if(EffectiveMove.get(j).getPower() > HiDamage.getPower()){
+                   HiDamage = EffectiveMove.get(j);
+                 }
+               }
+               planAttack = HiDamage;
+               return planAttack;
+             }
+                   
+                 
           }
           
    

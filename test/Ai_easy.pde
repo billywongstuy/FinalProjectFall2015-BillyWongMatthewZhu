@@ -1,3 +1,4 @@
+
 //using oppPokemonOut as placeholder for opp pokemon currently out
 //using Pikachu as placeholder for your Pokemon out
 
@@ -13,7 +14,6 @@ class Ai_easy extends AI{
     attacks.add(oppPokemonOut.geta2());
     attacks.add(oppPokemonOut.geta3());
     attacks.add(oppPokemonOut.geta4());
-    
     int moveNumber = (int)(Math.random()*4);
     Attack planAttack = attacks.get(moveNumber);
     if(!yourPokemonOut.getStatus().equals("none")){
