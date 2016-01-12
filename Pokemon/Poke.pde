@@ -95,7 +95,9 @@ abstract class Poke implements Cloneable{
     
     int damage = (int)(Math.floor(baseDmg*modifier));
     
-    addEffects = attack.generateFullEffect(opp,this,damage);
+    if (attackEffectiveness != 0) {
+      addEffects = attack.generateFullEffect(opp,this,damage);
+    }
     if (opp.hp < damage) {
       return opp.hp;  
     }
