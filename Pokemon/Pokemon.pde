@@ -82,7 +82,7 @@ void setup() {
 }
 
 void draw() {
-  println(state);
+  /*println(state);
   frameRate(30);
   displayBattlersInfo();
   if (state.equals("chooseOption")) {
@@ -104,7 +104,9 @@ void draw() {
   }
   if (state.equals("chooseNext-opp")) {
     
-  }
+  }*/
+  Scyther.attack(Pinsir,Swords_Dance);
+  noLoop();
 }
 
 //----------------------------------------------------------
@@ -364,8 +366,8 @@ void turnEvents() {
          break;
     }
     
-    int yourSpeed = yourPokemonOut.speed;
-    int oppSpeed = oppPokemonOut.speed;
+    int yourSpeed = (int)(yourPokemonOut.speed * multipliers[yourPokemonOut.statStatus[4]+6]);
+    int oppSpeed = (int)(oppPokemonOut.speed * multipliers[oppPokemonOut.statStatus[4]+6]);
     
     //paralysis hindrance
     if (oppPokemonOut.getStatus().equals("PRZ")) {

@@ -49,7 +49,9 @@ class Attack {
        //something with indexOf "(" and indexOf of ","
     }
     if (effect.substring(0,3).equals("rai")) {
-      
+      println(effect.substring(effect.indexOf("(")+1,effect.indexOf(".")));
+      println(effect.substring(effect.indexOf(".")+1,effect.indexOf(",")));
+      println(effect.substring(effect.indexOf(",")+1,effect.indexOf(")")));
     }
     if (effect.substring(0,3).equals("bur") && Math.random() < effectChance) {
         target.setStatus("BRN");  
