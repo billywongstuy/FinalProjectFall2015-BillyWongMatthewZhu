@@ -98,7 +98,7 @@ class Attack {
   }
   
   String getType() {
-    return type.toUpperCase();  
+    return type;  
   }
   
   double getPower() {

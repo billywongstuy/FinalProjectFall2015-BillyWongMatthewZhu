@@ -45,7 +45,7 @@ void setup() {
   yourTeam.add(Pokemons.get(24)); 
   
   
-  OppTrainer = new Ai_easy(Electrode, Ekans, Arbok);
+  OppTrainer = new AI_Normal(Electrode, Ekans, Arbok);
   oppTeam = OppTrainer.AI_Team;
   yourPokemonOut = yourTeam.get(0);
   oppPokemonOut = oppTeam.get(0);
