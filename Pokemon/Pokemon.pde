@@ -231,13 +231,16 @@ void animateTurn() {
   }
   
   if (state.equals("type-effect-opp") && textShowTime <= 45) {
-    if (oppPokemonOut.attackEffectiveness == 0.5 || oppPokemonOut.attackEffectiveness == 0.25) {
+    if (oppAttack.getPower() == 0) {
+        textShowTime = 45;
+    }
+    else if (oppPokemonOut.attackEffectiveness == 0.5 || oppPokemonOut.attackEffectiveness == 0.25) {
       text("It's not very effective!",50,475);
     }
-    if (oppPokemonOut.attackEffectiveness == 2) {
+    else if (oppPokemonOut.attackEffectiveness == 2) {
       text("It's super effective!",50,475);
     }
-    if (oppPokemonOut.attackEffectiveness == 0) {
+    else if (oppPokemonOut.attackEffectiveness == 0) {
       text("It had no effect!",50,475);
     }
     textShowTime++;
@@ -254,13 +257,16 @@ void animateTurn() {
 
   
   if (state.equals("type-effect-you") && textShowTime <= 45) {
-    if (yourPokemonOut.attackEffectiveness == 0.5 || oppPokemonOut.attackEffectiveness == 0.25) {
+    if (yourAttack.getPower() == 0) {
+      textShowTime = 45;
+    }
+    else if (yourPokemonOut.attackEffectiveness == 0.5 || oppPokemonOut.attackEffectiveness == 0.25) {
       text("It's not very effective!",50,475);
     }
-    if (yourPokemonOut.attackEffectiveness == 2) {
+    else if (yourPokemonOut.attackEffectiveness == 2) {
       text("It's super effective!",50,475);  
     }
-    if (yourPokemonOut.attackEffectiveness == 0) {
+    else if (yourPokemonOut.attackEffectiveness == 0) {
       text("It had no effect!",50,475);
     }
     textShowTime++;
