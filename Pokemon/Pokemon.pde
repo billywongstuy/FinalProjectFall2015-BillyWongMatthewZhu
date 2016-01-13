@@ -10,7 +10,6 @@ PImage blankBox;
 PImage options;
 PImage yourPoke;
 PImage oppPoke;
-PImage switchScreen;
 
 PImage choiceArrow;
 int cArrowX = 288;
@@ -19,6 +18,10 @@ int cArrowY = 450;
 PImage move;
 PImage moveArrow;
 int mArrowY = 420;
+
+PImage switchScreen;
+PImage switchArrow;
+int sArrowY = 20;
 
 String state;
 int slow = 0;
@@ -56,7 +59,7 @@ void setup() {
   yourTeam.add(Pokemons.get(25)); 
   yourTeam.add(Pokemons.get(150));
   yourTeam.add(Pokemons.get(5));
-  OppTrainer = new Ai_easy(Electrode, Ekans, Arbok);
+  OppTrainer = new Ai_easy(Dugtrio, Ekans, Arbok);
   oppTeam = OppTrainer.AI_Team;
   yourPokemonOut = yourTeam.get(0);
   oppPokemonOut = oppTeam.get(0);
@@ -75,10 +78,10 @@ void setup() {
   moveArrow = loadImage("arrow.png");
   
   blankBox = loadImage("blank_box_bottom.png");
+  
   switchScreen = loadImage("switching.png");
-  switchScreen.resize(640,576);
-  
-  
+  switchArrow = loadImage("arrow.png");
+    
   yourPokemonOut.a1 = Surf;
   yourPokemonOut.a2 = Thunder;
   yourPokemonOut.a3 = Strength;
@@ -135,16 +138,37 @@ void draw() {
 //--------------------------------
 
 void switchYou() {
+  frameRate(10);
   if (!yourPokemonOut.getStatus().equals("FNT") && keyPressed && (key == 'x' || key == 'X')) {
     state = "chooseOption";
   }
-  println("hey");
   image(switchScreen,0,0);
-  fill(color(0));
-  text(yourTeam.get(0).getName(),100,30);
-  text(yourTeam.get(1).getName(),100,93);
-  text(yourTeam.get(2).getName(),100,156);
-  text(hpString(yourTeam.get(0).hp),430,60);
+  image(switchArrow,0,sArrowY);
+  displayTeamInfo();
+  //include the part that puts status instead of level later
+  
+  if (keyPressed && key == CODED && keyCode == DOWN) {
+    switch(sArrowY) {
+      case 20:
+        sArrowY = 88;
+        break;
+      case 88:
+        sArrowY = 151;
+        break;
+    }
+  }
+  if (keyPressed && key == CODED && keyCode == UP) {
+    switch(sArrowY) {
+      case 151:
+        sArrowY = 88;
+        break;
+      case 88:
+        sArrowY = 20;
+        break;
+    }
+  }
+  
+  
 }
 
 
@@ -154,13 +178,32 @@ void switchOpp() {
 
 String hpString(int hp) {
   String showHealth = ""+hp;
-  if (showHealth.length() <= 2) {
-    showHealth = " " + showHealth;
+  if (showHealth.length() <= 3) {
+    showHealth = "  " + showHealth;
   }
   showHealth = showHealth.substring(showHealth.length()-3);
   return showHealth;
 }
 
+
+void displayTeamInfo() {
+  fill(color(0));
+  text(yourTeam.get(0).getName(),99,30);
+  text(yourTeam.get(1).getName(),99,93);
+  text(yourTeam.get(2).getName(),99,156);
+  
+  text(hpString(yourTeam.get(0).hp),415,60);
+  text(hpString(yourTeam.get(0).health),545,60);
+  text(yourTeam.get(0).lv,450,29);
+  
+  text(hpString(yourTeam.get(1).hp),415,123);
+  text(hpString(yourTeam.get(1).health),545,123);
+  text(yourTeam.get(1).lv,450,92);
+  
+  text(hpString(yourTeam.get(2).hp),415,186);
+  text(hpString(yourTeam.get(2).health),545,186);
+  text(yourTeam.get(2).lv,450,155);
+}
 
 //--------------------------------------------------
 //THIS FUNCTION HANDLES ALL THE END OF TURN THINGS
@@ -436,7 +479,7 @@ void animateTurn() {
   }
   
   //when you faint
-  if (yourPokemonOut.status.equals("FNT") && yourHealthLost == yourPokemonOut.health && !state.equals("choosePokeOpp")) {
+  if (yourPokemonOut.status.equals("FNT") && yourHealthLost == yourPokemonOut.health && !state.equals("choosePokeYou")) {
     if (textShowTime < 60) {
       state = "faintShow";
       text(yourPokemonOut.getName(),50,475);
@@ -445,7 +488,7 @@ void animateTurn() {
     }
     else {
       textShowTime = 0;  
-      state = "choosPokeYou";
+      state = "choosePokeYou";
     }
   }
   
@@ -533,7 +576,7 @@ void turnEvents() {
     }
     
     //opponent chooses move
-    oppAttack = Wing_Attack;   //should be oppAttack = OppTrainer.chooseMove(yourPokemonOut);
+    oppAttack = Tackle;   //should be oppAttack = OppTrainer.chooseMove(yourPokemonOut);
     
     if (speedWinner == yourPokemonOut) {
       yourPokemonOut.attack(oppPokemonOut,yourAttack);
@@ -755,7 +798,8 @@ void displayBattlersInfo() {
   if (yourdisplayHP.length() <= 2) {
     yourdisplayHP = " " +  yourdisplayHP;
   }
-  text(yourdisplayHP.substring(yourdisplayHP.length()-3),350,348);
+  //text(yourdisplayHP.substring(yourdisplayHP.length()-3),350,348);
+  text(hpString(hpToShow),350,348);
   
   if (yourPokemonOut.getStatus().equals("none") || (yourPokemonOut.getStatus().equals("FNT") && yourHealthLost < yourPokemonOut.health)) {
     text(yourPokemonOut.lv,480,285);
