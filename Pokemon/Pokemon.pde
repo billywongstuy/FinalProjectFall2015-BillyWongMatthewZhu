@@ -1,3 +1,9 @@
+//FIX NOTES: 
+//STATUS APPEARS AS SOON AS THE ANIMATION STARTS
+//NO PAUSE BETWEEN ATTACK DAMAGE AND STATUS DAMAGE
+//MIGHT BE TOO FAST FOR STATUS HP DROP
+
+
 PFont font;
 PImage battle;
 PImage blankBox;
@@ -20,12 +26,7 @@ int textShowTime = 0;
 
 //String speedWinner;
 Poke speedWinner;     
-/*if I want to evetually use this, replace all:
-  -.==equals(yourPokemonOut) with  ==yourPokemonOut
-  -.==equals(oppPokemonOut) with  ==oppPokemonOut
-  -"==opp" with oppPokemonOut
-  -"==you" with yourPokemonOut
-*/
+Poke slowerPoke;
 int hpToShow;
 String yourdisplayHP;
 
@@ -99,16 +100,74 @@ void draw() {
   }
   animateTurn();
   showHPBar();
+  if (state.equals("turnEndDamage") || state.equals("textEnd1") || state.equals("textEnd2")) {
+    handleEndTurn();  
+  }
   if (state.equals("chooseNext-you")) {
       
   }
   if (state.equals("chooseNext-opp")) {
     
   }
-  /*
+  /*Pinsir.hp = 999;
+  println(Pinsir.hp);
+  Scyther.attack(Pinsir,Wing_Attack);
+  println(Pinsir.hp);
   Scyther.attack(Pinsir,Swords_Dance);
+  Scyther.attack(Pinsir,Wing_Attack);
+  println(Pinsir.hp);
   noLoop();*/
 }
+
+//--------------------------------------------------
+//THIS FUNCTION HANDLES ALL THE END OF TURN THINGS
+//--------------------------------------------------
+
+void handleEndTurn() {
+  image(blankBox,0,0); 
+  fill(color(0));
+  
+  if (state.equals("turnEndDamage")) {
+    println("entered");
+    //incorporate speed later
+    if (yourPokemonOut.getStatus().equals("BRN") || yourPokemonOut.getStatus().equals("PSN")) {
+      yourPokemonOut.takeDamage((int)(yourPokemonOut.health/16));
+      println("HP:" + yourPokemonOut.hp);
+    }
+    if (oppPokemonOut.getStatus().equals("BRN") || oppPokemonOut.getStatus().equals("PSN")) {
+      oppPokemonOut.takeDamage((int)(oppPokemonOut.health/16));
+    }
+    state = "textEnd1";
+  }
+  if (state.equals("textEnd1")) {
+    
+    if (speedWinner.getStatus().equals("BRN")) {
+      text(speedWinner.getName() + " is burned!",50,475);
+    }
+    else if (speedWinner.getStatus().equals("PSN")) {
+      text(speedWinner.getName() + " is poisoned!",50,475);      
+    }
+    
+    if (speedWinner == yourPokemonOut) {yourDropHealth();}
+    else {oppDropHealth();}
+
+  }
+  if (state.equals("textEnd2")) {
+    println("entered-2");
+        
+    if (slowerPoke.getStatus().equals("BRN")) {
+      text(slowerPoke.getName() + " is burned!",50,475); 
+    }
+    else if (slowerPoke.getStatus().equals("PSN")) {
+      text(slowerPoke.getName() + " is poisoned!",50,475);      
+    }
+    
+    if (slowerPoke == yourPokemonOut) {yourDropHealth();}
+    else {oppDropHealth();}
+
+  }  
+}
+
 
 //----------------------------------------------------------
 //THIS FUNCTION SCROLLS THE HP AND DISPLAY ALL ATTACK TEXT
@@ -225,7 +284,7 @@ void animateTurn() {
     textShowTime++;
   }
   if (state.equals("crit-2") && textShowTime >= 45) {
-    state = "chooseOption";
+    state = "turnEndDamage";
     textShowTime = 0;
     
     if (yourPokemonOut.attackEffectiveness != 1 && !state.equals("type-effect-opp") && speedWinner == oppPokemonOut) {
@@ -258,7 +317,7 @@ void animateTurn() {
       state = "turn-p2";  
     }
     else {
-      state = "chooseOption";  
+      state = "turnEndDamage";  
     }
     textShowTime = 0;  
   }
@@ -284,7 +343,7 @@ void animateTurn() {
       state = "turn-p2";  
     }
     else {
-      state = "chooseOption";  
+      state = "turnEndDamage";  
     }
     textShowTime = 0;  
   }
@@ -385,21 +444,25 @@ void turnEvents() {
     
     //who goes first
     if (yourSpeed > oppSpeed) {
-      speedWinner = yourPokemonOut;  
+      speedWinner = yourPokemonOut;
+      slowerPoke = oppPokemonOut;
     }
     else if (oppSpeed > yourSpeed) {
-      speedWinner = oppPokemonOut;  
+      speedWinner = oppPokemonOut; 
+      slowerPoke = yourPokemonOut;
     }
     //speedtie
     else if ((int)(Math.random()*2) == 0) {
       speedWinner = yourPokemonOut;  
+      slowerPoke = oppPokemonOut;
     }
     else {
       speedWinner = oppPokemonOut;  
+      slowerPoke = yourPokemonOut;
     }
     
     //opponent chooses move
-    oppAttack = Thundershock;   //should be oppAttack = OppTrainer.chooseMove(yourPokemonOut);
+    oppAttack = Wing_Attack;   //should be oppAttack = OppTrainer.chooseMove(yourPokemonOut);
     
     if (speedWinner == yourPokemonOut) {
       yourPokemonOut.attack(oppPokemonOut,yourAttack);
@@ -444,8 +507,16 @@ void oppDropHealth() {
       println("hi");
     }
     else if (state.equals("turn-p2") && !(yourPokemonOut.attackEffectiveness == 0 || yourAttack.getPower() == 0)) {
-      state = "chooseOption";
-    }    
+      state = "turnEndDamage";
+    }
+    else if (state.equals("textEnd1")) {
+      state = "textEnd2"; 
+      println("apple");
+    }
+    else if (state.equals("textEnd2")) {
+      state = "chooseOption";  
+      println("cadp");
+    }
   }  
 }
 
@@ -458,6 +529,7 @@ void yourDropHealth() {
       yourHealthLost++; 
       hpToShow--;
     }
+    
   }
   else if ((oppPokemonOut.turnParalyzed || oppPokemonOut.frozen) && textShowTime < 45) {
     
@@ -476,8 +548,15 @@ void yourDropHealth() {
       println("ho");
     }
     else if (state.equals("turn-p2") && !(oppPokemonOut.attackEffectiveness == 0 || oppAttack.getPower() == 0)){
+      state = "turnEndDamage";
+    }   
+    else if (state.equals("textEnd1")) {
+      state = "textEnd2";  
+    }
+    else if (state.equals("textEnd2")) {
       state = "chooseOption";
-    }    
+      println("bhu");
+    }
   }    
 }
 
@@ -625,6 +704,6 @@ void displayBattlersInfo() {
     fill(color(0));
     text(oppPokemonOut.getStatus(),126,60);
   }
-  
+  fill(color(0));
   
 }
