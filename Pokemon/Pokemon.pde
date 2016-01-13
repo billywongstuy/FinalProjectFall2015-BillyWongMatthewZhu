@@ -147,13 +147,16 @@ void switchYou() {
   displayTeamInfo();
   //include the part that puts status instead of level later
   
+  int partySlot = 0;
   if (keyPressed && key == CODED && keyCode == DOWN) {
     switch(sArrowY) {
       case 20:
         sArrowY = 88;
+        partySlot++;
         break;
       case 88:
         sArrowY = 151;
+        partySlot++;
         break;
     }
   }
@@ -161,13 +164,32 @@ void switchYou() {
     switch(sArrowY) {
       case 151:
         sArrowY = 88;
+        partySlot--;
         break;
       case 88:
         sArrowY = 20;
+        partySlot--;
         break;
     }
   }
   
+  
+  /*
+  
+  if key down and key is z check if partyslot member is equal to pokemon out
+  
+  offer switch and cancel
+  
+  if so text say pokemon is battling and if the pokemon out is fainted instead print out fainted message
+  
+  if not equal
+  set yourPokemonOut to yourTeam.get(partySlot)
+  set yourHealthLost to yourTeam.get(partySlot).health - yourTeam.get(partySlot).hp
+  set state to chooseOption
+  
+  MAYBE INCLUDE GO [POKEMON NAME]!
+  
+  */
   
 }
 
