@@ -10,6 +10,7 @@ PImage blankBox;
 PImage options;
 PImage yourPoke;
 PImage oppPoke;
+PImage switchScreen;
 
 PImage choiceArrow;
 int cArrowX = 288;
@@ -29,6 +30,7 @@ Poke speedWinner;
 Poke slowerPoke;
 int hpToShow;
 String yourdisplayHP;
+String yourdisplayHealth;
 
 Attack yourAttack;
 Attack oppAttack;
@@ -52,6 +54,8 @@ void setup() {
   
   setupPokeSet();
   yourTeam.add(Pokemons.get(25)); 
+  yourTeam.add(Pokemons.get(150));
+  yourTeam.add(Pokemons.get(5));
   OppTrainer = new Ai_easy(Electrode, Ekans, Arbok);
   oppTeam = OppTrainer.AI_Team;
   yourPokemonOut = yourTeam.get(0);
@@ -71,6 +75,8 @@ void setup() {
   moveArrow = loadImage("arrow.png");
   
   blankBox = loadImage("blank_box_bottom.png");
+  switchScreen = loadImage("switching.png");
+  switchScreen.resize(640,576);
   
   
   yourPokemonOut.a1 = Surf;
@@ -108,11 +114,11 @@ void draw() {
   if (state.equals("turnEndDamage") || state.equals("textEnd1") || state.equals("textEnd2")) {
     handleEndTurn();  
   }
-  if (state.equals("chooseNext-you")) {
-      
+  if (state.equals("choosePokeYou")) {
+    switchYou();
   }
-  if (state.equals("chooseNext-opp")) {
-    
+  if (state.equals("choosePokeOpp")) {
+    switchOpp();
   }
   /*Pinsir.hp = 999;
   println(Pinsir.hp);
@@ -123,6 +129,38 @@ void draw() {
   println(Pinsir.hp);
   noLoop();*/
 }
+
+//--------------------------------
+//SWITCHING
+//--------------------------------
+
+void switchYou() {
+  if (!yourPokemonOut.getStatus().equals("FNT") && keyPressed && (key == 'x' || key == 'X')) {
+    state = "chooseOption";
+  }
+  println("hey");
+  image(switchScreen,0,0);
+  fill(color(0));
+  text(yourTeam.get(0).getName(),100,30);
+  text(yourTeam.get(1).getName(),100,93);
+  text(yourTeam.get(2).getName(),100,156);
+  text(hpString(yourTeam.get(0).hp),430,60);
+}
+
+
+void switchOpp() {
+  
+}
+
+String hpString(int hp) {
+  String showHealth = ""+hp;
+  if (showHealth.length() <= 2) {
+    showHealth = " " + showHealth;
+  }
+  showHealth = showHealth.substring(showHealth.length()-3);
+  return showHealth;
+}
+
 
 //--------------------------------------------------
 //THIS FUNCTION HANDLES ALL THE END OF TURN THINGS
@@ -384,7 +422,7 @@ void animateTurn() {
   
   
   //when your opponent faints
-  if (oppPokemonOut.status.equals("FNT") && oppHealthLost == oppPokemonOut.health && !state.equals("chooseNext-opp")) {
+  if (oppPokemonOut.status.equals("FNT") && oppHealthLost == oppPokemonOut.health && !state.equals("choosePokeOpp")) {
     if (textShowTime < 60) {
       state = "faintShow";
       text("Enemy " + oppPokemonOut.getName(),50,475);
@@ -393,12 +431,12 @@ void animateTurn() {
     }
     else {
       textShowTime = 0;  
-      state = "chooseNext-opp";
+      state = "choosePokeOpp";
     }
   }
   
   //when you faint
-  if (yourPokemonOut.status.equals("FNT") && yourHealthLost == yourPokemonOut.health && !state.equals("chooseNext-you")) {
+  if (yourPokemonOut.status.equals("FNT") && yourHealthLost == yourPokemonOut.health && !state.equals("choosePokeOpp")) {
     if (textShowTime < 60) {
       state = "faintShow";
       text(yourPokemonOut.getName(),50,475);
@@ -407,11 +445,11 @@ void animateTurn() {
     }
     else {
       textShowTime = 0;  
-      state = "chooseNext-you";
+      state = "choosPokeYou";
     }
   }
   
-  //chooseNext state is the switch screen. to be implemented
+  //choosePoke state is the switch screen. to be implemented
   
 }
 
@@ -689,8 +727,13 @@ void setupOptionScreen() {
   if (keyPressed && cArrowX == 288 && cArrowY == 450 && (key == 'z' || key == 'Z')) {
     state = "chooseMove";    
   }
+  if (keyPressed && cArrowX == 482 && cArrowY == 450 && (key == 'z' || key == 'Z')) {
+    state = "choosePokeYou";    
+  }
   
 }
+
+
 
 //------------------------------------------------------
 //SETUP IMAGES FOR BATTLING POKEMON AND FULL HP BARS
@@ -705,7 +748,6 @@ void displayBattlersInfo() {
   fill(color(0));
   
   text(yourPokemonOut.getName(),319,252);  
-  String yourdisplayHealth;
   yourdisplayHealth = " " + yourPokemonOut.health;
   text(yourdisplayHealth.substring(yourdisplayHealth.length()-3),480,348);
   
