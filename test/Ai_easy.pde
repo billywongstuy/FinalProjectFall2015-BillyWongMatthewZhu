@@ -47,4 +47,10 @@ class Ai_easy extends AI{
     
     return planAttack;
   }
+  Poke chooseNextPoke(){
+    int PokemonIndex = (int)Math.random()*AI_Team.size();
+    oppPokemonOut = AI_Team.get(PokemonIndex);
+  }
+    
+    
 }
