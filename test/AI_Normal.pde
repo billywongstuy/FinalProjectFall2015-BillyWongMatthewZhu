@@ -14,8 +14,9 @@ class AI_Normal extends AI{
               //at end remove any elements with effectiveness < strongest
                 for(int i = 0; i < attacks.size(); i ++){
                   if(i < attacks.size()){
-                    if(effective(attacks.get(i),oppPokemonOut.getType1(),oppPokemonOut.getType2()) > 2){
-                   EffectiveMove.add(i);
+                    if(checkEffectiveness(attacks.get(i).getType(),PlayerPoke.getType1()) > 2
+                    || checkEffectiveness(attacks.get(i).getType(),PlayerPoke.getType2())>2){
+                   EffectiveMove.add(attacks.get(i));
                     }
                   }
                 }
