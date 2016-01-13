@@ -52,8 +52,8 @@ void setup() {
   
   setupPokeSet();
   yourTeam.add(Pokemons.get(25)); 
-OppTrainer = new Ai_easy(Electrode, Ekans, Arbok);
-oppTeam = OppTrainer.AI_Team;
+  OppTrainer = new Ai_easy(Electrode, Ekans, Arbok);
+  oppTeam = OppTrainer.AI_Team;
   yourPokemonOut = yourTeam.get(0);
   oppPokemonOut = oppTeam.get(0);
   
@@ -80,10 +80,10 @@ oppTeam = OppTrainer.AI_Team;
   
   hpToShow = yourPokemonOut.hp;
   yourdisplayHP = " " + yourPokemonOut.hp;
-    oppPokemonOut.a1 = Thunder_Wave;
-oppPokemonOut.a2 = Tackle;
-oppPokemonOut.a3 = Flamethrower;
-oppPokemonOut.a4 = Strength;
+  oppPokemonOut.a1 = Thunder_Wave;
+  oppPokemonOut.a2 = Tackle;
+  oppPokemonOut.a3 = Flamethrower;
+  oppPokemonOut.a4 = Strength;
    
 }
 
@@ -147,10 +147,22 @@ void handleEndTurn() {
   if (state.equals("textEnd1")) {
     
     if (speedWinner.getStatus().equals("BRN")) {
-      text(speedWinner.getName() + " is burned!",50,475);
+      if (speedWinner == yourPokemonOut) {
+        text(speedWinner.getName() + "'s",50,475);
+      }
+      else {
+        text("Enemy " + speedWinner.getName() + "'s",50,475);
+      }
+      text("hurt by the burn!",50,535);
     }
     else if (speedWinner.getStatus().equals("PSN")) {
-      text(speedWinner.getName() + " is poisoned!",50,475);      
+      if (speedWinner == yourPokemonOut) {
+        text(speedWinner.getName() + "'s",50,475);
+      }
+      else {
+        text("Enemy " + speedWinner.getName() + "'s",50,475);
+      }
+      text("hurt by poison!",50,535);      
     }
     
     if (speedWinner == yourPokemonOut) {yourDropHealth();}
@@ -161,10 +173,22 @@ void handleEndTurn() {
     println("entered-2");
         
     if (slowerPoke.getStatus().equals("BRN")) {
-      text(slowerPoke.getName() + " is burned!",50,475); 
+      if (slowerPoke == yourPokemonOut) {
+        text(slowerPoke.getName() + "'s",50,475);
+      }
+      else {
+        text("Enemy " + slowerPoke.getName() + "'s",50,475);
+      }
+      text("hurt by the burn!",50,535);
     }
     else if (slowerPoke.getStatus().equals("PSN")) {
-      text(slowerPoke.getName() + " is poisoned!",50,475);      
+      if (slowerPoke == yourPokemonOut) {
+        text(slowerPoke.getName() + "'s",50,475);
+      }
+      else {
+        text("Enemy " + slowerPoke.getName() + "'s",50,475);
+      }
+      text("hurt by poison!",50,535);    
     }
     
     if (slowerPoke == yourPokemonOut) {yourDropHealth();}
@@ -269,7 +293,7 @@ void animateTurn() {
     
   //text for crits and transitioning to next phase
   if (state.equals("crit-1") && textShowTime < 45) {
-    text("A critical hit!",50,475);  
+    text("Critical hit!",50,475);  
     textShowTime++;
   }
   if (state.equals("crit-1") && textShowTime >= 45) {
@@ -285,7 +309,7 @@ void animateTurn() {
     
   }
   if (state.equals("crit-2") && textShowTime < 45) {
-    text("A critical hit!",50,475);  
+    text("Critical hit!",50,475);  
     textShowTime++;
   }
   if (state.equals("crit-2") && textShowTime >= 45) {
@@ -307,13 +331,15 @@ void animateTurn() {
         textShowTime = 45;
     }
     else if (oppPokemonOut.attackEffectiveness == 0.5 || oppPokemonOut.attackEffectiveness == 0.25) {
-      text("It's not very effective!",50,475);
+      text("It's not very",50,475);
+      text("effective...",50,535);
     }
-    else if (oppPokemonOut.attackEffectiveness == 2) {
-      text("It's super effective!",50,475);
+    else if (oppPokemonOut.attackEffectiveness == 2 || oppPokemonOut.attackEffectiveness == 4) {
+      text("It's super",50,475);
+      text("effective!",50,535);
     }
     else if (oppPokemonOut.attackEffectiveness == 0) {
-      text("It had no effect!",50,475);
+      text("No effect!",50,475);
     }
     textShowTime++;
   }
@@ -332,14 +358,16 @@ void animateTurn() {
     if (yourAttack.getPower() == 0) {
       textShowTime = 45;
     }
-    else if (yourPokemonOut.attackEffectiveness == 0.5 || oppPokemonOut.attackEffectiveness == 0.25) {
-      text("It's not very effective!",50,475);
+    else if (yourPokemonOut.attackEffectiveness == 0.5 || yourPokemonOut.attackEffectiveness == 0.25) {
+      text("It's not very",50,475);
+      text("effective...",50,535);
     }
-    else if (yourPokemonOut.attackEffectiveness == 2) {
-      text("It's super effective!",50,475);  
+    else if (yourPokemonOut.attackEffectiveness == 2 || yourPokemonOut.attackEffectiveness == 4) {
+      text("It's super",50,475);
+      text("effective!",50,535); 
     }
     else if (yourPokemonOut.attackEffectiveness == 0) {
-      text("It had no effect!",50,475);
+      text("No effect!",50,475);
     }
     textShowTime++;
   }
