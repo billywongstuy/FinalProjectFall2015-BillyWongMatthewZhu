@@ -3,7 +3,33 @@ class AI_Normal extends AI{
     public AI_Normal(Poke p1, Poke p2, Poke p3){
                 super(p1,p2,p3);
               }
-             Attack chooseMove(Poke PlayerPoke){
+       Poke chooseNextPoke(){
+         Poke chooseThis = AI_Team.get(0);
+           if(checkEffectiveness(oppPokemonOut.geta1().getType(), yourPokemonOut.getType1()) < 1||
+           checkEffectiveness(oppPokemonOut.geta1().getType(), yourPokemonOut.getType2()) < 1||
+           checkEffectiveness(oppPokemonOut.geta2().getType(), yourPokemonOut.getType1()) < 1||
+           checkEffectiveness(oppPokemonOut.geta2().getType(), yourPokemonOut.getType2()) < 1||
+           checkEffectiveness(oppPokemonOut.geta3().getType(), yourPokemonOut.getType1()) < 1||
+           checkEffectiveness(oppPokemonOut.geta3().getType(), yourPokemonOut.getType2()) < 1||
+           checkEffectiveness(oppPokemonOut.geta4().getType(), yourPokemonOut.getType1()) < 1||
+           checkEffectiveness(oppPokemonOut.geta4().getType(), yourPokemonOut.getType2()) < 1){
+         for(int a = 0; a < AI_Team.size(); a ++){
+               if(checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
+               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
+               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
+               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
+               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
+               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
+               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1){
+                 
+               
+               
+               
+             
+             
+
+
+       Attack chooseMove(Poke PlayerPoke){
               ArrayList<Attack>attacks = new ArrayList<Attack>();
               ArrayList<Attack>EffectiveMove = new ArrayList<Attack>();
               int strongestEffectiveness = 2;
@@ -68,6 +94,7 @@ class AI_Normal extends AI{
                    
                  
           }
+          
 }
 
    

@@ -18,7 +18,7 @@ abstract class AI {
     PokeAttacks[PokePosition][counter]= attack;
     counter ++;
   }
-  
+   abstract Poke chooseNextPoke();
    abstract Attack chooseMove(Poke PlayersPoke);
 
 }
