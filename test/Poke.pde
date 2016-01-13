@@ -19,6 +19,7 @@ abstract class Poke implements Cloneable{
   private Attack a3;
   private Attack a4;
   private boolean attackCrit;
+  private float attackEffectiveness = 1;
   private boolean turnParalyzed;
   private boolean frozen;
   
@@ -80,10 +81,10 @@ abstract class Poke implements Cloneable{
   int calculateDamage(Poke opp, Attack attack) {
     double baseDmg;
     if (attack.getCategory().equals("Physical")) {
-      baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical()+10)*atk*burned()*multipliers[statStatus[0]+6]*attack.getPower()/250)/opp.getDef())+2.0));
+      baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical()+10)*atk*burned()*multipliers[statStatus[0]+6]*attack.getPower()/250)/(opp.getDef()*multipliers[opp.statStatus[1]+6]))+2.0));
     }
     else if (attack.getCategory().equals("Special")) {
-      baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical()+10)*spec*multipliers[statStatus[2]+6]*attack.getPower()/250)/opp.getSpec())+2.0));
+      baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical()+10)*spec*multipliers[statStatus[2]+6]*attack.getPower()/250)/(opp.getSpec()*multipliers[opp.statStatus[2]+6]))+2.0));
     }
     else {
       baseDmg = 0;  
@@ -94,7 +95,9 @@ abstract class Poke implements Cloneable{
     
     int damage = (int)(Math.floor(baseDmg*modifier));
     
-    addEffects = attack.generateFullEffect(opp,this,damage);
+    if (attackEffectiveness != 0) {
+      addEffects = attack.generateFullEffect(opp,this,damage);
+    }
     if (opp.hp < damage) {
       return opp.hp;  
     }
@@ -130,6 +133,7 @@ abstract class Poke implements Cloneable{
   
   float effective(Attack attack, String t1, String t2) { 
     float result = checkEffectiveness(attack.type, t1) * checkEffectiveness(attack.type,t2);
+    attackEffectiveness = result;
     if (result == 0.5) {
       println("It's not very effective.");  
     }

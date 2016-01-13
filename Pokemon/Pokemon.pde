@@ -52,7 +52,8 @@ void setup() {
   
   setupPokeSet();
   yourTeam.add(Pokemons.get(25)); 
-  oppTeam.add((Poke)(Pokemons.get(50).clone()));
+OppTrainer = new Ai_easy(Electrode, Ekans, Arbok);
+oppTeam = OppTrainer.AI_Team;
   yourPokemonOut = yourTeam.get(0);
   oppPokemonOut = oppTeam.get(0);
   
@@ -79,6 +80,10 @@ void setup() {
   
   hpToShow = yourPokemonOut.hp;
   yourdisplayHP = " " + yourPokemonOut.hp;
+    oppPokemonOut.a1 = Thunder_Wave;
+oppPokemonOut.a2 = Tackle;
+oppPokemonOut.a3 = Flamethrower;
+oppPokemonOut.a4 = Strength;
    
 }
 

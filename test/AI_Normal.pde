@@ -5,6 +5,7 @@ class AI_Normal extends AI{
               }
              Attack chooseMove(Poke PlayerPoke){
               ArrayList<Attack>attacks = new ArrayList<Attack>();
+              ArrayList<Attack>EffectiveMove = new ArrayList<Attack>();
               int strongestEffectiveness = 2;
               int moveNumber = 0;
               int powerCompare = 0;
@@ -13,7 +14,7 @@ class AI_Normal extends AI{
               //at end remove any elements with effectiveness < strongest
                 for(int i = 0; i < attacks.size(); i ++){
                   if(i < attacks.size()){
-                    if(effective(attacks.get(i), attacks.get(i).getType1(), attacks.get(i).getType2()) == 2){
+                    if(effective(attacks.get(i),oppPokemonOut.getType1(),oppPokemonOut.getType2()) > 2){
                    EffectiveMove.add(i);
                     }
                   }
@@ -66,6 +67,7 @@ class AI_Normal extends AI{
                    
                  
           }
-          
+}
+
    
         
