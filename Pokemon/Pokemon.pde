@@ -49,6 +49,7 @@ Poke oppPokemonOut;
 AI OppTrainer;
 
 int partySlot = 0;
+boolean switchedThisTurn = false;
 
 void setup() {
   background(255,255,255);
@@ -184,23 +185,6 @@ void switchYou() {
     }
   }
   
-  
-  /*
-  
-  if key down and key is z check if partyslot member is equal to pokemon out
-  
-  offer switch and cancel
-  
-  if so text say pokemon is battling and if the pokemon out is fainted instead print out fainted message
-  
-  if not equal
-  set yourPokemonOut to yourTeam.get(partySlot)
-  set yourHealthLost to yourTeam.get(partySlot).health - yourTeam.get(partySlot).hp
-  set state to chooseOption
-  
-  MAYBE INCLUDE GO [POKEMON NAME]!
-  
-  */
   println(partySlot);
   if (keyPressed && (key == 'z' || key == 'Z')) {
     if (yourTeam.get(partySlot) == yourPokemonOut) {
@@ -216,6 +200,10 @@ void switchYou() {
     else {
       println("change");
      
+      if (!yourPokemonOut.getStatus().equals("FNT")) {
+        switchedThisTurn = true;
+      }
+     
       yourPokemonOut = yourTeam.get(partySlot);
       yourHealthLost = yourPokemonOut.health - yourPokemonOut.hp;
       hpToShow = yourPokemonOut.hp;
@@ -224,6 +212,13 @@ void switchYou() {
       //make it so that it skips the ability to attack if not fainted
       state = "chooseOption";
       stateFlowCheck = false;
+      
+      if (switchedThisTurn) {
+        state = "chooseMove";
+        turnEvents();
+        println("ghsdjbidcbn");
+      }
+      
     }
   }
   
@@ -332,7 +327,9 @@ void handleEndTurn() {
     
     if (slowerPoke == yourPokemonOut) {yourDropHealth();}
     else {oppDropHealth();}
-
+  
+    cArrowX = 288;
+    cArrowY = 450;
   }  
 }
 
@@ -354,8 +351,18 @@ void animateTurn() {
   }  
   
   //ANIMATE YOUR OPPONENT ATTACKING
-  if ((state.equals("turn-p1") && speedWinner == oppPokemonOut) || (state.equals("turn-p2") && speedWinner == yourPokemonOut)) { 
-    if (oppPokemonOut.attackEffectiveness == 0 || oppAttack.getPower() == 0) {
+  if ((state.equals("turn-p1") && speedWinner == oppPokemonOut) || (state.equals("turn-p2") && speedWinner == yourPokemonOut)) {
+    
+    if (oppAttack == None) {
+      if (state.equals("turn-p1")) {
+        state = "turn-p1";
+      }
+      if (state.equals("turn-p2")) {
+        state = "turnEndDamage";  
+      }
+    }
+    
+    else if (oppPokemonOut.attackEffectiveness == 0 || oppAttack.getPower() == 0) {
         if (textShowTime < 45) {
           text("Enemy " + oppPokemonOut.getName(),50,475);
           text("used " + oppAttack.toString()+"!",50,535); 
@@ -387,7 +394,16 @@ void animateTurn() {
   //ANIMATE YOU ATTACKING
   else if ((state.equals("turn-p1") && speedWinner == yourPokemonOut) || (state.equals("turn-p2") && speedWinner == oppPokemonOut)) {
     
-    if (yourPokemonOut.attackEffectiveness == 0 || yourAttack.getPower() == 0) {
+    if (yourAttack == None) {
+      if (state.equals("turn-p1")) {
+        state = "turn-p1";
+      }
+      if (state.equals("turn-p2")) {
+        state = "turnEndDamage";  
+      }
+    }
+    
+    else if (yourPokemonOut.attackEffectiveness == 0 || yourAttack.getPower() == 0) {
         
         if (textShowTime < 45) {
           text(yourPokemonOut.getName(),50,475);
@@ -636,6 +652,10 @@ void turnEvents() {
     //opponent chooses move
     oppAttack = Tackle;   //should be oppAttack = OppTrainer.chooseMove(yourPokemonOut);
     
+    if (switchedThisTurn) {
+      yourAttack = None;  
+    }
+    
     if (speedWinner == yourPokemonOut) {
       yourPokemonOut.attack(oppPokemonOut,yourAttack);
       oppPokemonOut.attack(yourPokemonOut,oppAttack);
@@ -646,6 +666,8 @@ void turnEvents() {
     }
     
     attackTransitionTime = 0;
+    
+    switchedThisTurn = false;
   }
 }
 
@@ -825,9 +847,13 @@ void setupOptionScreen() {
   if (keyPressed && cArrowX == 288 && cArrowY == 450 && (key == 'z' || key == 'Z')) {
     state = "chooseMove";    
   }
+  
+  if (cArrowX != 482 || cArrowY != 450) {
+    stateFlowCheck = true;  
+  }
   if (keyPressed && cArrowX == 482 && cArrowY == 450 && (key == 'z' || key == 'Z')) {
     println("go");
-    if (textShowTime > 10) {
+    if (textShowTime > 15) {
       stateFlowCheck = true;
       textShowTime = 0;
     }

@@ -1,4 +1,4 @@
-Attack None = new Attack("Tackle",0,"Normal","Physical",95,35,"",0,"","",0,"");
+Attack None = new Attack("None",0,"Normal","Physical",95,35,"",0,"","",0,"");
 Attack Tackle = new Attack("Tackle",35,"Normal","Physical",95,35,"",0,"","",0,"");
 Attack Fire_Blast = new Attack("Fire Blast",120,"Fire","Special",85,5,"burn",0.3,"o","",0,"");
 Attack Thunderbolt = new Attack("Thunderbolt",95,"Electric","Special",100,15,"paralysis",0.1,"o","",0,"");
