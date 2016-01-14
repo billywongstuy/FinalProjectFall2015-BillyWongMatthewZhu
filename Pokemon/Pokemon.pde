@@ -24,6 +24,7 @@ PImage switchArrow;
 int sArrowY = 20;
 
 String state;
+boolean stateFlowCheck = true;
 int slow = 0;
 int attackTransitionTime = 0;
 int textShowTime = 0;
@@ -47,6 +48,7 @@ ArrayList<Poke>oppTeam = new ArrayList<Poke>();
 Poke oppPokemonOut;
 AI OppTrainer;
 
+int partySlot = 0;
 
 void setup() {
   background(255,255,255);
@@ -86,6 +88,16 @@ void setup() {
   yourPokemonOut.a2 = Thunder;
   yourPokemonOut.a3 = Strength;
   yourPokemonOut.a4 = Thunderbolt;
+  
+  yourTeam.get(1).a1 = Surf;
+  yourTeam.get(1).a2 = Thunder;
+  yourTeam.get(1).a3 = Strength;
+  yourTeam.get(1).a4 = Thunderbolt;
+  
+  yourTeam.get(2).a1 = Surf;
+  yourTeam.get(2).a2 = Thunder;
+  yourTeam.get(2).a3 = Strength;
+  yourTeam.get(2).a4 = Thunderbolt;
   
   hpToShow = yourPokemonOut.hp;
   yourdisplayHP = " " + yourPokemonOut.hp;
@@ -147,7 +159,6 @@ void switchYou() {
   displayTeamInfo();
   //include the part that puts status instead of level later
   
-  int partySlot = 0;
   if (keyPressed && key == CODED && keyCode == DOWN) {
     switch(sArrowY) {
       case 20:
@@ -190,6 +201,31 @@ void switchYou() {
   MAYBE INCLUDE GO [POKEMON NAME]!
   
   */
+  println(partySlot);
+  if (keyPressed && (key == 'z' || key == 'Z')) {
+    if (yourTeam.get(partySlot) == yourPokemonOut) {
+      println(yourPokemonOut);
+      println(yourTeam.get(partySlot));
+      if (yourPokemonOut.getStatus().equals("FNT")) {
+        println("No energy to battle!");  
+      }
+      else {
+        println("Currently battling!");  
+      }
+    }
+    else {
+      println("change");
+     
+      yourPokemonOut = yourTeam.get(partySlot);
+      yourHealthLost = yourPokemonOut.health - yourPokemonOut.hp;
+      hpToShow = yourPokemonOut.hp;
+      yourPoke = loadImage("Sprites/Back/" + yourPokemonOut.index+".PNG");
+      
+      //make it so that it skips the ability to attack if not fainted
+      state = "chooseOption";
+      stateFlowCheck = false;
+    }
+  }
   
 }
 
@@ -640,18 +676,15 @@ void oppDropHealth() {
     
     else if (state.equals("turn-p1")) {      
       state = "turn-p2"; 
-      println("hi");
     }
     else if (state.equals("turn-p2") && !(yourPokemonOut.attackEffectiveness == 0 || yourAttack.getPower() == 0)) {
       state = "turnEndDamage";
     }
     else if (state.equals("textEnd1")) {
       state = "textEnd2"; 
-      println("apple");
     }
     else if (state.equals("textEnd2")) {
       state = "chooseOption";  
-      println("cadp");
     }
   }  
 }
@@ -793,7 +826,19 @@ void setupOptionScreen() {
     state = "chooseMove";    
   }
   if (keyPressed && cArrowX == 482 && cArrowY == 450 && (key == 'z' || key == 'Z')) {
-    state = "choosePokeYou";    
+    println("go");
+    if (textShowTime > 10) {
+      stateFlowCheck = true;
+      textShowTime = 0;
+    }
+    if (stateFlowCheck) {
+      state = "choosePokeYou";  
+    }
+    else {
+      //perfect time for Go pokemon name
+      println(textShowTime);
+      textShowTime++;    
+    }
   }
   
 }
