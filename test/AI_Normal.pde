@@ -5,22 +5,29 @@ class AI_Normal extends AI{
               }
        Poke chooseNextPoke(){
          Poke chooseThis = AI_Team.get(0);
-           if(checkEffectiveness(oppPokemonOut.geta1().getType(), yourPokemonOut.getType1()) < 1||
-           checkEffectiveness(oppPokemonOut.geta1().getType(), yourPokemonOut.getType2()) < 1||
-           checkEffectiveness(oppPokemonOut.geta2().getType(), yourPokemonOut.getType1()) < 1||
-           checkEffectiveness(oppPokemonOut.geta2().getType(), yourPokemonOut.getType2()) < 1||
-           checkEffectiveness(oppPokemonOut.geta3().getType(), yourPokemonOut.getType1()) < 1||
-           checkEffectiveness(oppPokemonOut.geta3().getType(), yourPokemonOut.getType2()) < 1||
-           checkEffectiveness(oppPokemonOut.geta4().getType(), yourPokemonOut.getType1()) < 1||
-           checkEffectiveness(oppPokemonOut.geta4().getType(), yourPokemonOut.getType2()) < 1){
          for(int a = 0; a < AI_Team.size(); a ++){
                if(checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
-               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
-               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
-               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
-               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
-               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
-               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1){
+               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType2()) > 1 ||
+               checkEffectiveness(AI_Team.get(a).geta2().getType(), yourPokemonOut.getType1()) > 1 ||
+               checkEffectiveness(AI_Team.get(a).geta2().getType(), yourPokemonOut.getType2()) > 1 ||
+               checkEffectiveness(AI_Team.get(a).geta3().getType(), yourPokemonOut.getType1()) > 1 ||
+               checkEffectiveness(AI_Team.get(a).geta3().getType(), yourPokemonOut.getType2()) > 1 ||
+               checkEffectiveness(AI_Team.get(a).geta4().getType(), yourPokemonOut.getType1()) > 1 ||
+               checkEffectiveness(AI_Team.get(a).geta4().getType(), yourPokemonOut.getType2()) > 1 ){
+                 chooseThis = AI_Team.get(a);
+                 return chooseThis;
+               }
+               else{
+                   for(int z = 0; z < AI_Team.size(); z ++){
+                     if(AI_Team.get(z).hp > 0){
+                       chooseThis = AI_Team.get(z);
+                       return chooseThis;
+                     }
+                   }
+               }
+         }
+       }
+
                  
                
                
@@ -35,7 +42,9 @@ class AI_Normal extends AI{
               int strongestEffectiveness = 2;
               int moveNumber = 0;
               int powerCompare = 0;
+              boolean AllDead= true;
               Attack planAttack = attacks.get(moveNumber);
+          
               //check if the typeffectiveness of each attack >= strongestEffectiveness if so, add it to arraylist then set strongest
               //at end remove any elements with effectiveness < strongest
                 for(int i = 0; i < attacks.size(); i ++){
@@ -94,6 +103,24 @@ class AI_Normal extends AI{
                    
                  
           }
+       }
+       int chooseAction(){
+           for(int b = 0; b < AI_Team.size(); b ++){
+                if(AI_Team.get(b).hp > 0){
+                  AllDead = false;
+                }
+              }
+                
+              if((!AllDead) && (checkEffectiveness(oppPokemonOut.geta1().getType(), yourPokemonOut.getType1()) < 1 ||
+           checkEffectiveness(oppPokemonOut.geta1().getType(), yourPokemonOut.getType2()) < 1||
+           checkEffectiveness(oppPokemonOut.geta2().getType(), yourPokemonOut.getType1()) < 1||
+           checkEffectiveness(oppPokemonOut.geta2().getType(), yourPokemonOut.getType2()) < 1||
+           checkEffectiveness(oppPokemonOut.geta3().getType(), yourPokemonOut.getType1()) < 1||
+           checkEffectiveness(oppPokemonOut.geta3().getType(), yourPokemonOut.getType2()) < 1||
+           checkEffectiveness(oppPokemonOut.geta4().getType(), yourPokemonOut.getType1()) < 1||
+           checkEffectiveness(oppPokemonOut.geta4().getType(), yourPokemonOut.getType2()) < 1)){
+             chooseNextPoke();
+           }
           
 }
 
