@@ -226,7 +226,11 @@ void switchYou() {
 
 
 void switchOpp() {
-  
+  //make variable poke to switch into from ai method chooseNext
+  //if opponent pokemon fainted set status to chooseOption
+  //set oppPokemonOut to that pokemon
+  //set oppHealthLost to health - hp
+  //change the image
 }
 
 String hpString(int hp) {
@@ -651,6 +655,12 @@ void turnEvents() {
     
     //opponent chooses move
     oppAttack = Tackle;   //should be oppAttack = OppTrainer.chooseMove(yourPokemonOut);
+    
+    //action = chooseAction from ai
+    //if action = 1
+    //call oppswitchfunction
+    //oppAttack = None
+    
     
     if (switchedThisTurn) {
       yourAttack = None;  
