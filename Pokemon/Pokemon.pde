@@ -118,7 +118,7 @@ void draw() {
   }
   if (state.equals("chooseMove")) {
     setupMoveChoice();
-    if (attackTransitionTime >= 25) {
+    if (attackTransitionTime >= 35) {
       turnEvents(); 
     }
     else {
@@ -260,6 +260,11 @@ void displayTeamInfo() {
   text(hpString(yourTeam.get(2).hp),415,186);
   text(hpString(yourTeam.get(2).health),545,186);
   text(yourTeam.get(2).lv,450,155);
+  
+  fill(color(48,164,71));
+  rect(192,44,yourTeam.get(0).hp*192/yourTeam.get(0).health,8);
+  rect(192,108,yourTeam.get(1).hp*192/yourTeam.get(1).health,8);
+  rect(192,172,yourTeam.get(2).hp*192/yourTeam.get(2).health,8);
 }
 
 //--------------------------------------------------
