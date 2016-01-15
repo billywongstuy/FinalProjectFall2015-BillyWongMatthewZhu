@@ -3,7 +3,6 @@
 //NO PAUSE BETWEEN ATTACK DAMAGE AND STATUS DAMAGE
 //MIGHT BE TOO FAST FOR STATUS HP DROP
 
-
 PFont font;
 PImage battle;
 PImage blankBox;
@@ -16,6 +15,7 @@ PImage chooseOppArrow;
 int cOArrowY = 300;
 int oppLevel = 1;
 
+boolean battleStart = false;
 PImage choiceArrow;
 int cArrowX = 288;
 int cArrowY = 450;
@@ -61,7 +61,7 @@ void setup() {
   size(640,576);
   font = loadFont("PokemonGB-32.vlw");
   textFont(font, 32);
-  state = "chooseOption";
+  state = "chooseOpp";
   
   setupPokeSet();
   yourTeam.add(Pokemons.get(25)); 
@@ -120,7 +120,12 @@ void setup() {
 void draw() {
   println(state);
   frameRate(30);
-  displayBattlersInfo();
+  if (state.equals("chooseOpp")) {
+    setupChooseOppScreen();  
+  }
+  if (battleStart) {
+    displayBattlersInfo();
+  }
   if (state.equals("chooseOption")) {
     setupOptionScreen();
   }
@@ -953,10 +958,16 @@ void displayBattlersInfo() {
 //SETUP CHOOSE OPPONENT SCREEN
 //-------------------------------------------------
 
-void setupChooseOpponentScreen() {
+void setupChooseOppScreen() {
   image(chooseOppScreen,0,0);
   image(chooseOppArrow,400,cOArrowY);
   
+  if (keyPressed && (key == 'z' || key == 'Z')) {
+    //currently directs to this because no catalog yet
+    state = "chooseOption";  
+    battleStart = true;
+    frameRate(2);
+  }
   
   
 }
