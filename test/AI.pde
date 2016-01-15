@@ -19,10 +19,14 @@ abstract class AI {
     counter ++;
   }
   
-  
+  float fullEffectiveness(String PokeType,String oppPokeType){
+    return checkEffectiveness(PokeType,oppPokeType);
+  }
+    
    abstract Poke chooseNextPoke();
    abstract Attack chooseMove(Poke PlayersPoke);  
    abstract int chooseAction();
+   
 
 }
       

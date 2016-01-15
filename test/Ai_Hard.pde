@@ -4,6 +4,45 @@ class Ai_Hard extends AI{
                 super(p1,p2,p3);
               }
               
+      int chooseAction(){
+        int option = 0;
+        if(fullEffectiveness(oppPokemonOut.getType1(),yourPokemonOut.getType1()) < 2||
+        fullEffectiveness(oppPokemonOut.getType1(),yourPokemonOut.getType2()) < 2||
+        fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType1()) < 2||
+        fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType2()) < 2){
+          option = 1;
+        }
+        else{
+          option = 0;
+        }
+        return option;
+      }
+          
+        
+      
+      Poke chooseNextPoke(){
+      for(int a = 0; a < AI_Team.size(); a ++){
+       if(AI_Team.get(a).hp <= 0){
+          AI_Team.remove(a);
+          a--;
+       }
+      }
+      Poke chooseThis = AI_Team.get(0);
+      for(int c = 0; c < AI_Team.size(); c ++){
+             if(fullEffectiveness(AI_Team.get(c).getType1(),yourPokemonOut.getType1())>1||
+             fullEffectiveness(AI_Team.get(c).getType2(),yourPokemonOut.getType1())>1||
+             fullEffectiveness(AI_Team.get(c).getType1(),yourPokemonOut.getType2())>1||
+             fullEffectiveness(AI_Team.get(c).getType2(),yourPokemonOut.getType2())>1){
+               
+               chooseThis = AI_Team.get(c);
+             
+      }
+      }
+         return chooseThis;
+      }
+       
+
+              
               Attack chooseMove(Poke PlayerPoke){
               ArrayList<Attack>attacks = new ArrayList<Attack>();
               ArrayList<Attack>EffectiveMove = new ArrayList<Attack>();
@@ -11,17 +50,6 @@ class Ai_Hard extends AI{
               int moveNumber = 0;
               int powerCompare = 0;
               Attack planAttack = attacks.get(moveNumber);
-             /* if(checkEffectiveness(PlayerPoke.geta1().getType(), oppPokemonOut.getType1()) > 1||
-              checkEffectiveness(PlayerPoke.geta1().getType(), oppPokemonOut.getType2()) > 1||
-              checkEffectiveness(PlayerPoke.geta2().getType(), oppPokemonOut.getType1())> 1||
-              checkEffectiveness(PlayerPoke.geta2().getType(), oppPokemonOut.getType2()) > 1||
-              checkEffectiveness(PlayerPoke.geta3().getType(), oppPokemonOut.getType1()) > 1||
-              checkEffectiveness(PlayerPoke.geta3().getType(), oppPokemonOut.getType2()) > 1||
-              checkEffectiveness(PlayerPoke.geta4().getType(), oppPokemonOut.getType1()) > 1||
-              checkEffectiveness(PlayerPoke.geta4().getType(), oppPokemonOut.getType1()) > 1){
-                //Swap pokemon out for advatangeous type
-              }
-              */
               
               //check if the typeffectiveness of each attack >= strongestEffectiveness if so, add it to arraylist then set strongest
               //at end remove any elements with effectiveness < strongest

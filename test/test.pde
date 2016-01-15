@@ -52,7 +52,7 @@ void setup() {
   
   setupPokeSet();
   yourTeam.add(Pokemons.get(25)); 
-OppTrainer = new Ai_easy(Electrode, Ekans, Arbok);
+OppTrainer = new Ai_Hard(Electrode, Ekans, Arbok);
 oppTeam = OppTrainer.AI_Team;
   yourPokemonOut = yourTeam.get(0);
   oppPokemonOut = oppTeam.get(0);
