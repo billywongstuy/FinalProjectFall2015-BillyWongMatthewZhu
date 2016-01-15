@@ -113,8 +113,7 @@ class AI_Normal extends AI{
     int option = 0;
     return option;       
   }
-       
 }
-
+    
    
         
