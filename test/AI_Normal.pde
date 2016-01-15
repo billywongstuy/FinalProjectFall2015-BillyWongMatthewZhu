@@ -15,26 +15,19 @@ class AI_Normal extends AI{
                checkEffectiveness(AI_Team.get(a).geta4().getType(), yourPokemonOut.getType1()) > 1 ||
                checkEffectiveness(AI_Team.get(a).geta4().getType(), yourPokemonOut.getType2()) > 1 ){
                  chooseThis = AI_Team.get(a);
-                 return chooseThis;
+
                }
                else{
                    for(int z = 0; z < AI_Team.size(); z ++){
                      if(AI_Team.get(z).hp > 0){
                        chooseThis = AI_Team.get(z);
-                       return chooseThis;
+
                      }
                    }
                }
          }
+         return chooseThis;
        }
-
-                 
-               
-               
-               
-             
-             
-
 
        Attack chooseMove(Poke PlayerPoke){
               ArrayList<Attack>attacks = new ArrayList<Attack>();
@@ -42,7 +35,6 @@ class AI_Normal extends AI{
               int strongestEffectiveness = 2;
               int moveNumber = 0;
               int powerCompare = 0;
-              boolean AllDead= true;
               Attack planAttack = attacks.get(moveNumber);
           
               //check if the typeffectiveness of each attack >= strongestEffectiveness if so, add it to arraylist then set strongest
@@ -103,8 +95,10 @@ class AI_Normal extends AI{
                    
                  
           }
-       }
+       
        int chooseAction(){
+         int option = 0;
+         /*boolean AllDead = true;
            for(int b = 0; b < AI_Team.size(); b ++){
                 if(AI_Team.get(b).hp > 0){
                   AllDead = false;
@@ -119,9 +113,14 @@ class AI_Normal extends AI{
            checkEffectiveness(oppPokemonOut.geta3().getType(), yourPokemonOut.getType2()) < 1||
            checkEffectiveness(oppPokemonOut.geta4().getType(), yourPokemonOut.getType1()) < 1||
            checkEffectiveness(oppPokemonOut.geta4().getType(), yourPokemonOut.getType2()) < 1)){
-             chooseNextPoke();
+             option = 1;
            }
-          
+          else{
+            option = 0;
+          }*/
+       return option;
+       }
+       
 }
 
    
