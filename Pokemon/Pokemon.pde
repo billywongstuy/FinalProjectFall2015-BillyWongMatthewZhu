@@ -966,7 +966,6 @@ void setupChooseOppScreen() {
     //currently directs to this because no catalog yet
     state = "chooseOption";  
     battleStart = true;
-    frameRate(2);
   }
   
   
