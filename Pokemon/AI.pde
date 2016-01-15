@@ -2,7 +2,7 @@ import java.lang.Object;
 import java.util.*;
 abstract class AI {
   private ArrayList<Poke> PlayerPokeTeam = new ArrayList<Poke>();
-  private ArrayList<Poke> AI_Team = new ArrayList<Poke>();
+  public ArrayList<Poke> AI_Team = new ArrayList<Poke>(3);
   private Attack[][] PokeAttacks = new Attack[3][4];
   private int counter = 0;
 
@@ -19,7 +19,14 @@ abstract class AI {
     counter ++;
   }
   
-   abstract Attack chooseMove(Poke PlayersPoke);
+  float fullEffectiveness(String PokeType,String oppPokeType){
+    return checkEffectiveness(PokeType,oppPokeType);
+  }
+    
+   abstract Poke chooseNextPoke();
+   abstract Attack chooseMove(Poke PlayersPoke);  
+   abstract int chooseAction();
+   
 
 }
       
