@@ -15,6 +15,8 @@ PImage chooseOppArrow;
 int cOArrowY = 300;
 int oppLevel = 1;
 
+PImage challengeScreen;
+
 boolean battleStart = false;
 PImage choiceArrow;
 int cArrowX = 288;
@@ -42,7 +44,7 @@ String yourdisplayHP;
 String yourdisplayHealth;
 
 Attack yourAttack;
-Attack oppAttack;
+Attack oppAttack = null;
 int oppHealthLost = 0;
 int yourHealthLost = 0;
 
@@ -74,6 +76,7 @@ void setup() {
   
   chooseOppScreen = loadImage("choose-level.png");
   chooseOppArrow = loadImage("arrow.png");
+  challengeScreen = loadImage("challenge.png");
   
   battle = loadImage("battlers-info-template.png");  
   yourPoke = loadImage("Sprites/Back/" + yourPokemonOut.index+".PNG"); 
@@ -122,6 +125,9 @@ void draw() {
   frameRate(30);
   if (state.equals("chooseOpp")) {
     setupChooseOppScreen();  
+  }
+  if (state.equals("challenge")) {
+    challengeScreen();  
   }
   if (battleStart) {
     displayBattlersInfo();
@@ -215,6 +221,7 @@ void switchYou() {
      
       if (!yourPokemonOut.getStatus().equals("FNT")) {
         switchedThisTurn = true;
+        oppAttack = OppTrainer.chooseMove();
       }
       
      
@@ -355,6 +362,8 @@ void handleEndTurn() {
   
     cArrowX = 288;
     cArrowY = 450;
+    oppAttack = null;
+    yourAttack = null;
   }  
 }
 
@@ -629,6 +638,7 @@ void turnEvents() {
   if (state.equals("chooseMove") && keyPressed && (key == 'Z' || key == 'z')) {
     state = "turn-p1";
     
+    
     //incorporate speed and turns
     switch(mArrowY) {
        case 420:
@@ -678,8 +688,11 @@ void turnEvents() {
     //opponent chooses move
     //oppAttack = Tackle;   //should be 
     println("OK");
-    oppAttack = OppTrainer.chooseMove();
-    println(oppAttack);
+    if (oppAttack == null) {
+      println(oppAttack);
+      println("here");
+      oppAttack = OppTrainer.chooseMove();
+    }
     
     //action = chooseAction from ai
     //if action = 1
@@ -964,9 +977,24 @@ void setupChooseOppScreen() {
   
   if (keyPressed && (key == 'z' || key == 'Z')) {
     //currently directs to this because no catalog yet
-    state = "chooseOption";  
-    battleStart = true;
+    state = "challenge";  
   }
   
   
+}
+
+//-------------------
+//CHALLENGE SCREEN
+//--------------------
+
+void challengeScreen() {
+    if (textShowTime < 45) {
+      image(challengeScreen,0,0);
+      textShowTime++;
+    }
+    else {
+      textShowTime = 0;
+      state = "chooseOption";
+      battleStart = true;
+    }
 }
