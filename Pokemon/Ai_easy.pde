@@ -2,9 +2,9 @@
 //using oppPokemonOut as placeholder for opp pokemon currently out
 //using Pikachu as placeholder for your Pokemon out
 
-class Ai_easy extends AI{
+class Ai_Easy extends AI{
   
-  public Ai_easy(Poke p1, Poke p2, Poke p3) {
+  public Ai_Easy(Poke p1, Poke p2, Poke p3) {
     super(p1,p2,p3);  
   }
   

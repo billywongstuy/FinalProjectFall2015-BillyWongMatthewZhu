@@ -11,6 +11,10 @@ class Ivysaur extends Poke {
 class Venusaur extends Poke {
   Venusaur() {
     super("Venusaur",3,"Grass","Poison",80,82,83,100,80,100);
+    a1 = Earthquake;
+    a2 = Razor_Leaf;
+    a3 = Sludge;
+    a4 = Vine_Whip;
   }
 }
 class Charmander extends Poke {
@@ -26,6 +30,10 @@ class Charmeleon extends Poke {
 class Charizard extends Poke {
   Charizard() {
     super("Charizard",6,"Fire","Flying",78,84,78,85,100,100);
+    a1 = Fire_Blast;
+    a2 = Wing_Attack;
+    a3 = Earthquake;
+    a4 = Swords_Dance;
   }
 }
 class Squirtle extends Poke {
@@ -41,6 +49,10 @@ class Wartortle extends Poke {
 class Blastoise extends Poke {
   Blastoise() {
     super("Blastoise",9,"Water",79,83,100,85,78,100);
+    a1 = Surf;
+    a2 = Earthquake;
+    a3 = Ice_Beam;
+    a4 = Strength;
   }
 }
 class Caterpie extends Poke {

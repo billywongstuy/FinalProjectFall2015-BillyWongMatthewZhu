@@ -2,6 +2,7 @@ float checkEffectiveness(String attackType, String type) {
   if (type.equals("")) {
     return 1;  
   }
+  
   int at = typeToInt(attackType);
   int t = typeToInt(type);
   float[][]matchups = new float[15][15];
@@ -76,6 +77,7 @@ float checkEffectiveness(String attackType, String type) {
 }
 
 int typeToInt(String type) {
+  
   if (type.equals("Normal")) {
     return 0;
   }
@@ -129,5 +131,5 @@ float checkFullEffectiveness(String attackType, String type1, String type2) {
 }
 
 float checkBattleEffectiveness(Attack attack, Poke p) {
-  return checkFullEffectiveness(attack.getType(),p.type1,p.type2);  
+  return checkFullEffectiveness(attack.type,p.type1,p.type2);  
 }

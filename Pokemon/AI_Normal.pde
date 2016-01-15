@@ -33,7 +33,7 @@ class AI_Normal extends AI{
     float strongestEffectiveness = 2;
     int moveNumber = 0;
     Attack planAttack = attacks.get(moveNumber);
-          
+    
     //check if the typeffectiveness of each attack >= strongestEffectiveness if so, add it to arraylist then set strongest
     //at end remove any elements with effectiveness < strongest
     for(int i = 0; i < attacks.size(); i ++){

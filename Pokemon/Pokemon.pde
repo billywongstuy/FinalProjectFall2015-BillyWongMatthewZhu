@@ -67,7 +67,7 @@ void setup() {
   yourTeam.add(Pokemons.get(25)); 
   yourTeam.add(Pokemons.get(150));
   yourTeam.add(Pokemons.get(5));
-  OppTrainer = new Ai_easy(Dugtrio, Ekans, Arbok);
+  OppTrainer = new AI_Normal(Venusaur,Charizard,Blastoise);
   oppTeam = OppTrainer.AI_Team;
   yourPokemonOut = yourTeam.get(0);
   oppPokemonOut = oppTeam.get(0);
@@ -110,10 +110,10 @@ void setup() {
   
   hpToShow = yourPokemonOut.hp;
   yourdisplayHP = " " + yourPokemonOut.hp;
-  oppPokemonOut.a1 = Thunder_Wave;
+  /*oppPokemonOut.a1 = Thunder_Wave;
   oppPokemonOut.a2 = Tackle;
   oppPokemonOut.a3 = Flamethrower;
-  oppPokemonOut.a4 = Strength;
+  oppPokemonOut.a4 = Strength;*/
    
 }
 
@@ -211,6 +211,7 @@ void switchYou() {
       if (!yourPokemonOut.getStatus().equals("FNT")) {
         switchedThisTurn = true;
       }
+      
      
       yourPokemonOut = yourTeam.get(partySlot);
       yourHealthLost = yourPokemonOut.health - yourPokemonOut.hp;
@@ -221,6 +222,8 @@ void switchYou() {
       state = "chooseOption";
       stateFlowCheck = false;
       
+      
+      //FATAL FLAW: OPPONENT CHOOSES MOVE AFTER SWITCHING
       if (switchedThisTurn) {
         state = "chooseMove";
         turnEvents();
@@ -358,7 +361,6 @@ void handleEndTurn() {
 void animateTurn() {
   //needs to add text box with attacks and side effects
   
-  
   if (state.equals("turn-p1") || state.equals("turn-p2") || state.equals("crit-1") || state.equals("crit-2") || state.equals("faintShow") || state.equals("type-effect-you") || state.equals("type-effect-opp")) {
     image(blankBox,0,0);  
   }
@@ -370,11 +372,13 @@ void animateTurn() {
   //ANIMATE YOUR OPPONENT ATTACKING
   if ((state.equals("turn-p1") && speedWinner == oppPokemonOut) || (state.equals("turn-p2") && speedWinner == yourPokemonOut)) {
     
+    println("opp attack");
+    
     if (oppAttack == None) {
       if (state.equals("turn-p1")) {
-        state = "turn-p1";
+        state = "turn-p2";
       }
-      if (state.equals("turn-p2")) {
+      else if (state.equals("turn-p2")) {
         state = "turnEndDamage";  
       }
     }
@@ -413,9 +417,9 @@ void animateTurn() {
     
     if (yourAttack == None) {
       if (state.equals("turn-p1")) {
-        state = "turn-p1";
+        state = "turn-p2";
       }
-      if (state.equals("turn-p2")) {
+      else if (state.equals("turn-p2")) {
         state = "turnEndDamage";  
       }
     }
@@ -667,7 +671,10 @@ void turnEvents() {
     }
     
     //opponent chooses move
-    oppAttack = Tackle;   //should be oppAttack = OppTrainer.chooseMove(yourPokemonOut);
+    //oppAttack = Tackle;   //should be 
+    println("OK");
+    oppAttack = OppTrainer.chooseMove();
+    println(oppAttack);
     
     //action = chooseAction from ai
     //if action = 1

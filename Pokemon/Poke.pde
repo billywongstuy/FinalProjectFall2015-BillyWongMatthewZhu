@@ -14,10 +14,10 @@ abstract class Poke implements Cloneable{
   private int [] statStatus = {0, 0, 0, 0, 0, 0};  //atk, def, special, speed, evasion, accuracy
   private boolean critOrNot;  //used for ignoring stat drops/boosts?
   private String addEffects;  //used for text to display
-  private Attack a1;
-  private Attack a2;
-  private Attack a3;
-  private Attack a4;
+  Attack a1;
+  Attack a2;
+  Attack a3;
+  Attack a4;
   private boolean attackCrit;
   private float attackEffectiveness = 1;
   private boolean turnParalyzed;
@@ -57,6 +57,9 @@ abstract class Poke implements Cloneable{
     //println(name + ": " + status);
     if (status.equals("FNT")) {
       //println(name + " is fainted!");
+      return 0;  
+    }
+    else if (attack == None) {
       return 0;  
     }
     else if (status.equals("PRZ") && (int)(Math.random()*4) == 0) {

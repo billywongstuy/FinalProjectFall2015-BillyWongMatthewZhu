@@ -1,4 +1,4 @@
-class Ai_Hard extends AI{
+/*class AI_Hard extends AI{
     ArrayList<Integer> EffectiveMove = new ArrayList<Integer>();
     public Ai_Hard(Poke p1, Poke p2, Poke p3){
                 super(p1,p2,p3);
@@ -110,3 +110,4 @@ class Ai_Hard extends AI{
                  
           }
 }
+}*/
