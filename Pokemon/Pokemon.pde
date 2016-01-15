@@ -11,6 +11,11 @@ PImage options;
 PImage yourPoke;
 PImage oppPoke;
 
+PImage chooseOppScreen;
+PImage chooseOppArrow;
+int cOArrowY = 300;
+int oppLevel = 1;
+
 PImage choiceArrow;
 int cArrowX = 288;
 int cArrowY = 450;
@@ -66,6 +71,9 @@ void setup() {
   oppTeam = OppTrainer.AI_Team;
   yourPokemonOut = yourTeam.get(0);
   oppPokemonOut = oppTeam.get(0);
+  
+  chooseOppScreen = loadImage("choose-level.png");
+  chooseOppArrow = loadImage("arrow.png");
   
   battle = loadImage("battlers-info-template.png");  
   yourPoke = loadImage("Sprites/Back/" + yourPokemonOut.index+".PNG"); 
@@ -885,7 +893,6 @@ void setupOptionScreen() {
 }
 
 
-
 //------------------------------------------------------
 //SETUP IMAGES FOR BATTLING POKEMON AND FULL HP BARS
 //------------------------------------------------------
@@ -932,5 +939,17 @@ void displayBattlersInfo() {
     text(oppPokemonOut.getStatus(),126,60);
   }
   fill(color(0));
+  
+}
+
+//--------------------------------------------------
+//SETUP CHOOSE OPPONENT SCREEN
+//-------------------------------------------------
+
+void setupChooseOpponentScreen() {
+  image(chooseOppScreen,0,0);
+  image(chooseOppArrow,400,cOArrowY);
+  
+  
   
 }
