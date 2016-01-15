@@ -123,3 +123,11 @@ int typeToInt(String type) {
   } 
     return 255;
 }
+
+float checkFullEffectiveness(String attackType, String type1, String type2) {
+  return checkEffectiveness(attackType,type1)*checkEffectiveness(attackType,type2);  
+}
+
+float checkBattleEffectiveness(Attack attack, Poke p) {
+  return checkFullEffectiveness(attack.getType(),p.type1,p.type2);  
+}

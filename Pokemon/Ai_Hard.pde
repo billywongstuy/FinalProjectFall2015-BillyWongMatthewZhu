@@ -43,7 +43,7 @@ class Ai_Hard extends AI{
        
 
               
-              Attack chooseMove(Poke PlayerPoke){
+              Attack chooseMove(){
               ArrayList<Attack>attacks = new ArrayList<Attack>();
               ArrayList<Attack>EffectiveMove = new ArrayList<Attack>();
               int strongestEffectiveness = 2;
@@ -55,8 +55,8 @@ class Ai_Hard extends AI{
               //at end remove any elements with effectiveness < strongest
                 for(int i = 0; i < attacks.size(); i ++){
                   if(i < attacks.size()){
-                    if(checkEffectiveness(attacks.get(i).getType(),PlayerPoke.getType1()) > 2
-                    || checkEffectiveness(attacks.get(i).getType(),PlayerPoke.getType2())>2){
+                    if(checkEffectiveness(attacks.get(i).getType(),yourPokemonOut.getType1()) > 2
+                    || checkEffectiveness(attacks.get(i).getType(),yourPokemonOut.getType2())>2){
                    EffectiveMove.add(attacks.get(i));
                     }
                   }

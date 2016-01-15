@@ -24,7 +24,7 @@ abstract class AI {
   }
     
    abstract Poke chooseNextPoke();
-   abstract Attack chooseMove(Poke PlayersPoke);  
+   abstract Attack chooseMove();  
    abstract int chooseAction();
    
 

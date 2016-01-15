@@ -117,7 +117,7 @@ class Attack {
     return type.toUpperCase();  
   }
   
-  double getPower() {
+  int getPower() {
     return power;      
   }
   

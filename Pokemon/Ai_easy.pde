@@ -35,7 +35,7 @@ class Ai_easy extends AI{
          return chooseThis;
        }
   
-  Attack chooseMove(Poke PlayerPoke){
+  Attack chooseMove(){
     ArrayList<Attack>attacks = new ArrayList<Attack>(4);
     attacks.add(oppPokemonOut.geta1());  
     attacks.add(oppPokemonOut.geta2());
