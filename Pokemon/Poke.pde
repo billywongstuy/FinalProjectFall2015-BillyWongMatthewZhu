@@ -19,6 +19,7 @@ abstract class Poke implements Cloneable{
   Attack a3;
   Attack a4;
   private boolean attackCrit;
+  private boolean attackMissed = false;
   private float attackEffectiveness = 1;
   private boolean turnParalyzed;
   private boolean frozen;
@@ -53,11 +54,28 @@ abstract class Poke implements Cloneable{
     }
   }
   
+  void setAttacks(Attack a, Attack b, Attack c, Attack d) {
+    a1 = (a.copy());
+    a2 = (b.copy());
+    a3 = (c.copy());
+    a4 = (d.copy());
+    /*a1 = a;
+    a2 = b;
+    a3 = c;
+    a4 = d;*/
+  }
+  
   int attack(Poke opp, Attack attack) {
     //println(name + ": " + status);
+    int rand = (int)(Math.random()*100);
     if (status.equals("FNT")) {
       //println(name + " is fainted!");
       return 0;  
+    }
+    else if (rand > attack.accuracy) {
+      attackMissed = true;  
+      //println("HUHIguedchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh\t" + x + "          " + attack.accuracy);
+      return 0;
     }
     else if (attack == None) {
       return 0;  
@@ -76,6 +94,7 @@ abstract class Poke implements Cloneable{
       println("t");
       turnParalyzed =false;
       frozen = false;
+      attackMissed = false;
       attack.ppLeft--;
       return opp.takeDamage(calculateDamage(opp, attack));
     }

@@ -33,9 +33,17 @@ class AI_Normal extends AI{
     attacks.add(oppPokemonOut.a3);
     attacks.add(oppPokemonOut.a4);
     
+    for (int y = 0; y < attacks.size(); y++) {
+      if (attacks.get(y).ppLeft <= 0) {
+        attacks.remove(y);
+        y--;
+      }
+    }
+    int beginningSize = attacks.size();
+    
     ArrayList<Attack>EffectiveMove = new ArrayList<Attack>();
     float strongestEffectiveness = 2;
-    int moveNumber = 0;
+    int moveNumber = (int)(Math.random()*attacks.size());
     Attack planAttack = attacks.get(moveNumber);
     
     //check if the typeffectiveness of each attack >= strongestEffectiveness if so, add it to arraylist then set strongest
@@ -61,7 +69,6 @@ class AI_Normal extends AI{
     }
     
     if(EffectiveMove.size() == 0){
-      moveNumber = (int)(Math.random()*4);
       planAttack = attacks.get(moveNumber); 
       if(!yourPokemonOut.getStatus().equals("none")){
         if(moveNumber == 0){
@@ -84,7 +91,7 @@ class AI_Normal extends AI{
             attacks.remove(3);          
           }
         }
-        if (attacks.size() < 4 && attacks.size() >= 1) {
+        if (attacks.size() < beginningSize && attacks.size() >= 1) {
           planAttack = attacks.get((int)(Math.random()*attacks.size()));
         }
       }   

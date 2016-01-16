@@ -3,6 +3,7 @@
 //NO PAUSE BETWEEN ATTACK DAMAGE AND STATUS DAMAGE
 //MIGHT BE TOO FAST FOR STATUS HP DROP
 //NEED TO ADD SWITCH TEXT (Go ___!, OPP sent out ___!) 
+//NEED TO ADD PP CHECK AND ACCURACY
 
 PFont font;
 PImage battle;
@@ -68,7 +69,7 @@ void setup() {
   
   setupPokeSet();
   yourTeam.add(Pokemons.get(25)); 
-  yourTeam.add(Pokemons.get(150));
+  yourTeam.add(Pokemons.get(2));
   yourTeam.add(Pokemons.get(5));
   
   OppTrainer = new AI_Easy(Venusaur,Charizard,Blastoise,"prof. oak"); 
@@ -97,22 +98,7 @@ void setup() {
   blankBox = loadImage("blank_box_bottom.png");
   
   switchScreen = loadImage("switching.png");
-  switchArrow = loadImage("arrow.png");
-    
-  yourPokemonOut.a1 = Surf;
-  yourPokemonOut.a2 = Thunder;
-  yourPokemonOut.a3 = Strength;
-  yourPokemonOut.a4 = Thunderbolt;
-  
-  yourTeam.get(1).a1 = Surf;
-  yourTeam.get(1).a2 = Thunder;
-  yourTeam.get(1).a3 = Strength;
-  yourTeam.get(1).a4 = Thunderbolt;
-  
-  yourTeam.get(2).a1 = Surf;
-  yourTeam.get(2).a2 = Thunder;
-  yourTeam.get(2).a3 = Strength;
-  yourTeam.get(2).a4 = Thunderbolt;
+  switchArrow = loadImage("arrow.png");   
   
   hpToShow = yourPokemonOut.hp;
   yourdisplayHP = " " + yourPokemonOut.hp;
@@ -429,7 +415,21 @@ void animateTurn() {
         else {
           textShowTime = 0;
           state = "type-effect-opp";
-          println("x");
+        }
+    }
+    else if (oppPokemonOut.attackMissed) {
+        if (textShowTime < 45) {
+          text("Enemy " + oppPokemonOut.getName(),50,475);
+          text("used " + oppAttack,50,535);
+        }
+        else if (textShowTime < 90) {
+          text("Enemy " + oppPokemonOut.getName()+"'s",50,475);
+          text("attack missed!",50,535); 
+          textShowTime++;
+        }
+        else {
+          textShowTime = 0;
+          state = "type-effect-opp";
         }
     }
     else if (oppPokemonOut.turnParalyzed) {
@@ -474,6 +474,22 @@ void animateTurn() {
           println("y");
         }
     }  
+    else if (yourPokemonOut.attackMissed) {
+        if (textShowTime < 45) {
+          text(yourPokemonOut.getName(),50,475);
+          text("used " + yourAttack+"!",50,535); 
+          textShowTime++;
+        }
+        else if (textShowTime < 90) {
+          text(yourPokemonOut.getName()+"'s",50,475);
+          text("attack missed!",50,535); 
+          textShowTime++;    
+        }
+        else {
+          textShowTime = 0;
+          state = "type-effect-you";
+        }
+    }
     else if (yourPokemonOut.turnParalyzed) {
       text(yourPokemonOut.getName()+"\'s",50,475);
       text("paralyzed!",50,535);
@@ -540,7 +556,7 @@ void animateTurn() {
   }
   
   if (state.equals("type-effect-opp") && textShowTime <= 45) {
-    if (oppAttack.getPower() == 0) {
+    if (oppAttack.getPower() == 0 || oppPokemonOut.attackMissed) {
         textShowTime = 45;
     }
     else if (oppPokemonOut.attackEffectiveness == 0.5 || oppPokemonOut.attackEffectiveness == 0.25) {
@@ -568,7 +584,7 @@ void animateTurn() {
 
   
   if (state.equals("type-effect-you") && textShowTime <= 45) {
-    if (yourAttack.getPower() == 0) {
+    if (yourAttack.getPower() == 0 || yourPokemonOut.attackMissed) {
       textShowTime = 45;
     }
     else if (yourPokemonOut.attackEffectiveness == 0.5 || yourPokemonOut.attackEffectiveness == 0.25) {
@@ -662,7 +678,9 @@ void turnEvents() {
     state = "turn-p1";
     
     
-    //incorporate speed and turns
+    //incorporate pp into here
+    //if pp Left for the move is 0, put into "noPP" state
+    //put section into animateTurn for "noPP" to display message for 45 frames (using textShowTime)
     switch(mArrowY) {
        case 420:
          yourAttack = yourPokemonOut.a1;

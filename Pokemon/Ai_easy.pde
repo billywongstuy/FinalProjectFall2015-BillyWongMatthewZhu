@@ -45,7 +45,15 @@ class AI_Easy extends AI{
     attacks.add(oppPokemonOut.geta2());
     attacks.add(oppPokemonOut.geta3());
     attacks.add(oppPokemonOut.geta4());
-    int moveNumber = (int)(Math.random()*4);
+    for (int i = 0; i < attacks.size(); i++) {
+      if (attacks.get(i).ppLeft <= 0) {
+        attacks.remove(i);
+        i--;
+      }
+    }
+    int beginningSize = attacks.size();
+    int moveNumber = (int)(Math.random()*attacks.size());
+    
     Attack planAttack = attacks.get(moveNumber);
     if(!yourPokemonOut.getStatus().equals("none")){
       if(moveNumber == 0){
@@ -70,7 +78,7 @@ class AI_Easy extends AI{
       }
            
        
-      if (attacks.size() < 4 && attacks.size() >= 1) {
+      if (attacks.size() < beginningSize && attacks.size() >= 1) {
        planAttack = attacks.get((int)(Math.random()*attacks.size()));
       }
         
@@ -79,30 +87,10 @@ class AI_Easy extends AI{
     return planAttack;
   }
 
-         int chooseAction(){
-         int option = 0;
-         /*boolean AllDead = true;
-           for(int b = 0; b < AI_Team.size(); b ++){
-                if(AI_Team.get(b).hp > 0){
-                  AllDead = false;
-                }
-              }
-                
-              if((!AllDead) && (checkEffectiveness(oppPokemonOut.geta1().getType(), yourPokemonOut.getType1()) < 1 ||
-           checkEffectiveness(oppPokemonOut.geta1().getType(), yourPokemonOut.getType2()) < 1||
-           checkEffectiveness(oppPokemonOut.geta2().getType(), yourPokemonOut.getType1()) < 1||
-           checkEffectiveness(oppPokemonOut.geta2().getType(), yourPokemonOut.getType2()) < 1||
-           checkEffectiveness(oppPokemonOut.geta3().getType(), yourPokemonOut.getType1()) < 1||
-           checkEffectiveness(oppPokemonOut.geta3().getType(), yourPokemonOut.getType2()) < 1||
-           checkEffectiveness(oppPokemonOut.geta4().getType(), yourPokemonOut.getType1()) < 1||
-           checkEffectiveness(oppPokemonOut.geta4().getType(), yourPokemonOut.getType2()) < 1)){
-             option = 1;
-           }
-          else{
-            option = 0;
-          }*/
-       return option;
-       }
+  int chooseAction(){
+    int option = 0;
+    return option;
+  }
     
     
 }

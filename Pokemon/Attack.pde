@@ -30,6 +30,18 @@ class Attack {
     effect2Target = eff2t;
   }
     
+  
+  Attack(Attack a) {
+    this(a.name,a.power,a.type,a.category,a.accuracy,a.pp,a.effect1,a.effect1Chance,a.effect2Target,a.effect2,a.effect2Chance,a.effect2Target);  
+  }
+  
+  public Attack copy() {
+    Attack copy = new Attack(this);
+    return copy;
+  }
+  
+  
+    
   String generateEffect(String effect, double effectChance, String effectTarget, Poke opp, Poke self, int damage) {
     Poke target = opp;
     if (effectChance == 0 || effect.equals("")) {
