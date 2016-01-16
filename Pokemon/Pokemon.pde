@@ -388,9 +388,21 @@ void animateTurn() {
     image(blankBox,0,0);  
   }
   
-  if (state.equals("pauseYou") || state.equals("pauseOpp")) {
+  if (state.equals("pauseYou") || state.equals("pauseOpp") || state.equals("noPP")) {
     image(blankBox,0,0);  
   }  
+  
+  //NO PP
+  if (state.equals("noPP")) {
+    if (textShowTime < 30) {
+      text("No PP!",50,475);
+      textShowTime++;
+    }
+    else {
+      textShowTime = 0;
+      state = "chooseMove";
+    }
+  }
   
   //ANIMATE YOUR OPPONENT ATTACKING
   if ((state.equals("turn-p1") && speedWinner == oppPokemonOut) || (state.equals("turn-p2") && speedWinner == yourPokemonOut)) {
@@ -673,6 +685,11 @@ void showHPBar() {
   rect(319-(oppHealthLost*190/oppPokemonOut.health),76,(oppHealthLost*190/oppPokemonOut.health),8);  
 }
 
+
+//------------------------
+//PROCESS TURN EVENTS
+//------------------------
+
 void turnEvents() {
   if (state.equals("chooseMove") && keyPressed && (key == 'Z' || key == 'z')) {
     state = "turn-p1";
@@ -695,68 +712,74 @@ void turnEvents() {
          yourAttack = yourPokemonOut.a4;
          break;
     }
+
     
-    int yourSpeed = (int)(yourPokemonOut.speed * multipliers[yourPokemonOut.statStatus[4]+6]);
-    int oppSpeed = (int)(oppPokemonOut.speed * multipliers[oppPokemonOut.statStatus[4]+6]);
-    
-    //paralysis hindrance
-    if (oppPokemonOut.getStatus().equals("PRZ")) {
-      oppSpeed /= 4;
+    if (yourAttack.ppLeft <= 0) {
+      state = "noPP";  
     }
-    if (yourPokemonOut.getStatus().equals("PRZ")) {
-      yourSpeed /= 4;
+    else {      
+      int yourSpeed = (int)(yourPokemonOut.speed * multipliers[yourPokemonOut.statStatus[4]+6]);
+      int oppSpeed = (int)(oppPokemonOut.speed * multipliers[oppPokemonOut.statStatus[4]+6]);
+      
+      //paralysis hindrance
+      if (oppPokemonOut.getStatus().equals("PRZ")) {
+        oppSpeed /= 4;
+      }
+      if (yourPokemonOut.getStatus().equals("PRZ")) {
+        yourSpeed /= 4;
+      }
+      
+      //who goes first
+      if (yourSpeed > oppSpeed) {
+        speedWinner = yourPokemonOut;
+        slowerPoke = oppPokemonOut;
+      }
+      else if (oppSpeed > yourSpeed) {
+        speedWinner = oppPokemonOut; 
+        slowerPoke = yourPokemonOut;
+      }
+      //speedtie
+      else if ((int)(Math.random()*2) == 0) {
+        speedWinner = yourPokemonOut;  
+        slowerPoke = oppPokemonOut;
+      }
+      else {
+        speedWinner = oppPokemonOut;  
+        slowerPoke = yourPokemonOut;
+      }
+      
+      //opponent chooses move
+      //oppAttack = Tackle;   //should be 
+      println("OK");
+      if (oppAttack == null) {
+        println(oppAttack);
+        println("here");
+        oppAttack = OppTrainer.chooseMove();
+      }
+      
+      //action = chooseAction from ai
+      //if action = 1
+      //call oppswitchfunction
+      //oppAttack = None
+      
+      
+      if (youSwitchedThisTurn) {
+        yourAttack = None;  
+      }
+      
+      if (speedWinner == yourPokemonOut) {
+        yourPokemonOut.attack(oppPokemonOut,yourAttack);
+        oppPokemonOut.attack(yourPokemonOut,oppAttack);
+      }
+      else if (speedWinner == oppPokemonOut) {
+        oppPokemonOut.attack(yourPokemonOut,oppAttack);  
+        yourPokemonOut.attack(oppPokemonOut,yourAttack);  
+      }
+      
+      attackTransitionTime = 0;
+      
+      youSwitchedThisTurn = false;
     }
-    
-    //who goes first
-    if (yourSpeed > oppSpeed) {
-      speedWinner = yourPokemonOut;
-      slowerPoke = oppPokemonOut;
-    }
-    else if (oppSpeed > yourSpeed) {
-      speedWinner = oppPokemonOut; 
-      slowerPoke = yourPokemonOut;
-    }
-    //speedtie
-    else if ((int)(Math.random()*2) == 0) {
-      speedWinner = yourPokemonOut;  
-      slowerPoke = oppPokemonOut;
-    }
-    else {
-      speedWinner = oppPokemonOut;  
-      slowerPoke = yourPokemonOut;
-    }
-    
-    //opponent chooses move
-    //oppAttack = Tackle;   //should be 
-    println("OK");
-    if (oppAttack == null) {
-      println(oppAttack);
-      println("here");
-      oppAttack = OppTrainer.chooseMove();
-    }
-    
-    //action = chooseAction from ai
-    //if action = 1
-    //call oppswitchfunction
-    //oppAttack = None
-    
-    
-    if (youSwitchedThisTurn) {
-      yourAttack = None;  
-    }
-    
-    if (speedWinner == yourPokemonOut) {
-      yourPokemonOut.attack(oppPokemonOut,yourAttack);
-      oppPokemonOut.attack(yourPokemonOut,oppAttack);
-    }
-    else if (speedWinner == oppPokemonOut) {
-      oppPokemonOut.attack(yourPokemonOut,oppAttack);  
-      yourPokemonOut.attack(oppPokemonOut,yourAttack);  
-    }
-    
-    attackTransitionTime = 0;
-    
-    youSwitchedThisTurn = false;
   }
 }
 

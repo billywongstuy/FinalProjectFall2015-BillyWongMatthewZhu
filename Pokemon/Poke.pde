@@ -74,7 +74,6 @@ abstract class Poke implements Cloneable{
     }
     else if (rand > attack.accuracy) {
       attackMissed = true;  
-      //println("HUHIguedchhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh\t" + x + "          " + attack.accuracy);
       return 0;
     }
     else if (attack == None) {
