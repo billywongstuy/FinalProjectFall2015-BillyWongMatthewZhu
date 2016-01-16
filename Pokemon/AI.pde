@@ -1,3 +1,5 @@
+//AI_Team is equivalent to oppTeam //they both never change after the battle starts
+
 import java.lang.Object;
 import java.util.*;
 abstract class AI {
@@ -38,6 +40,9 @@ abstract class AI {
    abstract Attack chooseMove();  
    abstract int chooseAction();
    
+   String toString() {
+     return name;  
+   }
 
 }
       

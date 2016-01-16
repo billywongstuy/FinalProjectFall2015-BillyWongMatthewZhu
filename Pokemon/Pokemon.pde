@@ -9,6 +9,7 @@
 //ai fart when they first switch or when you switch in
 //check if stat boosts are working?
 //does the prevent op from attacking when switching in turn work?
+//ai somehow sends out faimted pokemon again
 
 PFont font;
 PImage battle;
@@ -116,7 +117,7 @@ void setup() {
 }
 
 void draw() {
-  println(state);
+  //println(state);
   frameRate(30);
   if (state.equals("chooseOpp")) {
     setupChooseOppScreen();  
@@ -133,7 +134,9 @@ void draw() {
   if (state.equals("chooseMove")) {
     setupMoveChoice();
     if (attackTransitionTime >= 35) {
-      turnEvents(); 
+      if (keyPressed && (key == 'Z' || key == 'z')) {
+        turnEvents(); 
+      }
     }
     else {
       attackTransitionTime++;  
@@ -145,7 +148,12 @@ void draw() {
     handleEndTurn();  
   }
   if (state.equals("choosePokeYou")) {
-    switchYou();
+    if (loss()) {
+      state = "loss";  
+    }
+    else {
+      switchYou();
+    }
   }
   if (state.equals("choosePokeOpp")) {
     switchOpp();
@@ -158,6 +166,18 @@ void draw() {
   Scyther.attack(Pinsir,Wing_Attack);
   println(Pinsir.hp);
   noLoop();*/
+}
+
+
+//----------------------------
+//CHECKS IF YOU LOST
+//------------------------------
+
+boolean loss() {
+  if (yourTeam.get(0).getStatus().equals("FNT") && yourTeam.get(1).getStatus().equals("FNT") && yourTeam.get(2).getStatus().equals("FNT")) {
+    return true;  
+  }
+  return false;
 }
 
 //--------------------------------
@@ -199,7 +219,6 @@ void switchYou() {
     }
   }
   
-  println(partySlot);
   if (keyPressed && (key == 'z' || key == 'Z')) {
     if (yourTeam.get(partySlot) == yourPokemonOut) {
       println(yourPokemonOut);
@@ -212,36 +231,17 @@ void switchYou() {
       }
     }
     else {
-      println("change");
      
       if (!yourPokemonOut.getStatus().equals("FNT")) {
         youSwitchedThisTurn = true;
         oppAttack = OppTrainer.chooseMove();
-      }
-      
-       
+      }            
       yourPokemonOut = yourTeam.get(partySlot);
       yourHealthLost = yourPokemonOut.health - yourPokemonOut.hp;
       hpToShow = yourPokemonOut.hp;
       yourPoke = loadImage("Sprites/Back/" + yourPokemonOut.index+".PNG");
       
-      
-      //make it so that it skips the ability to attack if not fainted
-      state = "chooseOption";
-      stateFlowCheck = false;
-      
-      
-      
-      
-      //FATAL FLAW: OPPONENT CHOOSES MOVE AFTER SWITCHING
-      if (youSwitchedThisTurn) {
-        state = "chooseMove";
-        turnEvents();
-        println("ghsdjbidcbn");
-      }
-      
-    
-      
+      state = "youSendOut";               
     }
   }
   
@@ -249,30 +249,66 @@ void switchYou() {
 
 
 void switchOpp() {
-  //make variable poke to switch into from ai method chooseNext
-  //if opponent pokemon fainted set status to chooseOption
-  //set oppPokemonOut to that pokemon
-  //set oppHealthLost to health - hp
-  //change the image
+
   Poke switchTo = OppTrainer.chooseNextPoke();
   
-  if (!oppPokemonOut.getStatus().equals("FNT")) {
-    oppSwitchedThisTurn = true;
-    oppAttack = None;
+  if (switchTo == null) {
+    state = "victory";  
   }
+  else {
+    if (!oppPokemonOut.getStatus().equals("FNT")) {
+      oppSwitchedThisTurn = true;
+      oppAttack = None;
+    }
+    
+    oppPokemonOut = switchTo;
+    oppHealthLost = oppPokemonOut.health - oppPokemonOut.hp;
+    oppPoke = loadImage("Sprites/Front/" + oppPokemonOut.index+".PNG");
+    oppPoke.resize(225,225);   
+    
+    state = "oppSendOut";
   
-  oppPokemonOut = switchTo;
-  oppHealthLost = oppPokemonOut.health - oppPokemonOut.hp;
-  oppPoke = loadImage("Sprites/Front/" + oppPokemonOut.index+".PNG");
-  oppPoke.resize(225,225);
-  
-  state = "chooseOption";
-  
-  if (oppSwitchedThisTurn) {
-    state = "chooseMove";
-    turnEvents();
   }
+}
+
+void oppSendOut() {
+  if (textShowTime < 45) {
+    text(OppTrainer + " sent out",50,475);
+    text(oppPokemonOut.getName(),50,535);
+    textShowTime++;
+  }
+  else {
+    textShowTime = 0;
+    state = "chooseOption";
   
+    if (oppSwitchedThisTurn) {
+      state = "chooseMove";
+      turnEvents();
+    }
+    else {
+      oppAttack = null;  
+    }
+  }
+}
+
+void youSendOut() {
+  if (textShowTime < 45) {
+    text("Go! " + yourPokemonOut.getName() + "!",50,475);
+    textShowTime++;
+  }
+  else {
+    textShowTime = 0;
+    state = "chooseOption";
+    stateFlowCheck = false;
+      
+
+    if (youSwitchedThisTurn) {
+      println("here");
+      state = "chooseMove";
+      turnEvents();
+      println(state);
+    }
+  }
 }
 
 String hpString(int hp) {
@@ -398,6 +434,8 @@ void handleEndTurn() {
     cArrowY = 450;
     oppAttack = null;
     yourAttack = null;
+    youSwitchedThisTurn = false;
+    oppSwitchedThisTurn = false;
   }  
 }
 
@@ -413,9 +451,25 @@ void animateTurn() {
     image(blankBox,0,0);  
   }
   
-  if (state.equals("pauseYou") || state.equals("pauseOpp") || state.equals("noPP")) {
+  if (state.equals("pauseYou") || state.equals("pauseOpp") || state.equals("noPP") || state.equals("oppSendOut") || state.equals("youSendOut")) {
     image(blankBox,0,0);  
-  }  
+  } 
+  
+  if (state.equals("victory") || state.equals("loss")) {
+    image(blankBox,0,0);  
+  }
+  
+  if (state.equals("victory")) {
+    text("Player",50,475);
+    text("defeated " + OppTrainer + "!",50,535);
+    noLoop();
+  }
+  
+  if (state.equals("loss")) {
+    text("Player",50,475);
+    text("lost to " + OppTrainer + "!",50,535);
+    noLoop();
+  }
   
   //NO PP
   if (state.equals("noPP")) {
@@ -428,6 +482,15 @@ void animateTurn() {
       state = "chooseMove";
     }
   }
+  
+  if (state.equals("oppSendOut")) {
+    oppSendOut();  
+  }
+  
+  if (state.equals("youSendOut")) {
+    youSendOut();
+  }
+  
   
   //ANIMATE YOUR OPPONENT ATTACKING
   if ((state.equals("turn-p1") && speedWinner == oppPokemonOut) || (state.equals("turn-p2") && speedWinner == yourPokemonOut)) {
@@ -716,7 +779,7 @@ void showHPBar() {
 //------------------------
 
 void turnEvents() {
-  if (state.equals("chooseMove") && keyPressed && (key == 'Z' || key == 'z')) {
+  if (state.equals("chooseMove")) {
     state = "turn-p1";
     
     
@@ -803,7 +866,7 @@ void turnEvents() {
       
       attackTransitionTime = 0;
       
-      youSwitchedThisTurn = false;
+      
     }
   }
 }

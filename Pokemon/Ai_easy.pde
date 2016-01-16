@@ -13,31 +13,20 @@ class AI_Easy extends AI{
   }
   
   
-      Poke chooseNextPoke(){
-         Poke chooseThis = AI_Team.get(0);
-         for(int a = 0; a < AI_Team.size(); a ++){
-               if(checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.type1) > 1||
-               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.type2) > 1 ||
-               checkEffectiveness(AI_Team.get(a).geta2().getType(), yourPokemonOut.type1) > 1 ||
-               checkEffectiveness(AI_Team.get(a).geta2().getType(), yourPokemonOut.type2) > 1 ||
-               checkEffectiveness(AI_Team.get(a).geta3().getType(), yourPokemonOut.type1) > 1 ||
-               checkEffectiveness(AI_Team.get(a).geta3().getType(), yourPokemonOut.type2) > 1 ||
-               checkEffectiveness(AI_Team.get(a).geta4().getType(), yourPokemonOut.type1) > 1 ||
-               checkEffectiveness(AI_Team.get(a).geta4().getType(), yourPokemonOut.type2) > 1 ){
-                 chooseThis = AI_Team.get(a);
-
-               }
-               else{
-                   for(int z = 0; z < AI_Team.size(); z ++){
-                     if(AI_Team.get(z).hp > 0){
-                       chooseThis = AI_Team.get(z);
-
-                     }
-                   }
-               }
-         }
-         return chooseThis;
-       }
+  Poke chooseNextPoke(){
+    ArrayList<Poke>canSwitchTo = new ArrayList<Poke>();
+    for (int i = 0; i < AI_Team.size(); i++) {
+      if (!AI_Team.get(i).getStatus().equals("FNT") && AI_Team.get(i) != oppPokemonOut) {
+        canSwitchTo.add(AI_Team.get(i));  
+      }
+    }
+    if (canSwitchTo.size() == 0) {
+      return null;  
+    }
+    println(canSwitchTo);
+    Poke chooseThis = canSwitchTo.get((int)(Math.random()*canSwitchTo.size()));
+    return chooseThis;
+  }
   
   Attack chooseMove(){
     ArrayList<Attack>attacks = new ArrayList<Attack>(4);

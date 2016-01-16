@@ -16,13 +16,11 @@ class AI_Normal extends AI{
         canSwitchTo.add(AI_Team.get(i));  
       }
     }
+    if (canSwitchTo.size() == 0) {
+      return null;  
+    }
     Poke chooseThis = canSwitchTo.get((int)(Math.random()*canSwitchTo.size()));
     for(int a = 0; a < canSwitchTo.size(); a ++){
-      println("T1: " + canSwitchTo.get(a).type1);
-      println("T2: " + canSwitchTo.get(a).type2);
-      println(yourPokemonOut);
-      println("Y1: " + yourPokemonOut.type1);
-      println("Y2: " + yourPokemonOut.type2);
       if (checkFullEffectiveness(canSwitchTo.get(a).type1,yourPokemonOut.type1,yourPokemonOut.type2) > 1 || checkFullEffectiveness(canSwitchTo.get(a).type2,yourPokemonOut.type1,yourPokemonOut.type2) > 1) {
         chooseThis = canSwitchTo.get(a);        
       }              
@@ -61,6 +59,7 @@ class AI_Normal extends AI{
     }
     
     if (EffectiveMove.size() > 0) {
+      println("no supper effecrive");
       Attack HiDamage = EffectiveMove.get(0);
       float greatestBase = EffectiveMove.get(0).getPower() * checkBattleEffectiveness(EffectiveMove.get(0),yourPokemonOut);
       for(int j = 1; j < EffectiveMove.size(); j++){
