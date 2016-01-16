@@ -16,14 +16,14 @@ class AI_Easy extends AI{
       Poke chooseNextPoke(){
          Poke chooseThis = AI_Team.get(0);
          for(int a = 0; a < AI_Team.size(); a ++){
-               if(checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType1()) > 1||
-               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.getType2()) > 1 ||
-               checkEffectiveness(AI_Team.get(a).geta2().getType(), yourPokemonOut.getType1()) > 1 ||
-               checkEffectiveness(AI_Team.get(a).geta2().getType(), yourPokemonOut.getType2()) > 1 ||
-               checkEffectiveness(AI_Team.get(a).geta3().getType(), yourPokemonOut.getType1()) > 1 ||
-               checkEffectiveness(AI_Team.get(a).geta3().getType(), yourPokemonOut.getType2()) > 1 ||
-               checkEffectiveness(AI_Team.get(a).geta4().getType(), yourPokemonOut.getType1()) > 1 ||
-               checkEffectiveness(AI_Team.get(a).geta4().getType(), yourPokemonOut.getType2()) > 1 ){
+               if(checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.type1) > 1||
+               checkEffectiveness(AI_Team.get(a).geta1().getType(), yourPokemonOut.type2) > 1 ||
+               checkEffectiveness(AI_Team.get(a).geta2().getType(), yourPokemonOut.type1) > 1 ||
+               checkEffectiveness(AI_Team.get(a).geta2().getType(), yourPokemonOut.type2) > 1 ||
+               checkEffectiveness(AI_Team.get(a).geta3().getType(), yourPokemonOut.type1) > 1 ||
+               checkEffectiveness(AI_Team.get(a).geta3().getType(), yourPokemonOut.type2) > 1 ||
+               checkEffectiveness(AI_Team.get(a).geta4().getType(), yourPokemonOut.type1) > 1 ||
+               checkEffectiveness(AI_Team.get(a).geta4().getType(), yourPokemonOut.type2) > 1 ){
                  chooseThis = AI_Team.get(a);
 
                }

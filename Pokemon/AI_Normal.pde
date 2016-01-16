@@ -18,6 +18,11 @@ class AI_Normal extends AI{
     }
     Poke chooseThis = canSwitchTo.get((int)(Math.random()*canSwitchTo.size()));
     for(int a = 0; a < canSwitchTo.size(); a ++){
+      println("T1: " + canSwitchTo.get(a).type1);
+      println("T2: " + canSwitchTo.get(a).type2);
+      println(yourPokemonOut);
+      println("Y1: " + yourPokemonOut.type1);
+      println("Y2: " + yourPokemonOut.type2);
       if (checkFullEffectiveness(canSwitchTo.get(a).type1,yourPokemonOut.type1,yourPokemonOut.type2) > 1 || checkFullEffectiveness(canSwitchTo.get(a).type2,yourPokemonOut.type1,yourPokemonOut.type2) > 1) {
         chooseThis = canSwitchTo.get(a);        
       }              
@@ -100,27 +105,6 @@ class AI_Normal extends AI{
   }
        
   int chooseAction(){
-             /*boolean AllDead = true;
-           for(int b = 0; b < AI_Team.size(); b ++){
-                if(AI_Team.get(b).hp > 0){
-                  AllDead = false;
-                }
-              }
-                
-              if((!AllDead) && (checkEffectiveness(oppPokemonOut.geta1().getType(), yourPokemonOut.getType1()) < 1 ||
-           checkEffectiveness(oppPokemonOut.geta1().getType(), yourPokemonOut.getType2()) < 1||
-           checkEffectiveness(oppPokemonOut.geta2().getType(), yourPokemonOut.getType1()) < 1||
-           checkEffectiveness(oppPokemonOut.geta2().getType(), yourPokemonOut.getType2()) < 1||
-           checkEffectiveness(oppPokemonOut.geta3().getType(), yourPokemonOut.getType1()) < 1||
-           checkEffectiveness(oppPokemonOut.geta3().getType(), yourPokemonOut.getType2()) < 1||
-           checkEffectiveness(oppPokemonOut.geta4().getType(), yourPokemonOut.getType1()) < 1||
-           checkEffectiveness(oppPokemonOut.geta4().getType(), yourPokemonOut.getType2()) < 1)){
-             option = 1;
-           }
-          else{
-            option = 0;
-          }*/
-    
     int option = 0;
     return option;       
   }

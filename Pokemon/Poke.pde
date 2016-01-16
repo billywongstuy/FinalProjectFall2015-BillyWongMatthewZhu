@@ -73,6 +73,7 @@ abstract class Poke implements Cloneable{
       return 0;  
     }
     else if (rand > attack.accuracy) {
+      attack.ppLeft--;
       attackMissed = true;  
       return 0;
     }

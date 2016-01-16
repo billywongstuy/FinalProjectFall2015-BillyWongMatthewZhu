@@ -3,7 +3,12 @@
 //NO PAUSE BETWEEN ATTACK DAMAGE AND STATUS DAMAGE
 //MIGHT BE TOO FAST FOR STATUS HP DROP
 //NEED TO ADD SWITCH TEXT (Go ___!, OPP sent out ___!) 
-//NEED TO ADD PP CHECK AND ACCURACY
+//NEED TO ADD SLEEP (variable sleepTurns) in the end turn process events if sleepturns > 0, if subtract one in turnevents before attack
+//if sleepturns <= 0 set status ""
+//unfreeze doesn't not happen unless certain attacks
+//ai fart when they first switch or when you switch in
+//check if stat boosts are working?
+//does the prevent op from attacking when switching in turn work?
 
 PFont font;
 PImage battle;
@@ -59,6 +64,7 @@ AI OppTrainer;
 
 int partySlot = 0;
 boolean youSwitchedThisTurn = false;
+boolean oppSwitchedThisTurn = false;
 
 void setup() {
   background(255,255,255);
@@ -68,9 +74,9 @@ void setup() {
   state = "chooseOpp";
   
   setupPokeSet();
-  yourTeam.add(Pokemons.get(25)); 
+  yourTeam.add(Pokemons.get(5)); 
   yourTeam.add(Pokemons.get(2));
-  yourTeam.add(Pokemons.get(5));
+  yourTeam.add(Pokemons.get(25));
   
   OppTrainer = new AI_Easy(Venusaur,Charizard,Blastoise,"prof. oak"); 
   
@@ -248,6 +254,25 @@ void switchOpp() {
   //set oppPokemonOut to that pokemon
   //set oppHealthLost to health - hp
   //change the image
+  Poke switchTo = OppTrainer.chooseNextPoke();
+  
+  if (!oppPokemonOut.getStatus().equals("FNT")) {
+    oppSwitchedThisTurn = true;
+    oppAttack = None;
+  }
+  
+  oppPokemonOut = switchTo;
+  oppHealthLost = oppPokemonOut.health - oppPokemonOut.hp;
+  oppPoke = loadImage("Sprites/Front/" + oppPokemonOut.index+".PNG");
+  oppPoke.resize(225,225);
+  
+  state = "chooseOption";
+  
+  if (oppSwitchedThisTurn) {
+    state = "chooseMove";
+    turnEvents();
+  }
+  
 }
 
 String hpString(int hp) {
