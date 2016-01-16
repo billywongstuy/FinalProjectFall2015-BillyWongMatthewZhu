@@ -2,6 +2,7 @@
 //STATUS APPEARS AS SOON AS THE ANIMATION STARTS
 //NO PAUSE BETWEEN ATTACK DAMAGE AND STATUS DAMAGE
 //MIGHT BE TOO FAST FOR STATUS HP DROP
+//NEED TO ADD SWITCH TEXT (Go ___!, OPP sent out ___!) 
 
 PFont font;
 PImage battle;
@@ -12,7 +13,7 @@ PImage oppPoke;
 
 PImage chooseOppScreen;
 PImage chooseOppArrow;
-int cOArrowY = 300;
+int cOArrowY = 188;
 int oppLevel = 1;
 
 PImage challengeScreen;
@@ -56,7 +57,7 @@ Poke oppPokemonOut;
 AI OppTrainer;
 
 int partySlot = 0;
-boolean switchedThisTurn = false;
+boolean youSwitchedThisTurn = false;
 
 void setup() {
   background(255,255,255);
@@ -69,7 +70,9 @@ void setup() {
   yourTeam.add(Pokemons.get(25)); 
   yourTeam.add(Pokemons.get(150));
   yourTeam.add(Pokemons.get(5));
-  OppTrainer = new AI_Normal(Venusaur,Charizard,Blastoise);
+  
+  OppTrainer = new AI_Easy(Venusaur,Charizard,Blastoise,"prof. oak"); 
+  
   oppTeam = OppTrainer.AI_Team;
   yourPokemonOut = yourTeam.get(0);
   oppPokemonOut = oppTeam.get(0);
@@ -220,27 +223,32 @@ void switchYou() {
       println("change");
      
       if (!yourPokemonOut.getStatus().equals("FNT")) {
-        switchedThisTurn = true;
+        youSwitchedThisTurn = true;
         oppAttack = OppTrainer.chooseMove();
       }
       
-     
+       
       yourPokemonOut = yourTeam.get(partySlot);
       yourHealthLost = yourPokemonOut.health - yourPokemonOut.hp;
       hpToShow = yourPokemonOut.hp;
       yourPoke = loadImage("Sprites/Back/" + yourPokemonOut.index+".PNG");
+      
       
       //make it so that it skips the ability to attack if not fainted
       state = "chooseOption";
       stateFlowCheck = false;
       
       
+      
+      
       //FATAL FLAW: OPPONENT CHOOSES MOVE AFTER SWITCHING
-      if (switchedThisTurn) {
+      if (youSwitchedThisTurn) {
         state = "chooseMove";
         turnEvents();
         println("ghsdjbidcbn");
       }
+      
+    
       
     }
   }
@@ -289,6 +297,21 @@ void displayTeamInfo() {
   rect(192,108,yourTeam.get(1).hp*192/yourTeam.get(1).health,8);
   rect(192,172,yourTeam.get(2).hp*192/yourTeam.get(2).health,8);
 }
+
+//------------------------------
+//DECIDE AI DIFFICULTY
+//-------------------------------
+
+void chooseOppDiff() {
+  if (oppLevel == 1) {
+    OppTrainer = new AI_Easy(Venusaur,Charizard,Blastoise,"prof. oak"); 
+  }
+  else if (oppLevel == 2) {
+    OppTrainer = new AI_Normal(Venusaur,Charizard,Blastoise,"prof. oak");
+    println("norm");
+  }  
+}
+
 
 //--------------------------------------------------
 //THIS FUNCTION HANDLES ALL THE END OF TURN THINGS
@@ -700,7 +723,7 @@ void turnEvents() {
     //oppAttack = None
     
     
-    if (switchedThisTurn) {
+    if (youSwitchedThisTurn) {
       yourAttack = None;  
     }
     
@@ -715,7 +738,7 @@ void turnEvents() {
     
     attackTransitionTime = 0;
     
-    switchedThisTurn = false;
+    youSwitchedThisTurn = false;
   }
 }
 
@@ -910,7 +933,7 @@ void setupOptionScreen() {
     }
     else {
       //perfect time for Go pokemon name
-      println(textShowTime);
+      println(textShowTime + "LLLOO");
       textShowTime++;    
     }
   }
@@ -973,11 +996,43 @@ void displayBattlersInfo() {
 
 void setupChooseOppScreen() {
   image(chooseOppScreen,0,0);
-  image(chooseOppArrow,400,cOArrowY);
+  image(chooseOppArrow,375,cOArrowY);
+  
+  frameRate(10);
+  
+  if (keyPressed && key == CODED && keyCode == DOWN) {
+    //255
+    switch(cOArrowY) {
+      case 188:
+        cOArrowY = 255;
+        oppLevel++;
+        break;
+      case 255:
+        cOArrowY = 315;
+        oppLevel++;
+        break;
+    }
+  }
+  
+  if (keyPressed && key == CODED && keyCode == UP) {
+    //255
+    switch(cOArrowY) {
+      case 255:
+        cOArrowY = 188;
+        oppLevel--;
+        break;
+      case 315:
+        cOArrowY = 255;
+        oppLevel--;
+        break;
+    }
+  }
+  
   
   if (keyPressed && (key == 'z' || key == 'Z')) {
     //currently directs to this because no catalog yet
     state = "challenge";  
+    chooseOppDiff();
   }
   
   
@@ -988,8 +1043,12 @@ void setupChooseOppScreen() {
 //--------------------
 
 void challengeScreen() {
-    if (textShowTime < 45) {
+    frameRate(30);
+    if (textShowTime < 60) {
       image(challengeScreen,0,0);
+      fill(color(0));
+      text(OppTrainer.name + " wants",50,475);
+      text("to battle!",50,535);
       textShowTime++;
     }
     else {

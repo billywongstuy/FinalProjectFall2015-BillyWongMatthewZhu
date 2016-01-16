@@ -1,8 +1,12 @@
-class Ai_Hard extends AI{
+class AI_Hard extends AI{
     ArrayList<Integer> EffectiveMove = new ArrayList<Integer>();
-    public Ai_Hard(Poke p1, Poke p2, Poke p3){
-                super(p1,p2,p3);
-              }
+    public AI_Hard(Poke p1, Poke p2, Poke p3){
+    super(p1,p2,p3);
+    }
+              
+  public AI_Hard(Poke p1, Poke p2, Poke p3, String n){
+    super(p1,p2,p3,n);
+  }
               
       int chooseAction(){
         int option = 0;

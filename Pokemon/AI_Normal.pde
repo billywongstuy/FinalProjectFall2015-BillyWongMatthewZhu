@@ -5,6 +5,10 @@ class AI_Normal extends AI{
     super(p1,p2,p3);
   }
   
+  public AI_Normal(Poke p1, Poke p2, Poke p3, String n){
+    super(p1,p2,p3,n);
+  } 
+  
   Poke chooseNextPoke(){
     ArrayList<Poke>canSwitchTo = new ArrayList<Poke>();
     for (int i = 0; i < AI_Team.size(); i++) {

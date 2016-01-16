@@ -5,12 +5,23 @@ abstract class AI {
   public ArrayList<Poke> AI_Team = new ArrayList<Poke>(3);
   private Attack[][] PokeAttacks = new Attack[3][4];
   private int counter = 0;
+  String name;
 
   public AI(Poke p1, Poke p2, Poke p3) {
       AI_Team.add(p1);
       AI_Team.add(p2);
       AI_Team.add(p3);
+      name = "TRAINER";
   }
+  
+  public AI(Poke p1, Poke p2, Poke p3, String n) {
+      AI_Team.add(p1);
+      AI_Team.add(p2);
+      AI_Team.add(p3);
+      name = n.toUpperCase();
+  }
+  
+  
 
   
   void addPokeAttacks(Poke pokemon,Attack attack){
