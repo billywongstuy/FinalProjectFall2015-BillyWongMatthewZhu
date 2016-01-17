@@ -1,15 +1,14 @@
 //FIX NOTES: 
-//STATUS APPEARS AS SOON AS THE ANIMATION STARTS
+
 //NO PAUSE BETWEEN ATTACK DAMAGE AND STATUS DAMAGE
 //MIGHT BE TOO FAST FOR STATUS HP DROP
-//NEED TO ADD SWITCH TEXT (Go ___!, OPP sent out ___!) 
-//NEED TO ADD SLEEP (variable sleepTurns) in the end turn process events if sleepturns > 0, if subtract one in turnevents before attack
-//if sleepturns <= 0 set status ""
-//unfreeze doesn't not happen unless certain attacks
-//ai fart when they first switch or when you switch in
-//check if stat boosts are working?
+
+//code in so that unfreeze doesn't not happen unless certain attacks
 //does the prevent op from attacking when switching in turn work?
-//ai somehow sends out faimted pokemon again
+//send in battle for beginning of battle and when switching out "come back"
+//STATUS APPEARS AS SOON AS THE ANIMATION STARTS change it after the attack
+//add the text for status happened
+//make sure there's a pause between fainting and atack text
 
 PFont font;
 PImage battle;
@@ -542,6 +541,11 @@ void animateTurn() {
       text("frozen!",50,535);
       textShowTime++;    
     }
+    else if (oppPokemonOut.getStatus().equals("FNT")) {
+      text("Enemy " + oppPokemonOut.getName()+"\'s",50,475);
+      text("sleep!",50,535);
+      textShowTime++;      
+    }
     else {
       text("Enemy " + oppPokemonOut.getName(),50,475);
       text("used " + oppAttack.toString()+"!",50,535);
@@ -598,6 +602,11 @@ void animateTurn() {
     else if (yourPokemonOut.frozen) {
       text(yourPokemonOut.getName()+"\'s",50,475);
       text("frozen!",50,535);
+      textShowTime++;  
+    }
+    else if (yourPokemonOut.getStatus().equals("FNT")) {
+      text(yourPokemonOut.getName()+"\'s",50,475);
+      text("asleep!",50,535);
       textShowTime++;  
     }
     else {
@@ -711,7 +720,7 @@ void animateTurn() {
   }
   
   
-  
+  //need to make a break over here so other text displays before transitioning
   //when your opponent faints
   if (oppPokemonOut.status.equals("FNT") && oppHealthLost == oppPokemonOut.health && !state.equals("choosePokeOpp")) {
     if (textShowTime < 60) {
@@ -815,6 +824,19 @@ void turnEvents() {
       }
       if (yourPokemonOut.getStatus().equals("PRZ")) {
         yourSpeed /= 4;
+      }
+      
+      if (yourPokemonOut.sleepTurns > 0) {
+        yourPokemonOut.sleepTurns--;  
+      }
+      if (oppPokemonOut.sleepTurns > 0) {
+        oppPokemonOut.sleepTurns--;  
+      }
+      if (yourPokemonOut.sleepTurns == 0 && yourPokemonOut.getStatus().equals("SLP")) {
+        yourPokemonOut.setStatus("");  
+      }
+      if (oppPokemonOut.sleepTurns == 0 && oppPokemonOut.getStatus().equals("SLP")) {
+        oppPokemonOut.setStatus("");  
       }
       
       //who goes first

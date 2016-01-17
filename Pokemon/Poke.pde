@@ -23,6 +23,7 @@ abstract class Poke implements Cloneable{
   private float attackEffectiveness = 1;
   private boolean turnParalyzed;
   private boolean frozen;
+  int sleepTurns = 0;
   
   Poke(String n, int i, String t, int bh, int ba, int bd, int bsp, int bs, int l) {
     lv = l;
@@ -88,6 +89,10 @@ abstract class Poke implements Cloneable{
     else if (status.equals("FRZ")) {
       frozen = true;
       println(name + " is frozen and can't attack!");
+      return 0;
+    }
+    else if (status.equals("SLP")) {
+      println("asleep");
       return 0;
     }
     else {

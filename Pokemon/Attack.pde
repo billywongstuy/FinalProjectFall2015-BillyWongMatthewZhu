@@ -100,7 +100,11 @@ class Attack {
       target.setStatus("PSN");  
     }
     if (effect.substring(0,3).equals("sle") && Math.random() < effectChance && target.getStatus().equals("")) {
-      target.setStatus("SLP");  
+      target.setStatus("SLP"); 
+      /*if (this == Rest) {
+        target.sleepTurns = 2;  
+      }*/
+      target.sleepTurns = (int)(Math.random()*7+1);
     }
     if (effect.substring(0,3).equals("bad") && Math.random() < effectChance && target.getStatus().equals("")) {
       target.setStatus("PSN-B");  
