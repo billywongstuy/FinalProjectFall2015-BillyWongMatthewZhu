@@ -16,10 +16,19 @@ class AI_Hard extends AI{
     fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType2()) < 2){
       option = 1;
     }
-    else if(willDie(oppPokemonOut) && AI_Team.size() > 1){
+    else if(oppPokemonOut.speed > yourPokemonOut.speed){
+            if(willKill(yourPokemonOut)){
+              option = 0;
+            }
+            else{
+              option = 1;
+            }
+    }
+    
+    else if(oppPokemonOut.speed < yourPokemonOut.speed && willDie(oppPokemonOut)) {
       option = 1;
     }
-    else {
+    else{
       option = 0;
     }
     return option;
