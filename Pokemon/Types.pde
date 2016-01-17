@@ -78,8 +78,6 @@ float checkEffectiveness(String attackType, String type) {
 
 int typeToInt(String type) {
   
-  println(type);
-  
   if (type.equals("Normal")) {
     return 0;
   }

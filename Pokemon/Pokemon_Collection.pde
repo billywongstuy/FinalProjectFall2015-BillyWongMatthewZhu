@@ -265,6 +265,7 @@ class Meowth extends Poke {
 class Persian extends Poke {
   Persian() {
     super("Persian",53,"Normal",65,70,60,65,115,100);
+    setAttacks(Slash,BubbleBeam,Hyper_Beam,Thunderbolt);
   }
 }
 class Psyduck extends Poke {
