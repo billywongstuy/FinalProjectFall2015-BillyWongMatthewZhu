@@ -43,11 +43,13 @@ class Attack {
   
     
   String [] generateEffect(String effect, double effectChance, String effectTarget, Poke opp, Poke self, int damage) {
-    String [] ary = new String[2];
+    String [] ary = {"",""};
+    
     Poke target = opp;
     if (effectChance == 0 || effect.equals("") || effectTarget.equals("")) {
       return ary;  
     }
+    
     if (effectTarget.equals("s")) {
       target = self;  
     }
@@ -94,6 +96,8 @@ class Attack {
       target.setStatus("PRZ"); 
       ary[0] = target.getName();
       ary[1] = "got paralyzed!";
+      println(ary[0] + " " + ary[1] + "AAAAAA");
+      println("PARALYZED!");
     }
     if (effect.substring(0,3).equals("fre") && Math.random() < effectChance && target.getStatus().equals("")) {
       target.setStatus("FRZ");  
@@ -126,6 +130,7 @@ class Attack {
     if (effect.substring(0,3).equals("fai")) {
       //faint from self destruct, explosion
     }
+    println(ary[0]);
     return ary;
   }
   

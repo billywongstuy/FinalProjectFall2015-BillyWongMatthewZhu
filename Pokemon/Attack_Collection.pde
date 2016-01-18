@@ -19,7 +19,7 @@ Attack Earthquake = new Attack("Earthquake",100,"Ground","Physical",100,10,"",0,
 Attack Wing_Attack = new Attack("Wing Attack",60,"Flying","Physical",100,35,"",0,"","",0,"");
 Attack Sludge = new Attack("Sludge",65,"Poison","Physical",100,20,"poisons",0.3,"o","",0,"");
 Attack Thunder_Wave = new Attack("Thunder Wave",0,"Electric","Special",100,20,"paralysis",1,"o","",0,"");
-Attack Swords_Dance = new Attack("Swords Dance",0,"Normal","Status",100,30,"raiseStat(0,2)",1,"s","",0,"uhihi");
+Attack Swords_Dance = new Attack("Swords Dance",0,"Normal","Status",100,30,"raiseStat(0,2)",1,"s","",0,"");
 //Attack Thundershock= new Attack("Thundershock",40,"Electric","Special",100,30,"paralysis",0.1,"o","",0,"");
 
 //Attack test = new Attack(120,"Fire",85,5,"multi(2,5)",1,"o","",0,"");

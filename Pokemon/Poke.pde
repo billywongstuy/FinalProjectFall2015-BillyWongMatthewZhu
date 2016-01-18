@@ -9,10 +9,10 @@ abstract class Poke implements Cloneable{
   private int baseSpeed; 
   private int lv;
   int EV = 65535;
-  private String status = "none";
+  private String status = "";
   private boolean flinch = false;
   private int [] statStatus = {0, 0, 0, 0, 0, 0};  //atk, def, special, speed, evasion, accuracy
-  private String [][] addEffects;  //used for text to display
+  private String [][] attackEffects = {{"",""},{"",""}};  //used for text to display
   Attack a1;
   Attack a2;
   Attack a3;
@@ -137,10 +137,14 @@ abstract class Poke implements Cloneable{
     int damage = (int)(Math.floor(baseDmg*modifier));
     
     if (attackEffectiveness != 0) {
-      addEffects = attack.generateFullEffect(opp,this,damage);
+      attackEffects = attack.generateFullEffect(opp,this,damage);
     }
     if (opp.hp < damage) {
       return opp.hp;  
+    }
+    
+    if (attack.power == 0) {
+      return 0;  
     }
     return damage;
   }
