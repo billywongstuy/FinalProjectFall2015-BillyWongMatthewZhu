@@ -8,7 +8,7 @@
 //send in battle for beginning of battle and when switching out "come back"
 //STATUS APPEARS AS SOON AS THE ANIMATION STARTS change it after the attack
 //add the text for status happened
-//there's no pause between a non-neutral critical hit and fainting
+//there's no pause between a critical hit and fainting
 
 PFont font;
 PImage battle;
@@ -226,8 +226,10 @@ void switchYou() {
       println(yourTeam.get(partySlot));
       if (yourPokemonOut.getStatus().equals("FNT")) {
         println("No energy to battle!");  
+        state = "noEnergy";
       }
       else {
+        state = "battling";
         println("Currently battling!");  
       }
     }
@@ -497,6 +499,40 @@ void animateTurn() {
     text("lost to " + OppTrainer + "!",50,535);
   }
   
+  if (state.equals("noEnergy")) {
+    if (textShowTime < 45) {
+      background(color(255));
+      image(switchScreen,0,0);
+      displayTeamInfo();
+      image(blankBox,0,0);
+      fill(color(0));
+      text("There's no will",50,475);
+      text("to fight!",50,535);
+      textShowTime++;
+    }
+    else {
+      textShowTime = 0;
+      state = "choosePokeYou";
+    }    
+  }
+  
+  if (state.equals("battling")) {
+    if (textShowTime < 45) {
+      background(color(255));
+      image(switchScreen,0,0);
+      displayTeamInfo();
+      image(blankBox,0,0);
+      fill(color(0));
+      text(yourPokemonOut.getName() + "'s",50,475);
+      text("battling!",50,535);
+      textShowTime++;
+    }
+    else {
+      textShowTime = 0;
+      state = "choosePokeYou";
+    }    
+  }
+  
   //NO PP
   if (state.equals("noPP")) {
     if (textShowTime < 30) {
@@ -701,6 +737,7 @@ void animateTurn() {
     }
   }
   
+  
   if (oppPokemonOut.attackEffectiveness != 1 && oppPokemonOut.attackEffectiveness != 0 && !oppPokemonOut.attackCrit && yourHPFinish()) {
     if ((speedWinner == oppPokemonOut && state.equals("turn-p1")) || (speedWinner == yourPokemonOut && state.equals("turn-p2"))) {  
       state = "type-effect-opp";  
@@ -713,14 +750,16 @@ void animateTurn() {
       state = "type-effect-you";  
     }
   }
-    
+        
   //text for crits and transitioning to next phase
   if (state.equals("crit-1") && textShowTime < 45) {
     text("Critical hit!",50,475);  
+    println("crit in here!");
     textShowTime++;
     attackTransitionTime++;
   }
   if (state.equals("crit-1") && textShowTime >= 45) {
+    println("abort text");
     state = "turn-p2";
     textShowTime = 0;
     attackTransitionTime = 0;
@@ -812,8 +851,8 @@ void animateTurn() {
     attackTransitionTime = 0;
   }
   
-  
   //need to make a break over here so other text displays before transitioning
+  
   //when your opponent faints
   if (oppPokemonOut.status.equals("FNT") && oppHealthLost == oppPokemonOut.health && !state.equals("choosePokeOpp") && attackTransitionTime == 0) {
     if (textShowTime < 60) {
