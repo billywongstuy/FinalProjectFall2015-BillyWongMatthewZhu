@@ -42,20 +42,18 @@ class Attack {
   
   
     
-  String generateEffect(String effect, double effectChance, String effectTarget, Poke opp, Poke self, int damage) {
+  String [] generateEffect(String effect, double effectChance, String effectTarget, Poke opp, Poke self, int damage) {
+    String [] ary = new String[2];
     Poke target = opp;
     if (effectChance == 0 || effect.equals("") || effectTarget.equals("")) {
-      return "";  
+      return ary;  
     }
     if (effectTarget.equals("s")) {
       target = self;  
     }
     if (effect.substring(0,3).equals("mul")) {
       //something with effect.indexOf("(")
-      int min = Integer.parseInt(effect.substring(effect.indexOf("(")+1,effect.indexOf("(")+2));
-      int max = Integer.parseInt(effect.substring(effect.indexOf(",")+1,effect.indexOf(",")+2));
-      int hits = (int)(Math.random()*(max-min+1)+min);
-      
+      //ignore this part, handled in attack in poke
     }
     
     //for these use 0 for attack, 1 for def, 2 for special, 3 for speed, 4 for evasion, 5 for accuracy
@@ -68,6 +66,8 @@ class Attack {
       else if (target.statStatus[stat] == -5) {
         target.statStatus[stat] = -6;    
       }
+      ary[0] = target.getName()+"'s";
+      ary[1] = getStat(stat) + " fell!";
     }
     if (effect.substring(0,3).equals("rai")) {
       println("Raising");
@@ -82,22 +82,28 @@ class Attack {
       else if (target.statStatus[stat] == 5) {
         target.statStatus[stat] = 6;    
       }
+      ary[0] = target.getName()+"'s";
+      ary[1] = getStat(stat) + " rose!";
     }
     if (effect.substring(0,3).equals("bur") && Math.random() < effectChance && target.getStatus().equals("")) {
-        target.setStatus("BRN");  
-        println(target.getName() + " got burned.");
-        return (target.getName() + " got burned.");
+      target.setStatus("BRN");  
+      ary[0] = target.getName();
+      ary[1] = "got burned!";
     }
     if (effect.substring(0,3).equals("par") && Math.random() < effectChance && target.getStatus().equals("")) {
       target.setStatus("PRZ"); 
-      println(target.getName() + " got paralyzed.");
-        return (target.getName() + " got paralyzed.");
+      ary[0] = target.getName();
+      ary[1] = "got paralyzed!";
     }
     if (effect.substring(0,3).equals("fre") && Math.random() < effectChance && target.getStatus().equals("")) {
       target.setStatus("FRZ");  
+      ary[0] = target.getName();
+      ary[1] = "got frozen!";
     }
     if (effect.substring(0,3).equals("poi") && Math.random() < effectChance && target.getStatus().equals("")) {
-      target.setStatus("PSN");  
+      target.setStatus("PSN"); 
+      ary[0] = target.getName();
+      ary[1] = "got poisoned!";
     }
     if (effect.substring(0,3).equals("sle") && Math.random() < effectChance && target.getStatus().equals("")) {
       target.setStatus("SLP"); 
@@ -105,6 +111,8 @@ class Attack {
         target.sleepTurns = 2;  
       }*/
       target.sleepTurns = (int)(Math.random()*7+1);
+      ary[0] = target.getName();
+      ary[1] = "fell asleep!";
     }
     if (effect.substring(0,3).equals("bad") && Math.random() < effectChance && target.getStatus().equals("")) {
       target.setStatus("PSN-B");  
@@ -118,11 +126,14 @@ class Attack {
     if (effect.substring(0,3).equals("fai")) {
       //faint from self destruct, explosion
     }
-    return "";
+    return ary;
   }
   
-  String generateFullEffect(Poke opp, Poke self, int damage) {
-    return generateEffect(effect1, effect1Chance, effect1Target, opp, self, damage) + "\n" + generateEffect(effect2, effect2Chance, effect2Target, opp, self, damage);
+  String [][] generateFullEffect(Poke opp, Poke self, int damage) {
+    String[][]ary = new String[2][];
+    ary[0] = generateEffect(effect1, effect1Chance, effect1Target, opp, self, damage);
+    ary[1] = generateEffect(effect2, effect2Chance, effect2Target, opp, self, damage);
+    return ary;
   }
   
   
@@ -143,6 +154,25 @@ class Attack {
   
   String getCategory() {
     return category;  
+  }
+  
+  
+  String getStat(int n) {
+    switch(n) {
+      case 0:
+        return "attack";
+      case 1:
+        return "defense";
+      case 2:
+        return "special";
+      case 3:
+        return "speed";
+      case 4:
+        return "evasion";
+      case 5:
+        return "accuracy";
+    }
+    return "";
   }
   
   

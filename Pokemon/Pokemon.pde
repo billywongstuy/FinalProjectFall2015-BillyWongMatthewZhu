@@ -9,6 +9,8 @@
 //STATUS APPEARS AS SOON AS THE ANIMATION STARTS change it after the attack
 //add the text for status happened
 //there's no pause between a critical hit and fainting
+//figure out where multi hits text appears
+
 
 PFont font;
 PImage battle;
@@ -778,6 +780,7 @@ void animateTurn() {
     attackTransitionTime++;
   }
   if (state.equals("crit-2") && textShowTime >= 45) {
+    //put if statement here to check if status ailment added on here
     state = "turnEndDamage";
     textShowTime = 0;
     attackTransitionTime = 0;
@@ -815,6 +818,7 @@ void animateTurn() {
       state = "turn-p2";  
     }
     else {
+      //put check if status
       state = "turnEndDamage";  
     }
     textShowTime = 0;  

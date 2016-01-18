@@ -26,6 +26,7 @@ abstract class Poke implements Cloneable{
   int sleepTurns = 0;
   boolean recharge = false;
   boolean setRecharge = false;
+  int attackHits;
   
   Poke(String n, int i, String t, int bh, int ba, int bd, int bsp, int bs, int l) {
     lv = l;
@@ -100,7 +101,7 @@ abstract class Poke implements Cloneable{
       return 0;  
     }
     else {
-      turnParalyzed =false;
+      turnParalyzed = false;
       frozen = false;
       attackMissed = false;
       attack.ppLeft--;
@@ -108,6 +109,13 @@ abstract class Poke implements Cloneable{
       if (attack.name.equals("Hyper Beam") && opp.hp > 0) {
         setRecharge = true;    
       }
+      if (attack.effect1.substring(0,3).equals("mul")) {
+        int min = Integer.parseInt(attack.effect1.substring(attack.effect1.indexOf("(")+1,attack.effect1.indexOf("(")+2));
+        int max = Integer.parseInt(attack.effect1.substring(attack.effect1.indexOf(",")+1,attack.effect1.indexOf(",")+2));
+        attackHits = (int)(Math.random()*(max-min+1)+min);
+        return opp.takeDamage(calculateDamage(opp, attack))*attackHits;
+      }      
+      attackHits = 1;
       return damage;
     }
   }
