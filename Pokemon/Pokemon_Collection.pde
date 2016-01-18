@@ -129,7 +129,7 @@ class Pikachu extends Poke {
 class Raichu extends Poke {
   Raichu() {
     super("Raichu",26,"Electric",60,90,55,90,100,100);
-    setAttacks(Surf,Thunder,Strength,Thunderbolt);
+    setAttacks(Surf,Thunder_Wave,Strength,Thunderbolt);
   }
 }
 class Sandshrew extends Poke {
@@ -265,6 +265,7 @@ class Meowth extends Poke {
 class Persian extends Poke {
   Persian() {
     super("Persian",53,"Normal",65,70,60,65,115,100);
+    setAttacks(Slash,BubbleBeam,Hyper_Beam,Thunderbolt);
   }
 }
 class Psyduck extends Poke {

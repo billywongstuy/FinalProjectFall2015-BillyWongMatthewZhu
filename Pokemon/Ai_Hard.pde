@@ -84,7 +84,7 @@ class AI_Hard extends AI{
      if(EffectiveMove.size() == 0){
        moveNumber = (int)(Math.random()*4);
        planAttack = attacks.get(moveNumber); 
-       if(!yourPokemonOut.getStatus().equals("none")){
+       if(!yourPokemonOut.getStatus().equals("")){
          if (moveNumber == 0){
            if (!attacks.get(0).effect1.equals("") && attacks.get(0).effect1Chance == 1){
              attacks.remove(0);          

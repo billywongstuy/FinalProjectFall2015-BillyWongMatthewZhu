@@ -74,7 +74,7 @@ class AI_Normal extends AI{
     
     if(EffectiveMove.size() == 0){
       planAttack = attacks.get(moveNumber); 
-      if(!yourPokemonOut.getStatus().equals("none")){
+      if(!yourPokemonOut.getStatus().equals("")){
         if(moveNumber == 0){
           if (!attacks.get(0).effect1.equals("") && attacks.get(0).effect1Chance == 1){
             attacks.remove(0);          

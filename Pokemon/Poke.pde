@@ -9,11 +9,10 @@ abstract class Poke implements Cloneable{
   private int baseSpeed; 
   private int lv;
   int EV = 65535;
-  private String status = "none";
+  private String status = "";
   private boolean flinch = false;
   private int [] statStatus = {0, 0, 0, 0, 0, 0};  //atk, def, special, speed, evasion, accuracy
-  private boolean critOrNot;  //used for ignoring stat drops/boosts?
-  private String addEffects;  //used for text to display
+  private String [][] attackEffects = {{"",""},{"",""}};  //used for text to display
   Attack a1;
   Attack a2;
   Attack a3;
@@ -24,6 +23,9 @@ abstract class Poke implements Cloneable{
   private boolean turnParalyzed;
   private boolean frozen;
   int sleepTurns = 0;
+  boolean recharge = false;
+  boolean setRecharge = false;
+  int attackHits;
   
   Poke(String n, int i, String t, int bh, int ba, int bd, int bsp, int bs, int l) {
     lv = l;
@@ -67,7 +69,6 @@ abstract class Poke implements Cloneable{
   }
   
   int attack(Poke opp, Attack attack) {
-    //println(name + ": " + status);
     int rand = (int)(Math.random()*100);
     if (status.equals("FNT")) {
       //println(name + " is fainted!");
@@ -95,23 +96,36 @@ abstract class Poke implements Cloneable{
       println("asleep");
       return 0;
     }
+    else if (recharge) {
+      return 0;  
+    }
     else {
-      println("t");
-      turnParalyzed =false;
+      turnParalyzed = false;
       frozen = false;
       attackMissed = false;
       attack.ppLeft--;
-      return opp.takeDamage(calculateDamage(opp, attack));
+      int damage = opp.takeDamage(calculateDamage(opp, attack));
+      if (attack.name.equals("Hyper Beam") && opp.hp > 0) {
+        setRecharge = true;    
+      }
+      if (attack.effect1.length() >= 3 && attack.effect1.substring(0,3).equals("mul")) {
+        int min = Integer.parseInt(attack.effect1.substring(attack.effect1.indexOf("(")+1,attack.effect1.indexOf("(")+2));
+        int max = Integer.parseInt(attack.effect1.substring(attack.effect1.indexOf(",")+1,attack.effect1.indexOf(",")+2));
+        attackHits = (int)(Math.random()*(max-min+1)+min);
+        return opp.takeDamage(calculateDamage(opp, attack))*attackHits;
+      }      
+      attackHits = 1;
+      return damage;
     }
   }
   
   int calculateDamage(Poke opp, Attack attack) {
     double baseDmg;
     if (attack.getCategory().equals("Physical")) {
-      baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical()+10)*atk*burned()*multipliers[statStatus[0]+6]*attack.getPower()/250)/(opp.getDef()*multipliers[opp.statStatus[1]+6]))+2.0));
+      baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical(attack)+10)*atk*burned()*multipliers[statStatus[0]+6]*attack.getPower()/250)/(opp.getDef()*multipliers[opp.statStatus[1]+6]))+2.0));
     }
     else if (attack.getCategory().equals("Special")) {
-      baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical()+10)*spec*multipliers[statStatus[2]+6]*attack.getPower()/250)/(opp.getSpec()*multipliers[opp.statStatus[2]+6]))+2.0));
+      baseDmg = Math.floor(checkSTAB(attack)*(Math.floor(Math.floor((2*lv*critical(attack)+10)*spec*multipliers[statStatus[2]+6]*attack.getPower()/250)/(opp.getSpec()*multipliers[opp.statStatus[2]+6]))+2.0));
     }
     else {
       baseDmg = 0;  
@@ -123,23 +137,31 @@ abstract class Poke implements Cloneable{
     int damage = (int)(Math.floor(baseDmg*modifier));
     
     if (attackEffectiveness != 0) {
-      addEffects = attack.generateFullEffect(opp,this,damage);
+      attackEffects = attack.generateFullEffect(opp,this,damage);
     }
     if (opp.hp < damage) {
       return opp.hp;  
     }
+    
+    if (attack.power == 0) {
+      return 0;  
+    }
     return damage;
   }
   
-  double critical() {
-    double chance = baseSpeed*100.0/512.0;  //chance is baseSpeed*100/512 but divide by 100 for calculating
+  double critical(Attack a) {
+    float chance = baseSpeed*100.0/512.0;  //chance is baseSpeed*100/512 but divide by 100 for calculating
+    if (a.name.equals("Razor Leaf") || a.name.equals("Karate_Chop") || a.name.equals("Slash") || a.name.equals("Crabhammer")  /*Sky Attack, Razor Wind*/) {
+      chance = baseSpeed*100/64;  
+    }
     //println("chance: " + chance);
     double random = (Math.random()*100.0);
     //println(random);
     if (random < chance) {
       println("A critical hit!");
       attackCrit = true;
-      return 2.0;  
+      double increase = (2.0*this.lv+5)/(this.lv+5.0);
+      return increase;  
     }
     else {
       attackCrit = false;
