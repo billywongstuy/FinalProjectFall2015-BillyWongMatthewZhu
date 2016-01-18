@@ -12,8 +12,7 @@ abstract class Poke implements Cloneable{
   private String status = "none";
   private boolean flinch = false;
   private int [] statStatus = {0, 0, 0, 0, 0, 0};  //atk, def, special, speed, evasion, accuracy
-  private boolean critOrNot;  //used for ignoring stat drops/boosts?
-  private String addEffects;  //used for text to display
+  private String [][] addEffects;  //used for text to display
   Attack a1;
   Attack a2;
   Attack a3;
@@ -109,7 +108,7 @@ abstract class Poke implements Cloneable{
       if (attack.name.equals("Hyper Beam") && opp.hp > 0) {
         setRecharge = true;    
       }
-      if (attack.effect1.substring(0,3).equals("mul")) {
+      if (attack.effect1.length() >= 3 && attack.effect1.substring(0,3).equals("mul")) {
         int min = Integer.parseInt(attack.effect1.substring(attack.effect1.indexOf("(")+1,attack.effect1.indexOf("(")+2));
         int max = Integer.parseInt(attack.effect1.substring(attack.effect1.indexOf(",")+1,attack.effect1.indexOf(",")+2));
         attackHits = (int)(Math.random()*(max-min+1)+min);
