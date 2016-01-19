@@ -87,7 +87,7 @@ class Attack {
       ary[0] = target.getName()+"'s";
       ary[1] = getStat(stat) + " rose!";
     }
-    if (effect.substring(0,3).equals("bur") && Math.random() < effectChance && target.getStatus().equals("")) {
+    if (effect.substring(0,3).equals("bur") && Math.random() < effectChance && target.getStatus().equals("") && !target.type1.equals("Fire") && !target.type2.equals("Fire")) {
       target.setStatus("BRN");  
       ary[0] = target.getName();
       ary[1] = "got burned!";
@@ -104,10 +104,11 @@ class Attack {
       ary[0] = target.getName();
       ary[1] = "got frozen!";
     }
-    if (effect.substring(0,3).equals("poi") && Math.random() < effectChance && target.getStatus().equals("")) {
+    if (effect.substring(0,3).equals("poi") && Math.random() < effectChance && target.getStatus().equals("") && !target.type1.equals("Poison") && !target.type2.equals("Poison")) {
       target.setStatus("PSN"); 
       ary[0] = target.getName();
       ary[1] = "got poisoned!";
+      println("POISONED " + target.getName());
     }
     if (effect.substring(0,3).equals("sle") && Math.random() < effectChance && target.getStatus().equals("")) {
       target.setStatus("SLP"); 

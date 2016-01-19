@@ -27,7 +27,7 @@ class Charmeleon extends Poke {
 class Charizard extends Poke {
   Charizard() {
     super("Charizard",6,"Fire","Flying",78,84,78,85,100,100);
-    setAttacks(Fire_Blast,Wing_Attack,Earthquake,Swords_Dance);
+    setAttacks(Fire_Blast,Wing_Attack,Flamethrower,Swords_Dance);
   }
 }
 class Squirtle extends Poke {
@@ -129,7 +129,7 @@ class Pikachu extends Poke {
 class Raichu extends Poke {
   Raichu() {
     super("Raichu",26,"Electric",60,90,55,90,100,100);
-    setAttacks(Surf,Thunder_Wave,Strength,Thunderbolt);
+    setAttacks(Surf,Thunder_Wave,Thunder,Thunderbolt);
   }
 }
 class Sandshrew extends Poke {

@@ -69,6 +69,10 @@ abstract class Poke implements Cloneable{
   }
   
   int attack(Poke opp, Attack attack) {
+    attackEffects[0][0] = "";
+    attackEffects[0][1] = "";
+    attackEffects[1][0] = "";
+    attackEffects[1][1] = "";
     int rand = (int)(Math.random()*100);
     if (status.equals("FNT")) {
       //println(name + " is fainted!");
@@ -100,6 +104,7 @@ abstract class Poke implements Cloneable{
       return 0;  
     }
     else {
+      println("normal progression");
       turnParalyzed = false;
       frozen = false;
       attackMissed = false;
