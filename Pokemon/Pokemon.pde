@@ -395,6 +395,9 @@ void chooseOppDiff() {
     OppTrainer = new AI_Normal(Blastoise,Charizard,Venusaur,"prof.oak");
     println("norm");
   }  
+  else if(oppLevel ==3){
+    OppTrainer = new AI_Hard(Blastoise,Charizard,Venusaur,"prof.oak");
+  }
   
 }
 
