@@ -13,7 +13,3 @@ change status effects to 100% to show damage taking and paralyze stop
 
 BUGS:
 crit text doesn't show when the pokemon faints afterward
-
-1/19/16
-Changed AI_Hard attack algorithmn to only choose strongest move and it's effectiveness
-

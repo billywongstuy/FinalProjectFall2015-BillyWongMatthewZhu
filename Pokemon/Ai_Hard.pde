@@ -102,32 +102,18 @@ class AI_Hard extends AI{
     }
     
     if(EffectiveMove.size() == 0){
-      planAttack = attacks.get(moveNumber); 
+      planAttack = attacks.get(0);
+      float baseDamage = planAttack.getPower() * checkBattleEffectiveness(planAttack, yourPokemonOut); 
       if(!yourPokemonOut.getStatus().equals("")){
-        if(moveNumber == 0){
-          if (!attacks.get(0).effect1.equals("") && attacks.get(0).effect1Chance == 1){
-            attacks.remove(0);          
+        for(int z = 0; z < attacks.size(); z++){
+          if(attacks.get(z).getPower() * checkBattleEffectiveness(attacks.get(z),yourPokemonOut) > baseDamage){
+            planAttack = attacks.get(z);
+          }
+          else{
+            attacks.remove(z);
           }
         }
-        if(moveNumber == 1){
-          if (!attacks.get(1).effect1.equals("") && attacks.get(1).effect1Chance == 1){
-            attacks.remove(1);          
-          }
-        }
-        if(moveNumber == 2){
-          if (!attacks.get(2).effect1.equals("") && attacks.get(2).effect1Chance == 1){
-            attacks.remove(2);          
-           }
-        }
-        if(moveNumber == 3){
-          if (!attacks.get(3).effect1.equals("") && attacks.get(3).effect1Chance == 1){
-            attacks.remove(3);          
-          }
-        }
-        if (attacks.size() < beginningSize && attacks.size() >= 1) {
-          planAttack = attacks.get((int)(Math.random()*attacks.size()));
-        }
-      }   
+      }
     }
     return planAttack;         
   }
