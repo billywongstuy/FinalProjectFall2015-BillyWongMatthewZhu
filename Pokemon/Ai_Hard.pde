@@ -46,16 +46,13 @@ class AI_Hard extends AI{
     if (canSwitchTo.size() == 0) {
       return null;  
     }
-    Poke chooseThis = canSwitchTo.get(0);
-      for(int c = 0; c < canSwitchTo.size(); c ++){
-        if(fullEffectiveness(canSwitchTo.get(c).getType1(),yourPokemonOut.getType1())>1||
-        fullEffectiveness(canSwitchTo.get(c).getType2(),yourPokemonOut.getType1())>1||
-        fullEffectiveness(canSwitchTo.get(c).getType1(),yourPokemonOut.getType2())>1||
-        fullEffectiveness(canSwitchTo.get(c).getType2(),yourPokemonOut.getType2())>1){
-          chooseThis = canSwitchTo.get(c);
-        }
-      }
-      return chooseThis;
+    Poke chooseThis = canSwitchTo.get((int)(Math.random()*canSwitchTo.size()));
+    for(int a = 0; a < canSwitchTo.size(); a ++){
+      if (checkFullEffectiveness(canSwitchTo.get(a).type1,yourPokemonOut.type1,yourPokemonOut.type2) > 1 || checkFullEffectiveness(canSwitchTo.get(a).type2,yourPokemonOut.type1,yourPokemonOut.type2) > 1) {
+        chooseThis = canSwitchTo.get(a);        
+      }              
+    }
+    return chooseThis;     
   }
        
 
