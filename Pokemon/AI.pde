@@ -3,11 +3,12 @@
 import java.lang.Object;
 import java.util.*;
 abstract class AI {
-  private ArrayList<Poke> PlayerPokeTeam = new ArrayList<Poke>();
+  Poke[]PlayerTeam = new Poke[3];
+  Attack [][] PlayerAttacks = new Attack[3][4];
   public ArrayList<Poke> AI_Team = new ArrayList<Poke>(3);
-  private Attack[][] PokeAttacks = new Attack[3][4];
-  private int counter = 0;
   String name;
+  int pokemonStored = 0;
+  int[]attacksStored = {0,0,0};
 
   public AI(Poke p1, Poke p2, Poke p3) {
       AI_Team.add(p1);
@@ -26,14 +27,27 @@ abstract class AI {
   
 
   
-  void addPokeAttacks(Poke pokemon,Attack attack){
-    int PokePosition = PlayerPokeTeam.indexOf(pokemon);
-    PokeAttacks[PokePosition][counter]= attack;
-    counter ++;
+  void storeAttack(){
+    for (int i = 0; i < PlayerTeam.length; i++) {
+      //if attack is none or null then immediately stop
+      //check if the pokemon matches the current pokemon out
+      //if PlayerAttacks[i][3] != null stop
+      //if so check to see if yourAttack is in the PlayerAttacks[i][0-attacksStored]
+      //if not PlayerAttacks[i][attacksStored] = yourAttack
+      //attacksStored ++
+      
+    }
   }
   
-  float fullEffectiveness(String PokeType,String oppPokeType){
-    return checkEffectiveness(PokeType,oppPokeType);
+  void storePokemon() {
+    //if PlayerTeam[2] != null, then stop
+    
+    PlayerTeam[pokemonStored] = yourPokemonOut;
+    for (int i = 0; i < pokemonStored; i++) {
+      if (PlayerTeam[i].getClass().equals(yourPokemonOut.getClass())) {
+        PlayerTeam[pokemonStored-1] = null;  
+      }
+    }
   }
     
    abstract Poke chooseNextPoke();
