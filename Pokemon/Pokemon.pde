@@ -395,7 +395,7 @@ void chooseOppDiff() {
     OppTrainer = new AI_Normal(Blastoise,Charizard,Venusaur,"prof.oak");
     println("norm");
   }  
-  else if(oppLevel ==3){
+  else if(oppLevel == 3){
     OppTrainer = new AI_Hard(Blastoise,Charizard,Venusaur,"prof.oak");
   }
   
@@ -1134,15 +1134,25 @@ void turnEvents() {
         speedWinner = oppPokemonOut;  
         slowerPoke = yourPokemonOut;
       }
-      
+      if(OppTrainer.chooseAction() == 1){
+        switchOpp();
+        oppAttack = null;
+        state = "turn-p1";
+      }
+      else if(OppTrainer.chooseAction()==0){
+        oppAttack = OppTrainer.chooseMove();
+      }
+
       //opponent chooses move
       //oppAttack = Tackle;   //should be 
       //println("OK");
       if (oppAttack == null) {
         println(oppAttack);
         println("here");
+        
         oppAttack = OppTrainer.chooseMove();
       }
+      
       
       //oppAttack = Thunder_Wave;
       //oppAttack = Fire_Blast;

@@ -14,24 +14,23 @@ class AI_Hard extends AI{
     fullEffectiveness(oppPokemonOut.getType1(),yourPokemonOut.getType2()) < 2||
     fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType1()) < 2||
     fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType2()) < 2){
-      option = 1;
+      return 1;
     }
     else if(oppPokemonOut.speed > yourPokemonOut.speed){
             if(willKill(yourPokemonOut)){
-              option = 0;
+              return 0;
             }
             else{
-              option = 1;
+              return 1;
             }
     }
     
     else if(oppPokemonOut.speed < yourPokemonOut.speed && willDie(oppPokemonOut)) {
-      option = 1;
+      return 1;
     }
     else{
-      option = 0;
+      return 0;
     }
-    return option;
   }
           
         
