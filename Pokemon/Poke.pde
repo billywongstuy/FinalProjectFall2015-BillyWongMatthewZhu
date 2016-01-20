@@ -86,7 +86,7 @@ abstract class Poke implements Cloneable{
     else if (attack == None) {
       return 0;  
     }
-    else if (status.equals("PRZ") && (int)(Math.random()*4) == 0) {
+    else if (status.equals("PRZ") && (int)(Math.random()*1) == 0) {
       turnParalyzed = true;
       println(name + " is paralyzed! It couldn't attack!");
       return 0;  

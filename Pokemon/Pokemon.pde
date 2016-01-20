@@ -50,6 +50,7 @@ PImage switchArrow;
 int sArrowY = 20;
 
 String state;
+boolean screenShown = false;
 boolean stateFlowCheck = true;
 int slow = 0;
 int attackTransitionTime = 0;
@@ -583,6 +584,8 @@ void blankBox() {
 //----------------------------------------------------------
 
 void animateTurn() {
+  
+  println(state);
   //needs to add text box with attacks and side effects
   blankBox();
   
@@ -831,45 +834,6 @@ void oppAttackText() {
       }
     }
     
-    else if (oppPokemonOut.attackEffectiveness == 0) {
-      if (textShowTime < 45) {
-        text("Enemy " + oppPokemonOut.getName(),50,475);
-        text("used " + oppAttack.toString()+"!",50,535); 
-        textShowTime++;
-      }
-      else {
-        textShowTime = 0;
-        state = "type-effect-opp";
-      }
-    }
-    else if (oppAttack.getPower() == 0) {
-      if (textShowTime < 45) {
-        text("Enemy " + oppPokemonOut.getName(),50,475);
-        text("used " + oppAttack.toString()+"!",50,535); 
-        textShowTime++;      
-      }
-      else {
-        textShowTime = 0;
-        println("bk");
-        state = nextState(oppPokemonOut); 
-      }
-    }
-    else if (oppPokemonOut.attackMissed) {
-        if (textShowTime < 45) {
-          text("Enemy " + oppPokemonOut.getName(),50,475);
-          text("used " + oppAttack +"!",50,535);
-          textShowTime++;
-        }
-        else if (textShowTime < 90) {
-          text("Enemy " + oppPokemonOut.getName()+"'s",50,475);
-          text("attack missed!",50,535); 
-          textShowTime++;
-        }
-        else {
-          textShowTime = 0;
-          state = nextState(oppPokemonOut);
-        }
-    }
     else if (oppPokemonOut.turnParalyzed) {
       if (textShowTime < 45) {
         text("Enemy " + oppPokemonOut.getName()+"\'s",50,475);
@@ -916,7 +880,47 @@ void oppAttackText() {
         state = nextState(oppPokemonOut);
       }
     }
+    else if (oppPokemonOut.attackMissed) {
+        if (textShowTime < 45) {
+          text("Enemy " + oppPokemonOut.getName(),50,475);
+          text("used " + oppAttack +"!",50,535);
+          textShowTime++;
+        }
+        else if (textShowTime < 90) {
+          text("Enemy " + oppPokemonOut.getName()+"'s",50,475);
+          text("attack missed!",50,535); 
+          textShowTime++;
+        }
+        else {
+          textShowTime = 0;
+          state = nextState(oppPokemonOut);
+        }
+    }
+    else if (oppPokemonOut.attackEffectiveness == 0) {
+      if (textShowTime < 45) {
+        text("Enemy " + oppPokemonOut.getName(),50,475);
+        text("used " + oppAttack.toString()+"!",50,535); 
+        textShowTime++;
+      }
+      else {
+        textShowTime = 0;
+        state = "type-effect-opp";
+      }
+    }
+    else if (oppAttack.getPower() == 0) {
+      if (textShowTime < 45) {
+        text("Enemy " + oppPokemonOut.getName(),50,475);
+        text("used " + oppAttack.toString()+"!",50,535); 
+        textShowTime++;      
+      }
+      else {
+        textShowTime = 0;
+        println("bk");
+        state = nextState(oppPokemonOut); 
+      }
+    }
     else {
+      println("Used attack normally");
       text("Enemy " + oppPokemonOut.getName(),50,475);
       text("used " + oppAttack.toString()+"!",50,535);
       yourDropHealth();
@@ -938,46 +942,6 @@ void yourAttackText() {
       }
     }
     
-    else if (yourPokemonOut.attackEffectiveness == 0) {
-        
-      if (textShowTime < 45) {
-        text(yourPokemonOut.getName(),50,475);
-        text("used " + yourAttack.toString()+"!",50,535); 
-        textShowTime++;
-      }
-      else {
-        textShowTime = 0;
-        state = "type-effect-you";
-      }
-    }
-    else if (yourAttack.getPower() == 0) {
-      if (textShowTime < 45) {
-        text(yourPokemonOut.getName(),50,475);
-        text("used " + yourAttack.toString()+"!",50,535); 
-        textShowTime++;  
-        println("ARBOKKKK");
-      }
-      else {
-        textShowTime = 0;
-        state = nextState(yourPokemonOut); 
-      }
-    }
-    else if (yourPokemonOut.attackMissed) {
-        if (textShowTime < 45) {
-          text(yourPokemonOut.getName(),50,475);
-          text("used " + yourAttack+"!",50,535); 
-          textShowTime++;
-        }
-        else if (textShowTime < 90) {
-          text(yourPokemonOut.getName()+"'s",50,475);
-          text("attack missed!",50,535); 
-          textShowTime++;    
-        }
-        else {
-          textShowTime = 0;
-          state = nextState(yourPokemonOut);
-        }
-    }
     else if (yourPokemonOut.turnParalyzed) {
       if (textShowTime < 45) {
         text(yourPokemonOut.getName()+"\'s",50,475);
@@ -1020,6 +984,46 @@ void yourAttackText() {
       else {
         textShowTime = 0;
         state = nextState(yourPokemonOut);
+      }
+    }
+    else if (yourPokemonOut.attackMissed) {
+        if (textShowTime < 45) {
+          text(yourPokemonOut.getName(),50,475);
+          text("used " + yourAttack+"!",50,535); 
+          textShowTime++;
+        }
+        else if (textShowTime < 90) {
+          text(yourPokemonOut.getName()+"'s",50,475);
+          text("attack missed!",50,535); 
+          textShowTime++;    
+        }
+        else {
+          textShowTime = 0;
+          state = nextState(yourPokemonOut);
+        }
+    }
+    else if (yourPokemonOut.attackEffectiveness == 0) {
+        
+      if (textShowTime < 45) {
+        text(yourPokemonOut.getName(),50,475);
+        text("used " + yourAttack.toString()+"!",50,535); 
+        textShowTime++;
+      }
+      else {
+        textShowTime = 0;
+        state = "type-effect-you";
+      }
+    }
+    else if (yourAttack.getPower() == 0) {
+      if (textShowTime < 45) {
+        text(yourPokemonOut.getName(),50,475);
+        text("used " + yourAttack.toString()+"!",50,535); 
+        textShowTime++;  
+        println("ARBOKKKK");
+      }
+      else {
+        textShowTime = 0;
+        state = nextState(yourPokemonOut); 
       }
     }
     else {
@@ -1115,6 +1119,8 @@ void turnEvents() {
       if (oppPokemonOut.sleepTurns == 0 && oppPokemonOut.getStatus().equals("SLP")) {
         oppPokemonOut.setStatus("");  
       }
+      
+      //oppPokemonOut.status = "PRZ";
             
       //who goes first
       if (yourSpeed > oppSpeed) {
@@ -1484,9 +1490,9 @@ void displayBattlersInfo() {
 //-------------------------------------------------
 
 void setupChooseOppScreen() {
-  image(chooseOppScreen,0,0);
+
+  image(chooseOppScreen,0,0);   
   image(chooseOppArrow,375,cOArrowY);
-  
   frameRate(10);
   
   if (keyPressed && key == CODED && keyCode == DOWN) {
@@ -1537,7 +1543,7 @@ void challengeScreen() {
       image(challengeScreen,0,0);
       fill(color(0));
       text(OppTrainer.name + " wants",50,475);
-      text("to battle!",50,535);
+      text("to battle!",50,535); 
       textShowTime++;
     }
     else {
