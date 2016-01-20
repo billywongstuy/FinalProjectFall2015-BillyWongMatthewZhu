@@ -13,3 +13,9 @@ change status effects to 100% to show damage taking and paralyze stop
 
 BUGS:
 crit text doesn't show when the pokemon faints afterward
+
+
+# Changelog
+
+1/20/16
+-Fixed bug that shows attack text even if the Pokemon was unable to attack
