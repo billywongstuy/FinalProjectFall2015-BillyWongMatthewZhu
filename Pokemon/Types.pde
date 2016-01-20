@@ -132,6 +132,10 @@ float checkFullEffectiveness(String attackType, String type1, String type2) {
   return checkEffectiveness(attackType,type1)*checkEffectiveness(attackType,type2);  
 }
 
+float checkTypeEffectiveness(String type, Poke p) {
+  return checkFullEffectiveness(type,p.type1,p.type2);  
+}
+
 float checkBattleEffectiveness(Attack attack, Poke p) {
   return checkFullEffectiveness(attack.type,p.type1,p.type2);  
 }

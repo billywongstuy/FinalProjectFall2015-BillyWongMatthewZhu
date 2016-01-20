@@ -10,10 +10,18 @@ class AI_Hard extends AI{
               
   int chooseAction(){
     int option = 0;
-    if(fullEffectiveness(oppPokemonOut.getType1(),yourPokemonOut.getType1()) < 2||
-    fullEffectiveness(oppPokemonOut.getType1(),yourPokemonOut.getType2()) < 2||
-    fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType1()) < 2||
-    fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType2()) < 2){
+    
+    //should check for attacks
+    
+    //if(fullEffectiveness(oppPokemonOut.getType1(),yourPokemonOut.getType1()) < 2||
+    //fullEffectiveness(oppPokemonOut.getType1(),yourPokemonOut.getType2()) < 2||
+    //fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType1()) < 2||
+    //fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType2()) < 2){
+     // return 1;
+    //}
+    
+    if(checkTypeEffectiveness(yourPokemonOut.getType1(),oppPokemonOut) >= 2||
+    checkTypeEffectiveness(yourPokemonOut.getType2(),oppPokemonOut) >= 2){
       return 1;
     }
     else if(oppPokemonOut.speed > yourPokemonOut.speed){
@@ -32,10 +40,16 @@ class AI_Hard extends AI{
       return 0;
     }
   }
+   
           
+  void collectInfo() {
+      
+  }
         
       
   Poke chooseNextPoke(){
+    
+    //add parts to check for weakness not to switch in
     ArrayList<Poke>canSwitchTo = new ArrayList<Poke>();
     for (int i = 0; i < AI_Team.size(); i++) {
       if (AI_Team.get(i) != oppPokemonOut && !AI_Team.get(i).getStatus().equals("FNT")) {

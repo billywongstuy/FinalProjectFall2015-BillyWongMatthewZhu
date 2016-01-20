@@ -298,7 +298,7 @@ void switchOpp() {
 void oppSendOut() {
   if (textShowTime < 45) {
     text(OppTrainer + " sent out",50,475);
-    text(oppPokemonOut.getName(),50,535);
+    text(oppPokemonOut.getName() + "!",50,535);
     textShowTime++;
   }
   else {
@@ -306,8 +306,9 @@ void oppSendOut() {
     state = "chooseOption";
   
     if (oppSwitchedThisTurn) {
-      state = "chooseMove";
-      turnEvents();
+      state = "turn-p1";
+      oppAttack = None;
+      //turnEvents();
     }
     else {
       oppAttack = null;  
@@ -586,6 +587,9 @@ void blankBox() {
 void animateTurn() {
   
   println(state);
+  println((state.equals("turn-p1") && speedWinner == yourPokemonOut) || (state.equals("turn-p2") && speedWinner == oppPokemonOut));
+  println(speedWinner);
+  
   //needs to add text box with attacks and side effects
   blankBox();
   
@@ -1019,7 +1023,7 @@ void yourAttackText() {
         text(yourPokemonOut.getName(),50,475);
         text("used " + yourAttack.toString()+"!",50,535); 
         textShowTime++;  
-        println("ARBOKKKK");
+        println("ARBOKKKK " + textShowTime);
       }
       else {
         textShowTime = 0;
@@ -1140,29 +1144,28 @@ void turnEvents() {
         speedWinner = oppPokemonOut;  
         slowerPoke = yourPokemonOut;
       }
-      if(OppTrainer.chooseAction() == 1){
+      
+      if (OppTrainer.chooseAction() == 1){
         switchOpp();
-        oppAttack = null;
-        state = "turn-p1";
+        println(state);
+        oppAttack = None;
+        speedWinner = yourPokemonOut;
+        slowerPoke = oppPokemonOut;
       }
-      else if(OppTrainer.chooseAction()==0){
-        oppAttack = OppTrainer.chooseMove();
-      }
+      
+      
+      println("o-attack: " + oppAttack);
+      println("y-attack: " + yourAttack);
+      
 
-      //opponent chooses move
-      //oppAttack = Tackle;   //should be 
-      //println("OK");
       if (oppAttack == null) {
         println(oppAttack);
         println("here");
         
         oppAttack = OppTrainer.chooseMove();
       }
+
       
-      
-      //oppAttack = Thunder_Wave;
-      //oppAttack = Fire_Blast;
-      //oppPokemonOut.attackMissed = true;
    
       if (youSwitchedThisTurn) {
         yourAttack = None;  
