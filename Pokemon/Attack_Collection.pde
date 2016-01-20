@@ -6,6 +6,8 @@ Attack Hyper_Beam = new Attack("Hyper Beam",150,"Normal","Physical",90,5,"",0,""
 Attack Fire_Blast = new Attack("Fire Blast",120,"Fire","Special",85,5,"burn",0.3,"o","",0,"");
 Attack Thunderbolt = new Attack("Thunderbolt",95,"Electric","Special",100,15,"paralysis",0.1,"o","",0,"");
 Attack Thundershock= new Attack("Thundershock",40,"Electric","Special",100,30,"paralysis",0.1,"o","",0,"");
+
+//change accuracy back to 70 later
 Attack Thunder = new Attack("Thunder",120,"Electric","Special",70,10,"paralysis",0.1,"o","",0,"");
 Attack Vine_Whip = new Attack("Vine Whip",35,"Grass","Special",100,10,"",0,"","",0,"");
 Attack Razor_Leaf = new Attack("Razor Leaf",55,"Grass","Special",95,25,"",0,"","",0,"");
