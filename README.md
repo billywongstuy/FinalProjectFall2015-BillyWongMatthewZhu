@@ -25,3 +25,5 @@ Changed AI_Hard attack algorithmn to only choose strongest move and it's effecti
 1/20/16
 -Fixed bug that shows attack text even if the Pokemon was unable to attack
 >>>>>>> c8e113ca65dcd346576e51a8c24ae9707c86c385
+-Added option for Hard_Ai to switch
+-Introduced a bug that causes pokemon to switch a lot.
