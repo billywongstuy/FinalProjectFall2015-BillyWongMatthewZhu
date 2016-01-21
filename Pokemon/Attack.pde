@@ -57,7 +57,9 @@ class Attack {
       //something with effect.indexOf("(")
       //ignore this part, handled in attack in poke
     }
-    
+    if (effect.substring(0,3).equals("hea")) {
+      
+    }
     //for these use 0 for attack, 1 for def, 2 for special, 3 for speed, 4 for evasion, 5 for accuracy
     if (effect.substring(0,3).equals("low")) {
       int stat = Integer.parseInt(effect.substring(effect.indexOf("(")+1,effect.indexOf(",")));
