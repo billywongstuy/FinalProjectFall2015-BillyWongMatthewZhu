@@ -9,7 +9,8 @@ class AI_Hard extends AI{
   }
               
   int chooseAction(){
-    int option = 0;
+    String currentAttackType = yourAttack.type;
+    
     
     //should check for attacks
     
@@ -19,6 +20,9 @@ class AI_Hard extends AI{
     //fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType2()) < 2){
      // return 1;
     //}
+    if(checkFullEffectiveness(currentAttackType,oppPokemonOut.getType1(),oppPokemonOut.getType2()) >=2){
+      return 1;
+    }
     
     if(checkTypeEffectiveness(yourPreviousPoke.getType1(),oppPokemonOut) >= 2||
     checkTypeEffectiveness(yourPreviousPoke.getType2(),oppPokemonOut) >= 2){
@@ -51,6 +55,7 @@ class AI_Hard extends AI{
     
     //add parts to check for weakness not to switch in
     ArrayList<Poke>canSwitchTo = new ArrayList<Poke>();
+    String currentAttackType = yourAttack.type;
     for (int i = 0; i < AI_Team.size(); i++) {
       if (AI_Team.get(i) != oppPokemonOut && !AI_Team.get(i).getStatus().equals("FNT")) {
         canSwitchTo.add(AI_Team.get(i));  
@@ -61,7 +66,8 @@ class AI_Hard extends AI{
     }
     Poke chooseThis = canSwitchTo.get((int)(Math.random()*canSwitchTo.size()));
     for(int a = 0; a < canSwitchTo.size(); a ++){
-      if (checkFullEffectiveness(canSwitchTo.get(a).type1,yourPreviousPoke.type1,yourPreviousPoke.type2) > 1 || checkFullEffectiveness(canSwitchTo.get(a).type2,yourPreviousPoke.type1,yourPreviousPoke.type2) > 1) {
+      if (checkFullEffectiveness(currentAttackType,chooseThis.type1,chooseThis.type2) <= 1 ||
+          checkFullEffectiveness(currentAttackType,chooseThis.type1,chooseThis.type2) <= 1) {
         chooseThis = canSwitchTo.get(a);        
       }              
     }

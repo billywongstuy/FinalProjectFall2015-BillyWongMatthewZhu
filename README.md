@@ -23,6 +23,8 @@
 ## 1/21/16 ##
 -Discovered bug that causes Pokemon that used sucide to not faint if it fainted the target
 -Bug that affects multi hit attacks with type effectiveness not equal to 1
+-Added swap that checks preemptive attacks from player
+-Added swap to include status
 
 ## 1/20/16 ##
 -Changed AI_Hard attack algorithmn to only choose strongest move and it's effectiveness
