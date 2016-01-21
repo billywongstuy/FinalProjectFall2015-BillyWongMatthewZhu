@@ -27,7 +27,7 @@ class Charmeleon extends Poke {
 class Charizard extends Poke {
   Charizard() {
     super("Charizard",6,"Fire","Flying",78,84,78,85,100,100);
-    setAttacks(Fire_Blast,Wing_Attack,Flamethrower,Swords_Dance);
+    setAttacks(Fire_Blast,Wing_Attack,Earthquake,Swords_Dance);
   }
 }
 class Squirtle extends Poke {
@@ -381,6 +381,8 @@ class Graveler extends Poke {
 class Golem extends Poke {
   Golem() {
     super("Golem",76,"Rock","Ground",80,110,130,55,45,100);
+    //NEED TO CHANGE
+    setAttacks(Earthquake,Tackle,Explosion,Strength);
   }
 }
 class Ponyta extends Poke {
@@ -516,6 +518,7 @@ class Exeggcute extends Poke {
 class Exeggutor extends Poke {
   Exeggutor() {
     super("Exeggutor",103,"Grass","Psychic",95,95,85,125,55,100);
+    setAttacks(Sleep_Powder,Psychic,Explosion,Razor_Leaf);
   }
 }
 class Cubone extends Poke {

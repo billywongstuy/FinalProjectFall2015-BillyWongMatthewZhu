@@ -8,7 +8,11 @@
 //send in battle for beginning of battle and when switching out "come back"
 //STATUS APPEARS AS SOON AS THE ANIMATION STARTS change it after the attack
 //add the text for status happened (after everything) using Poke.addEffects
+
+
 //there's no pause between a critical hit and fainting
+//or no pause btw effectiveness text and fainting if crit
+
 //figure out where multi hits text appears
 
 //order of display text
@@ -19,8 +23,7 @@
 //hit times
 //status
 
-
-//Errors; no text for got poisoned
+//Need to make the text for sleep/freeze get omitted if target attacks first, add wake up/unthawing text
 
 PFont font;
 PImage battle;
@@ -70,6 +73,7 @@ int yourHealthLost = 0;
 
 ArrayList<Poke>yourTeam = new ArrayList<Poke>();
 Poke yourPokemonOut;
+Poke yourPreviousPoke;
 
 ArrayList<Poke>oppTeam = new ArrayList<Poke>();
 Poke oppPokemonOut;
@@ -87,8 +91,8 @@ void setup() {
   state = "chooseOpp";
   
   setupPokeSet();
-  //add 5 (charizard)
-  yourTeam.add(Pokemons.get(25)); 
+  //add 5 (charizard) 25 raichu
+  yourTeam.add(Pokemons.get(102)); 
   yourTeam.add(Pokemons.get(5));
   yourTeam.add(Pokemons.get(2));
   
@@ -96,6 +100,8 @@ void setup() {
   
   oppTeam = OppTrainer.AI_Team;
   yourPokemonOut = yourTeam.get(0);
+  yourPreviousPoke = yourPokemonOut;
+  
   oppPokemonOut = oppTeam.get(0);
   
   chooseOppScreen = loadImage("choose-level.png");
@@ -252,6 +258,7 @@ void switchYou() {
         youSwitchedThisTurn = true;
         oppAttack = OppTrainer.chooseMove();
       }            
+      yourPreviousPoke = yourPokemonOut;
       yourPokemonOut = yourTeam.get(partySlot);
       yourHealthLost = yourPokemonOut.health - yourPokemonOut.hp;
       hpToShow = yourPokemonOut.hp;
@@ -501,19 +508,37 @@ void handleEndTurn() {
 //--------------------------
 
 String nextState(Poke p) {
-  println(yourAttack);
-  println(p.attackEffects[0][0]);
-  if (p.attackEffects[0][0].equals("")) {
-    if (speedWinner == p) {
-      return "turn-p2";  
-    }
-    return "turnEndDamage";
+  Attack a;
+  if (p == yourPokemonOut) {
+    a = yourAttack; 
   }
   else {
+    a = oppAttack;  
+  }
+
+  if (!p.attackEffects[0][0].equals("")) {
     if (p == yourPokemonOut) {
       return "yourStatusText"; 
     }
     return "oppStatusText";
+  }
+  else if (a.name.equals(Explosion.name) || a.name.equals(Self_Destruct.name)) {
+    p.hp = 0;
+    p.status = "FNT";
+    if (p == yourPokemonOut) {
+      yourHealthLost = p.health;
+      yourdisplayHP = "  0";
+    }
+    else {
+      oppHealthLost = p.health;  
+    }
+    return "faintShow";
+  }
+  else {
+    if (speedWinner == p) {
+      return "turn-p2";  
+    }
+    return "turnEndDamage";
   }
 }
 
@@ -585,10 +610,6 @@ void blankBox() {
 //----------------------------------------------------------
 
 void animateTurn() {
-  
-  println(state);
-  println((state.equals("turn-p1") && speedWinner == yourPokemonOut) || (state.equals("turn-p2") && speedWinner == oppPokemonOut));
-  println(speedWinner);
   
   //needs to add text box with attacks and side effects
   blankBox();
@@ -709,7 +730,9 @@ void animateTurn() {
   oppEffectivenessText();
   yourEffectivenessText();
   
+  
   //need to make a break over here so other text displays before transitioning
+  
   
   //when your opponent faints
   if (oppPokemonOut.status.equals("FNT") && oppHealthLost == oppPokemonOut.health && !state.equals("choosePokeOpp") && attackTransitionTime == 0 && !state.equals("victory") && !state.equals("loss")) {
@@ -919,12 +942,10 @@ void oppAttackText() {
       }
       else {
         textShowTime = 0;
-        println("bk");
         state = nextState(oppPokemonOut); 
       }
     }
     else {
-      println("Used attack normally");
       text("Enemy " + oppPokemonOut.getName(),50,475);
       text("used " + oppAttack.toString()+"!",50,535);
       yourDropHealth();
@@ -1034,6 +1055,7 @@ void yourAttackText() {
       text(yourPokemonOut.getName(),50,475);
       text("used " + yourAttack.toString()+"!",50,535); 
       oppDropHealth();
+      
     }
 }
 
@@ -1124,6 +1146,8 @@ void turnEvents() {
         oppPokemonOut.setStatus("");  
       }
       
+      println("sleep turns: " + oppPokemonOut.sleepTurns);
+      
       //oppPokemonOut.status = "PRZ";
             
       //who goes first
@@ -1145,6 +1169,15 @@ void turnEvents() {
         slowerPoke = yourPokemonOut;
       }
       
+      
+      if (youSwitchedThisTurn) {
+        yourAttack = None;  
+      }
+      else {
+        yourPreviousPoke = yourPokemonOut;  
+      }
+      
+      
       if (OppTrainer.chooseAction() == 1){
         switchOpp();
         println(state);
@@ -1164,12 +1197,7 @@ void turnEvents() {
         
         oppAttack = OppTrainer.chooseMove();
       }
-
       
-   
-      if (youSwitchedThisTurn) {
-        yourAttack = None;  
-      }
       
       if (speedWinner == yourPokemonOut) {
         yourPokemonOut.attack(oppPokemonOut,yourAttack);
