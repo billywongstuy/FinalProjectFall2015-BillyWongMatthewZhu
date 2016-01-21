@@ -20,8 +20,8 @@ class AI_Hard extends AI{
      // return 1;
     //}
     
-    if(checkTypeEffectiveness(yourPokemonOut.getType1(),oppPokemonOut) >= 2||
-    checkTypeEffectiveness(yourPokemonOut.getType2(),oppPokemonOut) >= 2){
+    if(checkTypeEffectiveness(yourPreviousPoke.getType1(),oppPokemonOut) >= 2||
+    checkTypeEffectiveness(yourPreviousPoke.getType2(),oppPokemonOut) >= 2){
       return 1;
     }
     else if(oppPokemonOut.speed > yourPokemonOut.speed){
@@ -61,7 +61,7 @@ class AI_Hard extends AI{
     }
     Poke chooseThis = canSwitchTo.get((int)(Math.random()*canSwitchTo.size()));
     for(int a = 0; a < canSwitchTo.size(); a ++){
-      if (checkFullEffectiveness(canSwitchTo.get(a).type1,yourPokemonOut.type1,yourPokemonOut.type2) > 1 || checkFullEffectiveness(canSwitchTo.get(a).type2,yourPokemonOut.type1,yourPokemonOut.type2) > 1) {
+      if (checkFullEffectiveness(canSwitchTo.get(a).type1,yourPreviousPoke.type1,yourPreviousPoke.type2) > 1 || checkFullEffectiveness(canSwitchTo.get(a).type2,yourPreviousPoke.type1,yourPreviousPoke.type2) > 1) {
         chooseThis = canSwitchTo.get(a);        
       }              
     }

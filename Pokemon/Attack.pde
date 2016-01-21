@@ -70,6 +70,9 @@ class Attack {
       }
       ary[0] = target.getName()+"'s";
       ary[1] = getStat(stat) + " fell!";
+      if (lower >= 2) {
+        ary[1] = getStat(stat) + " sharply fell!";
+      }
     }
     if (effect.substring(0,3).equals("rai")) {
       println("Raising");
@@ -77,15 +80,15 @@ class Attack {
       int boost = Integer.parseInt(effect.substring(effect.indexOf(",")+1,effect.indexOf(")")));
       if (target.statStatus[stat] + boost <= 6) {
         target.statStatus[stat] += boost;  
-        println("added " + boost + " to " + stat);
-        println(target);
-        println(target.statStatus[stat]);
       }
       else if (target.statStatus[stat] == 5) {
         target.statStatus[stat] = 6;    
       }
       ary[0] = target.getName()+"'s";
       ary[1] = getStat(stat) + " rose!";
+      if (boost >= 2) {
+        ary[1] = getStat(stat) + " sharply rose!";
+      }
     }
     if (effect.substring(0,3).equals("bur") && Math.random() < effectChance && target.getStatus().equals("") && !target.type1.equals("Fire") && !target.type2.equals("Fire")) {
       target.setStatus("BRN");  
