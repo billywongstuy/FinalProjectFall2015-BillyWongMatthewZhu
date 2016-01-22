@@ -91,18 +91,18 @@ void setup() {
   state = "chooseOpp";
   
   setupPokeSet();
-  //add 5 (charizard) 25 raichu 102 for exeggcutor
-  yourTeam.add(Pokemons.get(134)); 
+  //add 5 (charizard) 25 raichu 102 for exeggcutor 134 for jolteon
+  yourTeam.add(Pokemons.get(25)); 
   yourTeam.add(Pokemons.get(5));
   yourTeam.add(Pokemons.get(2));
   
-  OppTrainer = new AI_Easy(Charizard,Blastoise,Venusaur,"prof.oak"); 
+  //OppTrainer = new AI_Easy(Charizard,Blastoise,Venusaur,"prof.oak"); 
   
-  oppTeam = OppTrainer.AI_Team;
+  //oppTeam = OppTrainer.AI_Team;
   yourPokemonOut = yourTeam.get(0);
   yourPreviousPoke = yourPokemonOut;
   
-  oppPokemonOut = oppTeam.get(0);
+  //oppPokemonOut = oppTeam.get(0);
   
   chooseOppScreen = loadImage("choose-level.png");
   chooseOppArrow = loadImage("arrow.png");
@@ -110,10 +110,10 @@ void setup() {
   
   battle = loadImage("battlers-info-template.png");  
   yourPoke = loadImage("Sprites/Back/" + yourPokemonOut.index+".PNG"); 
-  oppPoke = loadImage("Sprites/Front/" + oppPokemonOut.index+".PNG");
+  //oppPoke = loadImage("Sprites/Front/" + oppPokemonOut.index+".PNG");
  
   yourPoke.resize(230,230);
-  oppPoke.resize(225,225);
+  //oppPoke.resize(225,225);
  
   options = loadImage("pkmn-battle-bottom-bar.png");
   choiceArrow = loadImage("arrow.png");
@@ -146,38 +146,38 @@ void draw() {
   }
   if (battleStart) {
     displayBattlersInfo();
-  }
-  if (state.equals("chooseOption")) {
-    setupOptionScreen();
-  }
-  if (state.equals("chooseMove")) {
-    setupMoveChoice();
-    if (attackTransitionTime >= 35) {
-      if (keyPressed && (key == 'Z' || key == 'z')) {
-        turnEvents(); 
+  
+    if (state.equals("chooseOption")) {
+      setupOptionScreen();
+    }
+    if (state.equals("chooseMove")) {
+      setupMoveChoice();
+      if (attackTransitionTime >= 35) {
+        if (keyPressed && (key == 'Z' || key == 'z')) {
+          turnEvents(); 
+        }
+      }
+      else {
+        attackTransitionTime++;  
       }
     }
-    else {
-      attackTransitionTime++;  
+    animateTurn();
+    showHPBar();
+    if (state.equals("turnEndDamage") || state.equals("textEnd1") || state.equals("textEnd2")) {
+      handleEndTurn();  
+    }
+    if (state.equals("choosePokeYou")) {
+      if (loss()) {
+        state = "loss";  
+      }
+      else {
+        switchYou();
+      }
+    }
+    if (state.equals("choosePokeOpp")) {
+      switchOpp();
     }
   }
-  animateTurn();
-  showHPBar();
-  if (state.equals("turnEndDamage") || state.equals("textEnd1") || state.equals("textEnd2")) {
-    handleEndTurn();  
-  }
-  if (state.equals("choosePokeYou")) {
-    if (loss()) {
-      state = "loss";  
-    }
-    else {
-      switchYou();
-    }
-  }
-  if (state.equals("choosePokeOpp")) {
-    switchOpp();
-  }
-  
   /*Pinsir.hp = 999;
   println(Pinsir.hp);
   Scyther.attack(Pinsir,Wing_Attack);
@@ -396,7 +396,7 @@ void displayTeamInfo() {
 //-------------------------------
 
 void chooseOppDiff() {
-  println(oppLevel + "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL " + oppLevel);
+  //println(oppLevel + "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL " + oppLevel);
   if (oppLevel == 1) {
     OppTrainer = new AI_Easy(Blastoise,Charizard,Venusaur,"prof.oak"); 
   }
@@ -407,7 +407,11 @@ void chooseOppDiff() {
   else if(oppLevel == 3){
     OppTrainer = new AI_Hard(Blastoise,Charizard,Venusaur,"prof.oak");
   }
-  
+  println("hey");
+  oppTeam = OppTrainer.AI_Team;
+  oppPokemonOut = oppTeam.get(0);
+  oppPoke = loadImage("Sprites/Front/" + oppPokemonOut.index+".PNG");
+  oppPoke.resize(225,225);
 }
 
 
@@ -517,28 +521,18 @@ String nextState(Poke p) {
   }
   
 
-  if (p.attackHits > 1) {
+  if (p.attackEffectiveness != 1 && p.attackEffectiveness != 0 && !p.attackCrit && targetHPFinish(p) && a != null && a.getPower() != 0 && !state.substring(0,6).equals("type-e")) {
+    if (p == yourPokemonOut) {
+      println("type-type");
+      return "type-effect-you";  
+    }
+    return "type-effect-opp";
+  }
+  else if (p.attackHits > 1) {
     if (p == yourPokemonOut) {
       return "multi-hit-you";
     }
     return "multi-hit-opp";
-  }
-  /*if (oppPokemonOut.attackEffectiveness != 1 && oppPokemonOut.attackEffectiveness != 0 && !oppPokemonOut.attackCrit && yourHPFinish() && oppAttack != null && oppAttack.getPower() != 0) {
-    if ((speedWinner == oppPokemonOut && state.equals("turn-p1")) || (speedWinner == yourPokemonOut && state.equals("turn-p2"))) {  
-      return "type-effect-opp";  
-    }
-  }
-  
-  if (yourPokemonOut.attackEffectiveness != 1 && yourPokemonOut.attackEffectiveness != 0 && !yourPokemonOut.attackCrit && oppHPFinish() && yourAttack != null && yourAttack.getPower() != 0) {
-    if ((speedWinner == yourPokemonOut && state.equals("turn-p1")) || (speedWinner == oppPokemonOut && state.equals("turn-p2"))) { 
-      return "type-effect-you";  
-    }
-  }*/
-  else if (p.attackEffectiveness != 1 && p.attackEffectiveness != 0 && !p.attackCrit && yourHPFinish() && oppHPFinish() && a != null && a.getPower() != 0) {
-    if (p == yourPokemonOut) {
-      return "type-effect-you";  
-    }
-    return "type-effect-opp";
   }
   else if (!p.attackEffects[0][0].equals("")) {
     if (p == yourPokemonOut) {
@@ -559,6 +553,7 @@ String nextState(Poke p) {
     return "faintShow";
   }
   else {
+    println("next turn!");
     if (speedWinner == p) {
       return "turn-p2";  
     }
@@ -852,6 +847,7 @@ void yourEffectivenessText() {
     else {
       state = "turnEndDamage";  
     }*/
+    println("lololo");
     state = nextState(yourPokemonOut);
     
     textShowTime = 0;  
@@ -866,7 +862,6 @@ void yourEffectivenessText() {
 
 void oppEffectivenessText() {
   if (state.equals("type-effect-opp") && textShowTime <= 45) {
-
     if (oppAttack.getPower() == 0 || oppPokemonOut.attackMissed) {
       textShowTime = 45;
     }
@@ -893,7 +888,6 @@ void oppEffectivenessText() {
     }*/
     
     state = nextState(oppPokemonOut);
-    
     textShowTime = 0;  
     attackTransitionTime = 0;
   }    
@@ -1130,6 +1124,13 @@ boolean oppHPFinish() {
   return false;
 }
 
+boolean targetHPFinish(Poke p) {
+  if (p == oppPokemonOut) {
+    return yourHPFinish();  
+  }
+  return oppHPFinish();
+}
+
 
 //-----------------------
 //HP BAR DISPLAY
@@ -1210,6 +1211,7 @@ void turnEvents() {
       else if (oppSpeed > yourSpeed) {
         speedWinner = oppPokemonOut; 
         slowerPoke = yourPokemonOut;
+        println("you are slower");
       }
       //speedtie
       else if ((int)(Math.random()*2) == 0) {
@@ -1219,6 +1221,7 @@ void turnEvents() {
       else {
         speedWinner = oppPokemonOut;  
         slowerPoke = yourPokemonOut;
+        println("you're slower");
       }
       
       
@@ -1271,6 +1274,9 @@ void turnEvents() {
 //-------------------------------------
 
 void yourStatusText() {
+  if (yourPokemonOut.inflictStatusTarget.status.equals("") && !yourPokemonOut.inflictStatus.equals("")) {
+    yourPokemonOut.inflictStatusTarget.setStatus(yourPokemonOut.inflictStatus);
+  }
   if (textShowTime < 45) {
     println("you caused status");
     text(yourPokemonOut.attackEffects[0][0],50,475);
@@ -1295,6 +1301,9 @@ void yourStatusText() {
 //-------------------------------------
 
 void oppStatusText() {
+  if (oppPokemonOut.inflictStatusTarget.status.equals("") && !oppPokemonOut.inflictStatus.equals("")) {
+    oppPokemonOut.inflictStatusTarget.setStatus(oppPokemonOut.inflictStatus);
+  }
   if (textShowTime < 45) {
     println("opp caused status");
     text(oppPokemonOut.attackEffects[0][0],50,475);

@@ -14,7 +14,7 @@ abstract class AI {
       AI_Team.add(p1);
       AI_Team.add(p2);
       AI_Team.add(p3);
-      name = "TRAINER";
+      name = "PROF OAK";
   }
   
   public AI(Poke p1, Poke p2, Poke p3, String n) {

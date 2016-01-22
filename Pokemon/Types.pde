@@ -2,8 +2,8 @@ float checkEffectiveness(String attackType, String type) {
   if (type.equals("") || attackType.equals("")) {
     return 1;  
   }
-  println(attackType);
-  println(type);
+  //println(attackType);
+  //println(type);
   
   int at = typeToInt(attackType);
   int t = typeToInt(type);

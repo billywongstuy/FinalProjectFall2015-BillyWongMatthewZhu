@@ -23,7 +23,6 @@ class AI_Easy extends AI{
     if (canSwitchTo.size() == 0) {
       return null;  
     }
-    println(canSwitchTo);
     Poke chooseThis = canSwitchTo.get((int)(Math.random()*canSwitchTo.size()));
     return chooseThis;
   }

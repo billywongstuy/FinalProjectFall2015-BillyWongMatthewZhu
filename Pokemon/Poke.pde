@@ -26,6 +26,8 @@ abstract class Poke implements Cloneable{
   boolean recharge = false;
   boolean setRecharge = false;
   int attackHits;
+  String inflictStatus = "";
+  Poke inflictStatusTarget;
   
   Poke(String n, int i, String t, int bh, int ba, int bd, int bsp, int bs, int l) {
     lv = l;
@@ -73,6 +75,8 @@ abstract class Poke implements Cloneable{
     attackEffects[0][1] = "";
     attackEffects[1][0] = "";
     attackEffects[1][1] = "";
+    inflictStatus = "";
+    inflictStatusTarget = null;
     int rand = (int)(Math.random()*100);
     if (status.equals("FNT")) {
       //println(name + " is fainted!");
