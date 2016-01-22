@@ -70,10 +70,10 @@ class Attack {
       else if (target.statStatus[stat] == -5) {
         target.statStatus[stat] = -6;    
       }
-      ary[0] = target.getName()+"'s";
-      ary[1] = getStat(stat) + " fell!";
+      ary[0] = target.getName()+"'s " + getStat(stat);
+      ary[1] = "fell!";
       if (lower >= 2) {
-        ary[1] = getStat(stat) + " sharply fell!";
+        ary[1] = "sharply fell!";
       }
     }
     if (effect.substring(0,3).equals("rai")) {
@@ -86,37 +86,47 @@ class Attack {
       else if (target.statStatus[stat] == 5) {
         target.statStatus[stat] = 6;    
       }
-      ary[0] = target.getName()+"'s";
-      ary[1] = getStat(stat) + " rose!";
+      ary[0] = target.getName()+"'s " + getStat(stat);
+      ary[1] = "rose!";
       if (boost >= 2) {
-        ary[1] = getStat(stat) + " sharply rose!";
+        ary[1] = "sharply rose!";
       }
     }
     if (effect.substring(0,3).equals("bur") && Math.random() < effectChance && target.getStatus().equals("") && !target.type1.equals("Fire") && !target.type2.equals("Fire")) {
-      target.setStatus("BRN");  
+      //target.setStatus("BRN");
+      self.inflictStatus = "BRN";
+      self.inflictStatusTarget = target;
       ary[0] = target.getName();
       ary[1] = "got burned!";
     }
     if (effect.substring(0,3).equals("par") && Math.random() < effectChance && target.getStatus().equals("")) {
-      target.setStatus("PRZ"); 
+      //target.setStatus("PRZ"); 
+      self.inflictStatus = "PRZ";
+      self.inflictStatusTarget = target;
       ary[0] = target.getName();
       ary[1] = "got paralyzed!";
       println(ary[0] + " " + ary[1] + "AAAAAA");
       println("PARALYZED!");
     }
     if (effect.substring(0,3).equals("fre") && Math.random() < effectChance && target.getStatus().equals("")) {
-      target.setStatus("FRZ");  
+      //target.setStatus("FRZ");  
+      self.inflictStatus = "FRZ";
+      self.inflictStatusTarget = target;
       ary[0] = target.getName();
       ary[1] = "got frozen!";
     }
     if (effect.substring(0,3).equals("poi") && Math.random() < effectChance && target.getStatus().equals("") && !target.type1.equals("Poison") && !target.type2.equals("Poison")) {
-      target.setStatus("PSN"); 
+      //target.setStatus("PSN"); 
+      self.inflictStatus = "PSN";
+      self.inflictStatusTarget = target;
       ary[0] = target.getName();
       ary[1] = "got poisoned!";
       println("POISONED " + target.getName());
     }
     if (effect.substring(0,3).equals("sle") && Math.random() < effectChance && target.getStatus().equals("")) {
-      target.setStatus("SLP"); 
+      //target.setStatus("SLP"); 
+      self.inflictStatus = "SLP";
+      self.inflictStatusTarget = target;
       /*if (this == Rest) {
         target.sleepTurns = 2;  
       }*/

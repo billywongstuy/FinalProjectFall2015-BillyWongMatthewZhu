@@ -4,6 +4,7 @@
 
 # CURRENT BUGS: #
 -If an critical hit causes a Pokemon to faint, the last bit of text is skipped over and goes straight to faint
+-Suicide attack does not cause user to faint if the target faints
 
 # NITPICKS #
 -Program currently uses a decent amount of memory since it loads image and prints text over and over
@@ -27,6 +28,8 @@
 -Bug that affects multi hit attacks with type effectiveness not equal to 1
 -Added swap that checks preemptive attacks from player
 -Added swap to include status
+-Added multi-hit text
+-Fixed bug that shows status immediately as turn starts
 
 ## 1/20/16 ##
 -Changed AI_Hard attack algorithmn to only choose strongest move and it's effectiveness

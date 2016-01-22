@@ -649,6 +649,7 @@ class Tauros extends Poke {
 class Magikarp extends Poke {
   Magikarp() {
     super("Magikarp",129,"Water",20,10,55,20,80,100);
+    setAttacks(Tackle,Tackle,Tackle,Tackle);
   }
 }
 class Gyarados extends Poke {
@@ -679,6 +680,10 @@ class Vaporeon extends Poke {
 class Jolteon extends Poke {
   Jolteon() {
     super("Jolteon",135,"Electric",65,65,60,110,130,100);
+<<<<<<< HEAD
+=======
+    setAttacks(Pin_Missile,Thunderbolt,Thunder_Wave,Body_Slam);
+>>>>>>> 92fe762dfc498dafc274e0c3904188aaaa40c8b7
   }
 }
 class Flareon extends Poke {

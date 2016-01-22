@@ -14,7 +14,7 @@ abstract class AI {
       AI_Team.add(p1);
       AI_Team.add(p2);
       AI_Team.add(p3);
-      name = "TRAINER";
+      name = "PROF OAK";
   }
   
   public AI(Poke p1, Poke p2, Poke p3, String n) {
@@ -60,12 +60,12 @@ abstract class AI {
   }
   
   void storePokemon() {
-    //if PlayerTeam[2] != null, then stop
-    
-    PlayerTeam[pokemonStored] = yourPokemonOut;
-    for (int i = 0; i < pokemonStored; i++) {
-      if (PlayerTeam[i].getClass().equals(yourPokemonOut.getClass())) {
-        PlayerTeam[pokemonStored-1] = null;  
+    if (PlayerTeam[2] == null) {
+      PlayerTeam[pokemonStored] = yourPokemonOut;
+      for (int i = 0; i < pokemonStored; i++) {
+        if (PlayerTeam[i].getClass().equals(yourPokemonOut.getClass())) {
+          PlayerTeam[pokemonStored-1] = null;  
+        }
       }
     }
   }
