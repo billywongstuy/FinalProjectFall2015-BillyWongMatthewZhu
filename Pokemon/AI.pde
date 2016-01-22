@@ -8,7 +8,7 @@ abstract class AI {
   public ArrayList<Poke> AI_Team = new ArrayList<Poke>(3);
   String name;
   int pokemonStored = 0;
-  int[]attacksStored = {0,0,0};
+  int[]attacksStored = {0,0,0,0};
 
   public AI(Poke p1, Poke p2, Poke p3) {
       AI_Team.add(p1);
@@ -24,8 +24,7 @@ abstract class AI {
       name = n.toUpperCase();
   }
   
-  
-
+ 
   
   void storeAttack(){
     for (int i = 0; i < PlayerTeam.length; i++) {
@@ -35,7 +34,28 @@ abstract class AI {
       //if so check to see if yourAttack is in the PlayerAttacks[i][0-attacksStored]
       //if not PlayerAttacks[i][attacksStored] = yourAttack
       //attacksStored ++
-      
+      if(yourAttack != null && yourAttack.name != "None"){
+        if(PlayerTeam[i].getClass()== yourPokemonOut.getClass()){
+            for(int a = 0; a < attacksStored.length; a ++){
+              if(PlayerAttacks[i][a] == null){
+                PlayerAttacks[i][attacksStored[a]] = yourAttack;
+                attacksStored[a] ++;
+              }
+              else{
+                boolean contains = false;
+                for(int j = 0; j < 4; j ++){
+                  if(yourAttack == PlayerAttacks[i][j]){
+                    contains = true;
+                  }
+                }
+                if(!contains){
+                  PlayerAttacks[i][attacksStored[i]] = yourAttack;       
+                  attacksStored[i] ++;
+                    }
+                }
+            }
+        }
+      }
     }
   }
   

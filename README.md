@@ -18,6 +18,8 @@
 -Status appearance time
 
 # CHANGELOG #
+## 1/22/16
+-added StoreAttacks for AI
 
 
 ## 1/21/16 ##

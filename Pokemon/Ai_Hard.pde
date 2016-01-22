@@ -47,6 +47,9 @@ class AI_Hard extends AI{
    
           
   void collectInfo() {
+    storePokemon();
+    storeAttack();
+    
       
   }
         
@@ -66,7 +69,7 @@ class AI_Hard extends AI{
     }
     Poke chooseThis = canSwitchTo.get((int)(Math.random()*canSwitchTo.size()));
     for(int a = 0; a < canSwitchTo.size(); a ++){
-      if (checkFullEffectiveness(currentAttackType,chooseThis.type1,chooseThis.type2) <= 1) {
+      if (checkFullEffectiveness(currentAttackType,chooseThis.type1,chooseThis.type2) >= 2) {
         chooseThis = canSwitchTo.get(a);        
       }              
     }

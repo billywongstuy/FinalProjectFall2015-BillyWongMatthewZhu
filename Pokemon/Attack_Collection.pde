@@ -25,7 +25,7 @@ Attack Swords_Dance = new Attack("Swords Dance",0,"Normal","Status",100,30,"rais
 Attack Sleep_Powder = new Attack("Sleep Powder",0,"Grass","Status",75,15,"sleep",1,"o","",0,"");
 Attack Explosion = new Attack("Explosion",170,"Normal","Physical",100,5,"faint",1,"s","",0,"");
 Attack Self_Destruct = new Attack("Self-Destruct",130,"Normal","Physical",100,5,"faint",1,"s","",0,"");
-Attack Psychic = new Attack("Psychic",90,"Psychic","Special",100,10,"lowerStat(3,1)",0.3,"o","",0,"");
+Attack Psychic = new Attack("Psychic",90,"Psychic","Special",100,10,"lowerStat(2,1)",0.3,"o","",0,"");
 
 //Attack Thundershock= new Attack("Thundershock",40,"Electric","Special",100,30,"paralysis",0.1,"o","",0,"");
 
