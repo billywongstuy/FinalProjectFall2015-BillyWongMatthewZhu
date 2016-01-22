@@ -649,6 +649,7 @@ class Tauros extends Poke {
 class Magikarp extends Poke {
   Magikarp() {
     super("Magikarp",129,"Water",20,10,55,20,80,100);
+    setAttacks(Tackle,Tackle,Tackle,Tackle);
   }
 }
 class Gyarados extends Poke {

@@ -40,12 +40,12 @@ abstract class AI {
   }
   
   void storePokemon() {
-    //if PlayerTeam[2] != null, then stop
-    
-    PlayerTeam[pokemonStored] = yourPokemonOut;
-    for (int i = 0; i < pokemonStored; i++) {
-      if (PlayerTeam[i].getClass().equals(yourPokemonOut.getClass())) {
-        PlayerTeam[pokemonStored-1] = null;  
+    if (PlayerTeam[2] == null) {
+      PlayerTeam[pokemonStored] = yourPokemonOut;
+      for (int i = 0; i < pokemonStored; i++) {
+        if (PlayerTeam[i].getClass().equals(yourPokemonOut.getClass())) {
+          PlayerTeam[pokemonStored-1] = null;  
+        }
       }
     }
   }
