@@ -679,7 +679,6 @@ class Vaporeon extends Poke {
 class Jolteon extends Poke {
   Jolteon() {
     super("Jolteon",135,"Electric",65,65,60,110,130,100);
-    setAttacks(Pin_Missile,Thunderbolt,Thunder_Wave,Tackle);
   }
 }
 class Flareon extends Poke {

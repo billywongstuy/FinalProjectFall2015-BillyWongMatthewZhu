@@ -1,3 +1,4 @@
+k
 //FIX NOTES: 
 
 //NO PAUSE BETWEEN ATTACK DAMAGE AND STATUS DAMAGE
@@ -91,8 +92,8 @@ void setup() {
   state = "chooseOpp";
   
   setupPokeSet();
-  //add 5 (charizard) 25 raichu 102 for exeggcutor
-  yourTeam.add(Pokemons.get(134)); 
+  //add 5 (charizard) 25 raichu
+  yourTeam.add(Pokemons.get(102)); 
   yourTeam.add(Pokemons.get(5));
   yourTeam.add(Pokemons.get(2));
   
@@ -515,32 +516,8 @@ String nextState(Poke p) {
   else {
     a = oppAttack;  
   }
-  
 
-  if (p.attackHits > 1) {
-    if (p == yourPokemonOut) {
-      return "multi-hit-you";
-    }
-    return "multi-hit-opp";
-  }
-  /*if (oppPokemonOut.attackEffectiveness != 1 && oppPokemonOut.attackEffectiveness != 0 && !oppPokemonOut.attackCrit && yourHPFinish() && oppAttack != null && oppAttack.getPower() != 0) {
-    if ((speedWinner == oppPokemonOut && state.equals("turn-p1")) || (speedWinner == yourPokemonOut && state.equals("turn-p2"))) {  
-      return "type-effect-opp";  
-    }
-  }
-  
-  if (yourPokemonOut.attackEffectiveness != 1 && yourPokemonOut.attackEffectiveness != 0 && !yourPokemonOut.attackCrit && oppHPFinish() && yourAttack != null && yourAttack.getPower() != 0) {
-    if ((speedWinner == yourPokemonOut && state.equals("turn-p1")) || (speedWinner == oppPokemonOut && state.equals("turn-p2"))) { 
-      return "type-effect-you";  
-    }
-  }*/
-  else if (p.attackEffectiveness != 1 && p.attackEffectiveness != 0 && !p.attackCrit && yourHPFinish() && oppHPFinish() && a != null && a.getPower() != 0) {
-    if (p == yourPokemonOut) {
-      return "type-effect-you";  
-    }
-    return "type-effect-opp";
-  }
-  else if (!p.attackEffects[0][0].equals("")) {
+  if (!p.attackEffects[0][0].equals("")) {
     if (p == yourPokemonOut) {
       return "yourStatusText"; 
     }
@@ -627,10 +604,6 @@ void blankBox() {
   else if (state.equals("yourStatusText") || state.equals("oppStatusText")) {
     image(blankBox,0,0);  
   }
-  
-  else if (state.equals("multi-hit-you") || state.equals("multi-hit-opp")) {
-    image(blankBox,0,0);  
-  }
 }
 
 //----------------------------------------------------------
@@ -690,30 +663,20 @@ void animateTurn() {
   }
   
   
-  if (state.equals("multi-hit-you")) {
-    multiHitText(yourPokemonOut);  
-  }
-  
-  if (state.equals("multi-hit-opp")) {
-    multiHitText(oppPokemonOut);  
-  }
-  
-
-  /*
   if (oppPokemonOut.attackEffectiveness != 1 && oppPokemonOut.attackEffectiveness != 0 && !oppPokemonOut.attackCrit && yourHPFinish() && oppAttack != null && oppAttack.getPower() != 0) {
     if ((speedWinner == oppPokemonOut && state.equals("turn-p1")) || (speedWinner == yourPokemonOut && state.equals("turn-p2"))) {  
-      return "type-effect-opp";  
+      state = "type-effect-opp";  
+      println("change");
     }
   }
   
   if (yourPokemonOut.attackEffectiveness != 1 && yourPokemonOut.attackEffectiveness != 0 && !yourPokemonOut.attackCrit && oppHPFinish() && yourAttack != null && yourAttack.getPower() != 0) {
     if ((speedWinner == yourPokemonOut && state.equals("turn-p1")) || (speedWinner == oppPokemonOut && state.equals("turn-p2"))) { 
-      return "type-effect-you";  
+      state = "type-effect-you";  
+      println("ARGH");
     }
   }
-
-
-  */
+        
   //text for crits and transitioning to next phase
   if (state.equals("crit-1") && textShowTime < 45) {
     text("Critical hit!",50,475);  
@@ -802,20 +765,6 @@ void animateTurn() {
   
   //choosePoke state is the switch screen. to be implemented
   
-}
-
-//-------------------------------
-//
-
-void multiHitText(Poke p) {
-  if (textShowTime < 45) {
-    text("Hit " + p.attackHits + " times!",50,475);
-    textShowTime++;  
-  }
-  else {
-    p.attackHits = 1;
-    state = nextState(p);
-  }
 }
 
 

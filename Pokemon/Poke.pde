@@ -117,22 +117,6 @@ abstract class Poke implements Cloneable{
         int min = Integer.parseInt(attack.effect1.substring(attack.effect1.indexOf("(")+1,attack.effect1.indexOf("(")+2));
         int max = Integer.parseInt(attack.effect1.substring(attack.effect1.indexOf(",")+1,attack.effect1.indexOf(",")+2));
         attackHits = (int)(Math.random()*(max-min+1)+min);
-        
-        int randomNum = (int)(Math.random()*8);
-          if (max == 5 && min == 2) {
-          if (randomNum == 7) {
-            attackHits = 5;  
-          }
-          if (randomNum == 6) {
-            attackHits = 4;  
-          }
-          if (randomNum <= 5) {
-            attackHits = 3;    
-          }
-          if (randomNum <= 2) {
-            attackHits = 2;  
-          }
-        }
         return opp.takeDamage(calculateDamage(opp, attack))*attackHits;
       }      
       attackHits = 1;
