@@ -21,6 +21,7 @@
 # CHANGELOG #
 ## 1/22/16
 -added StoreAttacks for AI
+-Started working on the Explosion bug and reorganization of state changing
 
 
 ## 1/21/16 ##
