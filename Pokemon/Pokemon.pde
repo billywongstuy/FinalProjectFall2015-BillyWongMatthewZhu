@@ -91,7 +91,7 @@ void setup() {
   state = "chooseOpp";
   
   setupPokeSet();
-  //add 5 (charizard) 25 raichu 102 for exeggcutor 134 for jolteon
+  //add 5 (charizard) 25 raichu 102 for exeggcutor 134 for jolteon 128 magikarp
   yourTeam.add(Pokemons.get(102)); 
   yourTeam.add(Pokemons.get(5));
   yourTeam.add(Pokemons.get(2));
@@ -269,6 +269,9 @@ void switchYou() {
       if (yourAttack.name.equals("Explosion") || yourAttack.name.equals("Self-Destruct")) {
         state = "oppSendOut";  
       }
+      if (oppAttack.name.equals("Explosion") || oppAttack.name.equals("Self-Destruct")) {
+        state = "oppSendOut";  
+      }
       
     }
   }
@@ -300,7 +303,7 @@ void switchOpp() {
     state = "oppSendOut";
     
     if (yourPokemonOut.status.equals("FNT")) {
-      state = "choosePoke-You";  
+      state = "choosePokeYou";  
     }
     
   }
@@ -323,16 +326,37 @@ void oppSendOut() {
   
     if (oppSwitchedThisTurn) {
       state = "turn-p1";
-      oppAttack = None;
+      if (!oppAttack.name.equals("Explosion") && !oppAttack.name.equals("Self-Destruct")) {
+        oppAttack = None;
+      }
       //turnEvents();
     }
     else {
-      oppAttack = null;  
+      println("ack");
+      println(oppAttack);
+      //if (!oppAttack.name.equals("Explosion") && !oppAttack.name.equals("Self-Destruct")) {
+      //  oppAttack = null;
+      //}      
     }
-  }
-  
-  if (yourAttack.name.equals("Explosion") || yourAttack.name.equals("Self-Destruct")) {
-    state = "yourSendOut";  
+    
+    println("too");
+    
+    if (yourAttack.name.equals("Explosion") || yourAttack.name.equals("Self-Destruct")) {
+      state = "youSendOut";  
+    }
+      
+    println(oppAttack);
+    println("hegsgsg"); 
+    println(oppAttack.name.equals("Explosion") || oppAttack.name.equals("Self-Destruct"));
+      
+    if (oppAttack.name.equals("Explosion") || oppAttack.name.equals("Self-Destruct")) {
+      println("lkji");
+      state = "youSendOut";  
+      oppAttack = null;
+      println("lol null");
+    }
+    
+    println("hesh");
   }
  
 }
@@ -359,6 +383,13 @@ void youSendOut() {
       turnEvents();
       println(state);
     }
+    
+    
+    if (yourAttack.name.equals("Explosion") || yourAttack.name.equals("Self-Destruct")) {
+      oppAttack = null; 
+      yourAttack = null;
+    }
+    
   }
 }
 
@@ -416,12 +447,12 @@ void chooseOppDiff() {
   }
   else if (oppLevel == 2) {
     OppTrainer = new AI_Normal(Blastoise,Charizard,Venusaur,"prof.oak");
-    println("norm");
+    //println("norm");
   }  
   else if(oppLevel == 3){
     OppTrainer = new AI_Hard(Blastoise,Charizard,Venusaur,"prof.oak");
   }
-  println("hey");
+  //println("hey");
   oppTeam = OppTrainer.AI_Team;
   oppPokemonOut = oppTeam.get(0);
   oppPoke = loadImage("Sprites/Front/" + oppPokemonOut.index+".PNG");
@@ -442,7 +473,7 @@ void handleEndTurn() {
     //incorporate speed later
     if (yourPokemonOut.getStatus().equals("BRN") || yourPokemonOut.getStatus().equals("PSN")) {
       yourPokemonOut.takeDamage((int)(yourPokemonOut.health/16));
-      println("HP:" + yourPokemonOut.hp);
+      //println("HP:" + yourPokemonOut.hp);
     }
     if (oppPokemonOut.getStatus().equals("BRN") || oppPokemonOut.getStatus().equals("PSN")) {
       oppPokemonOut.takeDamage((int)(oppPokemonOut.health/16));
@@ -499,10 +530,16 @@ void handleEndTurn() {
     if (slowerPoke == yourPokemonOut) {yourDropHealth();}
     else {oppDropHealth();}
   
+    //println("reset everything");
     cArrowX = 288;
     cArrowY = 450;
-    oppAttack = null;
-    yourAttack = null;
+    if (!oppAttack.name.equals("Explosion") && !oppAttack.name.equals("Self-Destruct")) {
+      oppAttack = null;
+      //println("nullify");
+    }
+    if (!yourAttack.name.equals("Explosion") && !yourAttack.name.equals("Self-Destruct")) {
+      yourAttack = null;
+    }
     youSwitchedThisTurn = false;
     oppSwitchedThisTurn = false;
     
@@ -526,22 +563,29 @@ void handleEndTurn() {
 //--------------------------
 
 String nextState(Poke p) {
-  Attack a;
+  Attack a = oppAttack;
   Poke other = yourPokemonOut;
   int otherHealthLost = yourHealthLost;
+    
   if (p == yourPokemonOut) {
     a = yourAttack;
     other = oppPokemonOut;
     otherHealthLost = oppHealthLost;
   }
-  else {
-    a = oppAttack;  
+  
+  if (state.equals("faintShowYou") && (oppAttack.name.equals("Explosion") || oppAttack.name.equals("Self-Destruct"))) {
+    a = oppAttack; 
+    p = oppPokemonOut;
+    println(oppHealthLost);
   }
   
+  //println("change");
+  //println(a.name);
+  //println(Explosion.name);
 
   if (state.substring(0,3).equals("tur") && p.attackEffectiveness != 1 && p.attackEffectiveness != 0 && !p.attackCrit && targetHPFinish(p) && a != null && a.getPower() != 0 && !state.substring(0,6).equals("type-e")) {
     if (p == yourPokemonOut) {
-      println("type-type");
+      //println("type-type");
       return "type-effect-you";  
     }
     return "type-effect-opp";
@@ -558,17 +602,30 @@ String nextState(Poke p) {
     }
     return "oppStatusText";
   }
-  else if (a.name.equals(Explosion.name) || a.name.equals(Self_Destruct.name)) {
+  else if (a.name.equals("Explosion") || a.name.equals("Self-Destruct")) {
+    //println(p);
     p.hp = 0;
     p.status = "FNT";
     if (p == yourPokemonOut) {
-      yourHealthLost = p.health;
-      yourdisplayHP = "  0";
+      if (!state.equals("faintShowOpp") && !state.equals("faintShowYou")) {
+        return "faintShowOpp";  
+      }
+      if (!state.equals("faintShowYou")) {
+        return "faintShowYou";
+      }
+      //println(yourPokemonOut.status);
     }
-    else {
-      oppHealthLost = p.health;  
-    }
-    return "faintShow";
+    if (p == oppPokemonOut) {
+      println("heroshsh");
+      if (!state.equals("faintShowOpp") && !state.equals("faintShowYou")) {
+        return "faintShowYou";  
+      }
+      if (!state.equals("faintShowOpp")) {
+        return "faintShowOpp";
+      }
+      //println(oppPokemonOut.status);
+    }     
+    return "choosePokeOpp";
   }
   else if (oppPokemonOut.status.equals("FNT") && oppHealthLost == oppPokemonOut.health && !state.equals("faintShowOpp")) {
     return "faintShowOpp";  
@@ -580,11 +637,12 @@ String nextState(Poke p) {
     return "choosePokeOpp";    
   }
   else if (state.equals("faintShowYou")) {
+    //println("time to switch");
     return "choosePokeYou";    
   }
   
   else {
-    println("next turn!");
+    //println("next turn!");
     if (speedWinner == p) {
       return "turn-p2";  
     }
@@ -664,6 +722,7 @@ void blankBox() {
 //----------------------------------------------------------
 
 void animateTurn() {
+  //println(state);
   
   //needs to add text box with attacks and side effects
   blankBox();
@@ -724,21 +783,7 @@ void animateTurn() {
     multiHitText(oppPokemonOut);  
   }
   
-
-  /*
-  if (oppPokemonOut.attackEffectiveness != 1 && oppPokemonOut.attackEffectiveness != 0 && !oppPokemonOut.attackCrit && yourHPFinish() && oppAttack != null && oppAttack.getPower() != 0) {
-    if ((speedWinner == oppPokemonOut && state.equals("turn-p1")) || (speedWinner == yourPokemonOut && state.equals("turn-p2"))) {  
-      return "type-effect-opp";  
-    }
-  }
-  
-  if (yourPokemonOut.attackEffectiveness != 1 && yourPokemonOut.attackEffectiveness != 0 && !yourPokemonOut.attackCrit && oppHPFinish() && yourAttack != null && yourAttack.getPower() != 0) {
-    if ((speedWinner == yourPokemonOut && state.equals("turn-p1")) || (speedWinner == oppPokemonOut && state.equals("turn-p2"))) { 
-      return "type-effect-you";  
-    }
-  }
-  */
-  //text for crits and transitioning to next phase
+ 
   if (state.equals("crit-1") && textShowTime < 45) {
     text("Critical hit!",50,475);  
     textShowTime++;
@@ -748,14 +793,7 @@ void animateTurn() {
     state = nextState(speedWinner);
     textShowTime = 0;
     attackTransitionTime = 0;
-    
-    /*if (yourPokemonOut.attackEffectiveness != 1 && !state.equals("type-effect-opp") && speedWinner == yourPokemonOut) {
-      state = "type-effect-you";  
-    }
-    else if (oppPokemonOut.attackEffectiveness != 1 && !state.equals("type-effect-you") && speedWinner == oppPokemonOut) {
-      state = "type-effect-opp";  
-    } */
-    
+        
   }
   if (state.equals("crit-2") && textShowTime < 45) {
     text("Critical hit!",50,475);  
@@ -763,20 +801,9 @@ void animateTurn() {
     attackTransitionTime++;
   }
   if (state.equals("crit-2") && textShowTime >= 45) {
-    //put if statement here to check if status ailment added on here
-    //state = "turnEndDamage";
     state = nextState(slowerPoke);
     textShowTime = 0;
-    attackTransitionTime = 0;
-    
-    /*if (yourPokemonOut.attackEffectiveness != 1 && !state.equals("type-effect-opp") && speedWinner == oppPokemonOut && yourAttack.getPower() != 0) {
-      state = "type-effect-you";  
-    }
-    else if (oppPokemonOut.attackEffectiveness != 1 && !state.equals("type-effect-you") && speedWinner == yourPokemonOut && oppAttack.getPower() != 0) {
-      state = "type-effect-opp";  
-      println("a");
-    }*/
-    
+    attackTransitionTime = 0;    
   }
   
   if (state.equals("oppStatusText")) {
@@ -830,7 +857,7 @@ void animateTurn() {
     }
     else {
       textShowTime = 0;  
-      state = nextState(yourPokemonOut);
+      state = nextState(oppPokemonOut);
     }
   }
   
@@ -846,9 +873,6 @@ void animateTurn() {
       state = nextState(yourPokemonOut);
     }
   }
-  
-  
-  //choosePoke state is the switch screen. to be implemented
   
 }
 
@@ -1300,15 +1324,18 @@ void turnEvents() {
       println("o-attack: " + oppAttack);
       println("y-attack: " + yourAttack);
       
-
+      
+      
+      
       if (oppAttack == null) {
         println("here");
         
         oppAttack = OppTrainer.chooseMove();
       }
       
+     
+      //oppAttack = Explosion;
       
-      oppAttack = Swords_Dance;
       println(oppPokemonOut.status);
       
       if (speedWinner == yourPokemonOut) {
@@ -1362,7 +1389,6 @@ void oppStatusText() {
     oppPokemonOut.inflictStatusTarget.setStatus(oppPokemonOut.inflictStatus);
   }
   if (textShowTime < 45) {
-    println("opp caused status");
     text(oppPokemonOut.attackEffects[0][0],50,475);
     text(oppPokemonOut.attackEffects[0][1],50,535);
     textShowTime++;
@@ -1483,28 +1509,37 @@ void setupMoveChoice() {
   text(yourPokemonOut.a4.toString(),193,541);
   image(moveArrow,160,mArrowY);
  
+  Attack attackToShow = yourPokemonOut.a1;
+ 
   switch(mArrowY) {
     case 420:
-      text(yourPokemonOut.a1.getType(),65,349);
-      text(yourPokemonOut.a1.ppLeft,160,381);
-      text(yourPokemonOut.a1.pp,255,381);
+      attackToShow = yourPokemonOut.a1;
       break;
     case 452:
-      text(yourPokemonOut.a2.getType(),65,349);
-      text(yourPokemonOut.a2.ppLeft,160,381);
-      text(yourPokemonOut.a2.pp,255,381);
+      attackToShow = yourPokemonOut.a2;
       break;
     case 485:
-      text(yourPokemonOut.a3.getType(),65,349);
-      text(yourPokemonOut.a3.ppLeft,160,381);
-      text(yourPokemonOut.a3.pp,255,381);
+      attackToShow = yourPokemonOut.a3;
       break;
     case 516:
-      text(yourPokemonOut.a4.getType(),65,349);
-      text(yourPokemonOut.a4.ppLeft,160,381);
-      text(yourPokemonOut.a4.pp,255,381);
+      attackToShow = yourPokemonOut.a4;
       break;
    }
+   
+   String ppLeftString = "" + attackToShow.ppLeft;
+   if (ppLeftString.length() < 2) {
+     ppLeftString = " " + ppLeftString;  
+   }
+   
+   String ppString = "" + attackToShow.pp;
+   if (ppString.length() < 2) {
+     ppString = "" + ppLeftString;  
+   }
+   
+   text(attackToShow.getType(),65,349);
+   text(ppLeftString,160,381);
+   text(ppString,255,381);  
+   
  
   if (slow == 0) {
     slow = 1;  
@@ -1549,7 +1584,8 @@ void setupMoveChoice() {
 //-----------------------------------------------------------
 //SETUP SCREEN WHERE YOU CHOOSE TO FIGHT, SWITCH, OR RUN
 //-----------------------------------------------------------
-void setupOptionScreen() {
+void setupOptionScreen() { 
+  
   image(choiceArrow,cArrowX,cArrowY);
   if (keyPressed && key == CODED) {
     if (keyCode == UP && cArrowY >= 512) {
