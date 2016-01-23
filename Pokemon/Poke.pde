@@ -214,7 +214,7 @@ abstract class Poke implements Cloneable{
   int takeDamage(int damage) {
     if (damage >= hp) {
       hp = 0;
-      setStatus("FNT");
+      //setStatus("FNT");
     }
     else {
       println(name + " took " + damage);
