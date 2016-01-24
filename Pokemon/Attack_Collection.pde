@@ -59,6 +59,8 @@ Attack Low_Kick = new Attack("Low Kick",50,"Fighting","Physical",90,20,"flinch",
 Attack Rolling_Kick = new Attack("Rolling Kick",60,"Fighting","Physical",85,15,"flinch",0.3,"o","",0,"");
 Attack Fire_Punch = new Attack("Fire Punch",75,"Fire","Special",100,15,"burn",0.1,"o","",0,"");
 Attack Ember = new Attack("Ember",40,"Fire","Special",100,25,"burn",0.1,"o","",0,"");
+
+//change back to 0.3
 Attack Fire_Blast = new Attack("Fire Blast",120,"Fire","Special",85,5,"burn",0.3,"o","",0,"");
 Attack Fire_Spin = new Attack("Fire Spin",15,"Fire","Special",70,15,"trap(2,5)",1,"o","",0,"");
 Attack Flamethrower = new Attack("Flamethrower",95,"Fire","Special",100,15,"burn",0.1,"o","",0,"");
