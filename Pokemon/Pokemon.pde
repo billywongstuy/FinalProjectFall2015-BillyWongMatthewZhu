@@ -630,17 +630,26 @@ String nextState(Poke p) {
       return "type-effect-you";
     }
     return "type-effect-opp";
-  } else if (p.attackHits > 1 && !state.substring(0, 7).equals("multi-h")) {
+  } 
+  else if (p.attackHits > 1 && !state.substring(0, 7).equals("multi-h")) {
     if (p == yourPokemonOut) {
       return "multi-hit-you";
     }
     return "multi-hit-opp";
-  } else if (!p.attackEffects[0][0].equals("") && !state.substring(4, 6).equals("Sta")) {
+  } 
+  else if (!p.attackEffects[0][0].equals("") && !state.substring(4, 6).equals("Sta")) {
     if (p == yourPokemonOut) {
+      if (oppPokemonOut.status.equals("FNT")) {
+        return "faintShowOpp";  
+      }
       return "yourStatusText";
     }
+    if (yourPokemonOut.status.equals("FNT")) {
+      return "faintShowYou";  
+    }
     return "oppStatusText";
-  } else if (a.name.equals("Explosion") || a.name.equals("Self-Destruct")) {
+  } 
+  else if (a.name.equals("Explosion") || a.name.equals("Self-Destruct")) {
     //println(p);
     p.hp = 0;
     p.status = "FNT";
@@ -1102,7 +1111,7 @@ void oppAttackText() {
       state = nextState(oppPokemonOut);
     }
   } else {
-    println("droppp");
+    //println("droppp");
     text("Enemy " + oppPokemonOut.getName(), 50, 475);
     text("used " + oppAttack.toString()+"!", 50, 535);
     yourDropHealth();
@@ -1506,13 +1515,13 @@ void oppStatusText() {
 //-------------------------------------
 void oppDropHealth() {
   //add some text display to be placed here: Pokemon used attack!
-  println("droppity");
+  //println("droppity");
   
   if (oppPokemonOut.health - oppPokemonOut.hp > oppHealthLost) {
-    println("drippity");
+   // println("drippity");
     if (oppHealthLost < oppPokemonOut.health) {
       oppHealthLost++;  
-    println("hazel");  
+    //println("hazel");  
     }
   }
   //else if ((yourPokemonOut.turnParalyzed || yourPokemonOut.frozen) && textShowTime < 45) {
