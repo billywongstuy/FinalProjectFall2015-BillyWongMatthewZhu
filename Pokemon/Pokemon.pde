@@ -1839,8 +1839,7 @@ void setupChoosePokemonScreen() {
   }
   
   if (yourTeam.size() >= 3) {
-    println(yourTeam);
-    noLoop();
+    state = "chooseOpp";
   }  
 }
 
