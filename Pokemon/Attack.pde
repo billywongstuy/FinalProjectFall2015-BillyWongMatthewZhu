@@ -58,6 +58,23 @@ class Attack {
       //ignore this part, handled in attack in poke
     }
     if (effect.substring(0,3).equals("hea")) {
+      println("healing");
+      if (effect.substring(effect.indexOf("(")+1,effect.indexOf("(")+3).equals("ha")) {
+        //self.hp += ((int)(damage/2));
+        //if (self.hp > self.health) {
+        //  self.hp = self.health;  
+        //}
+        ary[0] = self.getName() + " drained";
+        ary[1] = opp.getName()+"'s health!"; 
+      }
+      if (effect.substring(effect.indexOf("(")+1,effect.indexOf("(")+3).equals("50")) {
+        //self.hp += (int)(self.health/2);
+        //if (self.hp > self.health) {
+        //  self.hp = self.health;  
+        //} 
+        ary[0] = self.getName() + " restored";
+        ary[1] = "its health!";
+      }
       
     }
     //for these use 0 for attack, 1 for def, 2 for special, 3 for speed, 4 for evasion, 5 for accuracy
@@ -133,6 +150,9 @@ class Attack {
       target.sleepTurns = (int)(Math.random()*7+1);
       ary[0] = target.getName();
       ary[1] = "fell asleep!";
+    }
+    if (effect.substring(0,3).equals("fli") && Math.random() < effectChance) {
+      target.flinch = true;    
     }
     if (effect.substring(0,3).equals("bad") && Math.random() < effectChance && target.getStatus().equals("")) {
       target.setStatus("PSN-B");  

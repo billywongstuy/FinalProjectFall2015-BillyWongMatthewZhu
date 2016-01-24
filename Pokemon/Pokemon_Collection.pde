@@ -518,7 +518,7 @@ class Exeggcute extends Poke {
 class Exeggutor extends Poke {
   Exeggutor() {
     super("Exeggutor",103,"Grass","Psychic",95,95,85,125,55,100);
-    setAttacks(Sleep_Powder,Psychic,Explosion,Razor_Leaf);
+    setAttacks(Sleep_Powder,Psychic,Explosion,Giga_Drain);
   }
 }
 class Cubone extends Poke {
