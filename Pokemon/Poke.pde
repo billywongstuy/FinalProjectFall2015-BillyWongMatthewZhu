@@ -21,7 +21,14 @@ abstract class Poke implements Cloneable{
   private float attackEffectiveness = 1;
   private boolean turnParalyzed;
   private boolean frozen;
+  private boolean asleep;
+  private boolean paralyzed;
+  private boolean burned;
+  private boolean fainted;
   private boolean flinch = false;
+  private boolean confused = false;
+  int confuseTurns = 0;
+  private boolean hitSelf = false;
   int sleepTurns = 0;
   boolean recharge = false;
   boolean setRecharge = false;
@@ -79,7 +86,7 @@ abstract class Poke implements Cloneable{
     inflictStatus = "";
     inflictStatusTarget = null;
     int rand = (int)(Math.random()*100);
-    if (status.equals("FNT")) {
+    if (fainted) {
       //println(name + " is fainted!");
       return 0;  
     }
@@ -91,13 +98,12 @@ abstract class Poke implements Cloneable{
     else if (attack == None) {
       return 0;  
     }
-    else if (status.equals("PRZ") && (int)(Math.random()*4) == 0) {
+    else if (paralyzed && (int)(Math.random()*4) == 0) {
       turnParalyzed = true;
       println(name + " is paralyzed! It couldn't attack!");
       return 0;  
     }
-    else if (status.equals("FRZ")) {
-      frozen = true;
+    else if (frozen) {
       println(name + " is frozen and can't attack!");
       return 0;
     }
@@ -112,7 +118,12 @@ abstract class Poke implements Cloneable{
       return 0;  
     }
     else {
+      /*if (confused && Math.random()*2 == 1) {
+        hitSelf = true;
+        return 0;  
+      }*/
       println(this + " normal progression");
+      hitSelf = false;
       turnParalyzed = false;
       frozen = false;
       attackMissed = false;
@@ -221,6 +232,7 @@ abstract class Poke implements Cloneable{
   int takeDamage(int damage) {
     if (damage >= hp) {
       hp = 0;
+      fainted = true;
       //setStatus("FNT");
     }
     else {
@@ -235,7 +247,7 @@ abstract class Poke implements Cloneable{
   }
   
   double burned() {
-    if (status.equals("BRN")) {
+    if (burned) {
       return 0.5;  
     }
     return 1;

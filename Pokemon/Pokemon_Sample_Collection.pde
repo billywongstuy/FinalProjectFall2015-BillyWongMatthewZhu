@@ -151,7 +151,92 @@ Poke Mewtwo = new Mewtwo();
 Poke Mew = new Mew();
 
 
-ArrayList<Poke>Pokemons = new ArrayList<Poke>(151);
+ArrayList<Poke>Pokemons = new ArrayList<Poke>();
+void setupPokeSet() {
+  Pokemons.add(new Venusaur());
+  Pokemons.add(new Charizard());
+  Pokemons.add(new Blastoise());
+  Pokemons.add(new Butterfree());
+  Pokemons.add(new Beedrill());
+  Pokemons.add(new Pidgeot());
+  Pokemons.add(new Raticate());
+  Pokemons.add(new Fearow());
+  Pokemons.add(new Arbok());
+  Pokemons.add(new Raichu());
+  Pokemons.add(new Sandslash());
+  Pokemons.add(new Nidoqueen());
+  Pokemons.add(new Nidoking());
+  Pokemons.add(new Clefable());
+  Pokemons.add(new Ninetales());
+  Pokemons.add(new Wigglytuff());
+  Pokemons.add(new Golbat());
+  Pokemons.add(new Vileplume());
+  Pokemons.add(new Parasect());
+  Pokemons.add(new Venomoth());
+  Pokemons.add(new Dugtrio());
+  Pokemons.add(new Persian());
+  Pokemons.add(new Golduck());
+  Pokemons.add(new Primeape());
+  Pokemons.add(new Arcanine());
+  Pokemons.add(new Poliwrath());
+  Pokemons.add(new Alakazam());
+  Pokemons.add(new Machamp());
+  Pokemons.add(new Victreebel());
+  Pokemons.add(new Tentacruel());
+  Pokemons.add(new Golem());
+  Pokemons.add(new Rapidash());
+  Pokemons.add(new Slowbro());
+  Pokemons.add(new Magneton());
+  Pokemons.add(new Farfetchd());
+  Pokemons.add(new Dodrio());
+  Pokemons.add(new Dewgong());
+  Pokemons.add(new Muk());
+  Pokemons.add(new Cloyster());
+  Pokemons.add(new Gengar());
+  Pokemons.add(new Onix());
+  Pokemons.add(new Hypno());
+  Pokemons.add(new Kingler());
+  Pokemons.add(new Electrode());
+  Pokemons.add(new Exeggutor());
+  Pokemons.add(new Marowak());
+  Pokemons.add(new Hitmonlee());
+  Pokemons.add(new Hitmonchan());
+  Pokemons.add(new Lickitung());
+  Pokemons.add(new Weezing());
+  Pokemons.add(new Rhydon());
+  Pokemons.add(new Chansey());
+  Pokemons.add(new Tangela());
+  Pokemons.add(new Kangaskhan());
+  Pokemons.add(new Seadra());
+  Pokemons.add(new Seaking());
+  Pokemons.add(new Starmie());
+  Pokemons.add(new MrMime());
+  Pokemons.add(new Scyther());
+  Pokemons.add(new Jynx());
+  Pokemons.add(new Electabuzz());
+  Pokemons.add(new Magmar());
+  Pokemons.add(new Pinsir());
+  Pokemons.add(new Tauros());
+  Pokemons.add(new Gyarados());
+  Pokemons.add(new Lapras());
+  //Pokemons.add(new Ditto());
+  Pokemons.add(new Vaporeon());
+  Pokemons.add(new Jolteon());
+  Pokemons.add(new Flareon());
+  Pokemons.add(new Porygon());
+  Pokemons.add(new Omastar());
+  Pokemons.add(new Kabutops());
+  Pokemons.add(new Aerodactyl());
+  Pokemons.add(new Snorlax());
+  Pokemons.add(new Articuno());
+  Pokemons.add(new Zapdos());
+  Pokemons.add(new Moltres());
+  Pokemons.add(new Dragonite());
+  Pokemons.add(new Mewtwo());
+  Pokemons.add(new Mew());  //index: 79
+}
+
+/*
 void setupPokeSet() {
   Pokemons.add(new Bulbasaur());
   Pokemons.add(new Ivysaur());
@@ -304,4 +389,4 @@ void setupPokeSet() {
   Pokemons.add(new Dragonite());
   Pokemons.add(new Mewtwo());
   Pokemons.add(new Mew());
-}
+}*/

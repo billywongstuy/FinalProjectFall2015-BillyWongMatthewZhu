@@ -111,6 +111,7 @@ class Attack {
     }
     if (effect.substring(0,3).equals("bur") && Math.random() < effectChance && target.getStatus().equals("") && !target.type1.equals("Fire") && !target.type2.equals("Fire")) {
       //target.setStatus("BRN");
+      target.burned = true;
       self.inflictStatus = "BRN";
       self.inflictStatusTarget = target;
       ary[0] = target.getName();
@@ -118,6 +119,7 @@ class Attack {
     }
     if (effect.substring(0,3).equals("par") && Math.random() < effectChance && target.getStatus().equals("")) {
       //target.setStatus("PRZ"); 
+      target.paralyzed = true;
       self.inflictStatus = "PRZ";
       self.inflictStatusTarget = target;
       ary[0] = target.getName();
@@ -127,6 +129,7 @@ class Attack {
     }
     if (effect.substring(0,3).equals("fre") && Math.random() < effectChance && target.getStatus().equals("")) {
       //target.setStatus("FRZ");  
+      target.frozen = true;
       self.inflictStatus = "FRZ";
       self.inflictStatusTarget = target;
       ary[0] = target.getName();
@@ -142,6 +145,7 @@ class Attack {
     }
     if (effect.substring(0,3).equals("sle") && Math.random() < effectChance && target.getStatus().equals("")) {
       //target.setStatus("SLP"); 
+      target.asleep = true;
       self.inflictStatus = "SLP";
       self.inflictStatusTarget = target;
       /*if (this == Rest) {
@@ -166,6 +170,12 @@ class Attack {
     if (effect.substring(0,3).equals("fai")) {
       //faint from self destruct, explosion
     }
+    /*if (effect.substring(0,3).equals("con") && Math.random() < effectChance && !target.confused) {
+      target.confused = true;
+      target.confuseTurns = (int)(Math.random()*4+1);
+      ary[0] = target.getName();
+      ary[1] = "became confused!";
+    }*/
     println(ary[0]);
     return ary;
   }

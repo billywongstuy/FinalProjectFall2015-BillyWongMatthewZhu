@@ -94,19 +94,16 @@ void setup() {
   size(640,576);
   font = loadFont("PokemonGB-32.vlw");
   textFont(font, 32);
-  state = "chooseOpp";
+  //state = "chooseOpp";
+  state = "choosePoke";
   
   setupPokeSet();
-  //add 5 (charizard) 25 raichu 102 for exeggcutor 134 for jolteon 128 magikarp
-  yourTeam.add(Pokemons.get(102)); 
-  yourTeam.add(Pokemons.get(5));
-  yourTeam.add(Pokemons.get(2));
+  //add 5 (charizard) 25 raichu 102 for exeggcutor 134 for jolteon 128 magikarp for full size
+  //44 exegg
+  //yourTeam.add(Pokemons.get(14)); 
+  //yourTeam.add(Pokemons.get(1));
+  //yourTeam.add(Pokemons.get(0));
   
-  //OppTrainer = new AI_Easy(Charizard,Blastoise,Venusaur,"prof.oak"); 
-  
-  //oppTeam = OppTrainer.AI_Team;
-  yourPokemonOut = yourTeam.get(0);
-  yourPreviousPoke = yourPokemonOut;
   
   choosePokeArrow = loadImage("arrow.png");
   
@@ -115,11 +112,7 @@ void setup() {
   challengeScreen = loadImage("challenge.png");
   
   battle = loadImage("battlers-info-template.png");  
-  yourPoke = loadImage("Sprites/Back/" + yourPokemonOut.index+".PNG"); 
-  //oppPoke = loadImage("Sprites/Front/" + oppPokemonOut.index+".PNG");
- 
-  yourPoke.resize(230,230);
-  //oppPoke.resize(225,225);
+  
  
   options = loadImage("pkmn-battle-bottom-bar.png");
   choiceArrow = loadImage("arrow.png");
@@ -132,18 +125,15 @@ void setup() {
   switchScreen = loadImage("switching.png");
   switchArrow = loadImage("arrow.png");   
   
-  hpToShow = yourPokemonOut.hp;
-  yourdisplayHP = " " + yourPokemonOut.hp;
-  /*oppPokemonOut.a1 = Thunder_Wave;
-  oppPokemonOut.a2 = Tackle;
-  oppPokemonOut.a3 = Flamethrower;
-  oppPokemonOut.a4 = Strength;*/
    
 }
 
 void draw() {
   //println(state);
   frameRate(30);
+  if (state.equals("choosePoke")) {
+    setupChoosePokemonScreen();  
+  }
   if (state.equals("chooseOpp")) {
     setupChooseOppScreen();  
   }
@@ -267,7 +257,9 @@ void switchYou() {
       }   
       
       
-      
+      for (int i = 0; i < yourPokemonOut.statStatus.length; i++) {
+        yourPokemonOut.statStatus[i] = 0;  
+      }
       
       yourPreviousPoke = yourPokemonOut;
       yourPokemonOut = yourTeam.get(partySlot);
@@ -312,6 +304,10 @@ void switchOpp() {
     if (!oppPokemonOut.getStatus().equals("FNT")) {
       oppSwitchedThisTurn = true;
       oppAttack = None;
+    }
+    
+    for (int i = 0; i < oppPokemonOut.statStatus.length; i++) {
+      oppPokemonOut.statStatus[i] = 0;  
     }
     
     oppPokemonOut = switchTo;
@@ -460,22 +456,32 @@ void displayTeamInfo() {
 //-------------------------------
 
 void chooseOppDiff() {
-  //println(oppLevel + "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL " + oppLevel);
+  Poke first = Venusaur;
+  Poke second = Charizard;
+  Poke third = Blastoise;
   if (oppLevel == 1) {
-    OppTrainer = new AI_Easy(Magikarp,Charizard,Venusaur,"prof.oak"); 
+    OppTrainer = new AI_Easy(first,second,third,"prof.oak"); 
   }
   else if (oppLevel == 2) {
-    OppTrainer = new AI_Normal(Blastoise,Charizard,Venusaur,"prof.oak");
+    OppTrainer = new AI_Normal(first,second,third,"prof.oak");
     //println("norm");
   }  
   else if(oppLevel == 3){
-    OppTrainer = new AI_Hard(Blastoise,Charizard,Venusaur,"prof.oak");
+    OppTrainer = new AI_Hard(first,second,third,"prof.oak");
   }
-  //println("hey");
+
   oppTeam = OppTrainer.AI_Team;
   oppPokemonOut = oppTeam.get(0);
   oppPoke = loadImage("Sprites/Front/" + oppPokemonOut.index+".PNG");
   oppPoke.resize(225,225);
+  
+  yourPokemonOut = yourTeam.get(0);
+  yourPreviousPoke = yourPokemonOut;
+  yourPoke = loadImage("Sprites/Back/" + yourPokemonOut.index+".PNG");  
+  yourPoke.resize(230,230);
+  hpToShow = yourPokemonOut.hp;
+  yourdisplayHP = " " + yourPokemonOut.hp;
+  
 }
 
 
@@ -766,7 +772,6 @@ void blankBox() {
 //----------------------------------------------------------
 
 void animateTurn() {
-  println(state);
   
   //needs to add text box with attacks and side effects
   blankBox();
@@ -1021,7 +1026,6 @@ void oppEffectivenessText() {
 //---------------------------------
 
 void oppAttackText() {
-  println(oppAttack);
   
   if (oppAttack == None) {
       if (state.equals("turn-p1")) {
@@ -1042,7 +1046,33 @@ void oppAttackText() {
         textShowTime = 0;
         state = nextState(oppPokemonOut);
       }
-    }    
+    }
+    /*else if (oppPokemonOut.confused) {
+      println("hereto");
+      println(textShowTime);
+      if (textShowTime < 45) {
+        text("Enemy " + oppPokemonOut.getName()+"'s",50,475);
+        text("confused!",50,535);
+        textShowTime++;      
+      }
+      if (textShowTime < 90 && textShowTime >= 45) {
+        if (oppPokemonOut.hitSelf) {
+          text("Enemy " + oppPokemonOut.getName() + " hurt",50,475);
+          text("itself in confusion!",50,535);
+          oppHealthLost = oppPokemonOut.health - oppPokemonOut.hp;
+          textShowTime++;  
+        }
+        else {
+          text("Enemy " + oppPokemonOut.getName(),50,475);
+          text("used " + oppAttack.toString()+"!",50,535); 
+          yourDropHealth();    
+        }
+      }
+      else {
+        textShowTime = 0;
+        state = nextState(oppPokemonOut);
+      }    
+    }*/
     else if (oppPokemonOut.turnParalyzed) {
       if (textShowTime < 45) {
         text("Enemy " + oppPokemonOut.getName()+"\'s",50,475);
@@ -1160,7 +1190,32 @@ void yourAttackText() {
         textShowTime = 0;
         state = nextState(yourPokemonOut);
       }
-    }     
+    } 
+    /*else if (yourPokemonOut.confused) {
+      if (textShowTime < 45) {
+        text(yourPokemonOut.getName(),50,475);
+        text("is confused!",50,535);
+        textShowTime++;      
+      }
+      if (textShowTime < 90 && textShowTime >= 45) {
+        if (yourPokemonOut.hitSelf) {
+          text(yourPokemonOut.getName() + " hurt",50,475);
+          text("itself in confusion!",50,535);
+          yourHealthLost = yourPokemonOut.health - yourPokemonOut.hp;
+          hpToShow = yourPokemonOut.hp;
+          textShowTime++;  
+        }
+        else {
+          text(yourPokemonOut.getName(),50,475);
+          text("used " + yourAttack.toString()+"!",50,535); 
+          oppDropHealth();    
+        }
+      }
+      else {
+        textShowTime = 0;
+        state = nextState(yourPokemonOut);
+      }    
+    }*/
     else if (yourPokemonOut.turnParalyzed) {
       if (textShowTime < 45) {
         text(yourPokemonOut.getName()+"\'s",50,475);
@@ -1345,6 +1400,20 @@ void turnEvents() {
       }
       if (oppPokemonOut.sleepTurns == 0 && oppPokemonOut.getStatus().equals("SLP")) {
         oppPokemonOut.setStatus("");  
+      }
+      
+      
+      if (yourPokemonOut.confuseTurns > 0) {
+        yourPokemonOut.confuseTurns--;  
+      }
+      if (oppPokemonOut.confuseTurns > 0) {
+        oppPokemonOut.sleepTurns--;  
+      }
+      if (yourPokemonOut.confuseTurns == 0 && yourPokemonOut.confused) {
+        yourPokemonOut.confused = false;  
+      }
+      if (oppPokemonOut.sleepTurns == 0 && oppPokemonOut.confused) {
+        oppPokemonOut.confused = false;  
       }
       
       //println("sleep turns: " + oppPokemonOut.sleepTurns);
@@ -1565,13 +1634,10 @@ void oppDropHealth() {
 //DROP YOUR HEALTH BIT BY BIT
 //-------------------------------------
 void yourDropHealth() {
-  println("time to drop");
-  println(yourPokemonOut.hp);
   if (yourPokemonOut.health - yourPokemonOut.hp > yourHealthLost) {
     if (yourHealthLost < yourPokemonOut.health && !oppPokemonOut.turnParalyzed) {
       yourHealthLost++; 
       hpToShow--;
-      println("dropping health");
     }
     
   }
@@ -1793,13 +1859,15 @@ int wait = 0;
 int choosePokePosition = 0;
 int choosePokeScreenPos = 0;
 int choosePokeArrowPos = 0;
+ArrayList<Poke>yTeam = new ArrayList<Poke>();
+Poke addBack1;
+Poke addBack2;
 
 //-------------------------------------
 //Setup CHOOSE POKEMON SCREEN
 //----------------------------------
 
 void setupChoosePokemonScreen() {
-    println(oppTeam.get(0).hp);
   frameRate(30);
   background(255,255,255);
   textFont(font,32);
@@ -1819,7 +1887,7 @@ void setupChoosePokemonScreen() {
   if (keyPressed) {
     frameRate(30);  
   }
-  if (keyPressed && keyCode == DOWN && choosePokePosition < 150 && wait == 0) {
+  if (keyPressed && keyCode == DOWN && choosePokePosition < Pokemons.size()-1 && wait == 0) {
     if (choosePokeArrowPos >= 9) {
       choosePokeScreenPos++;
     }
@@ -1839,10 +1907,28 @@ void setupChoosePokemonScreen() {
   }
   
   if (yourTeam.size() >= 3) {
+    Pokemons.add(addBack1);
+    Pokemons.add(addBack2);
     state = "chooseOpp";
   }  
 }
 
+void keyReleased() {
+  if (state.equals("choosePoke") && (key == 'Z' || key == 'z')) {
+    yourTeam.add(Pokemons.get(choosePokePosition));
+    if (yourTeam.size() == 1) {
+      addBack1 = Pokemons.get(choosePokePosition);
+      Pokemons.remove(choosePokePosition);
+    }
+    if (yourTeam.size() == 2) {
+      addBack2 = Pokemons.get(choosePokePosition);
+      Pokemons.remove(choosePokePosition);
+    }
+    choosePokePosition = 0;
+    choosePokeScreenPos = 0;
+    choosePokeArrowPos = 0;
+  }
+}
 
 //--------------------------------------------------
 //SETUP CHOOSE OPPONENT SCREEN
