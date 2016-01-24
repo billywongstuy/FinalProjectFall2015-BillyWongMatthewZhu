@@ -49,7 +49,7 @@ Attack Leech_Life = new Attack("Leech Life",20,"Bug","Physical",100,15,"heal(hal
 Attack Pin_Missile = new Attack("Pin Missile",14,"Bug","Physical",85,20,"multi(2,5)",1,"o","",0,"");
 Attack Twineedle = new Attack("Twineedle",25,"Bug","Physical",100,20,"multi(2,2)",1,"o","",0,"");
 Attack String_Shot = new Attack("String Shot",0,"Bug","Status",95,40,"lowerStat(3,1)",1,"o","",0,"");
-Attack Thunder_Punch = new Attack("ThunderPunch",75,"Electric","Special",100,15,"paralyze",0.1,"o","",0,"");
+Attack ThunderPunch = new Attack("ThunderPunch",75,"Electric","Special",100,15,"paralyze",0.1,"o","",0,"");
 Attack Thunder = new Attack("Thunder",120,"Electric","Special",70,10,"paralyze",0.3,"o","",0,"");
 Attack Thundershock = new Attack("Thundershock",40,"Electric","Special",100,30,"paralyze",0.1,"o","",0,"");
 Attack Thunderbolt = new Attack("Thunderbolt",95,"Electric","Special",100,15,"paralyze",0.1,"o","",0,"");
@@ -169,6 +169,8 @@ Attack Surf = new Attack("Surf",95,"Water","Special",100,15,"",0,"","",0,"");
 Attack Water_Gun = new Attack("Water Gun",40,"Water","Special",100,25,"",0,"","",0,"");
 Attack Withdraw = new Attack("Withdraw",0,"Water","Status",100,40,"raiseStat(1,1)",1,"s","",0,"");
 
+//need to implement hurt self which is 1 hp
+Attack High_Jump_Kick = new Attack("High Jump Kick",85,"Fighting","Physical",90,20,"hurtSelf()",1,"s","",0,"");
 
 
 /*
@@ -180,7 +182,6 @@ Attack Super_Fang = new Attack("Super Fang",0,"Normal","Physical",90,10,"setDama
 
 Attack Dragon Rage = new Attack("Dragon Rage",0,"Dragon","Special",100,10,"setDamage(40)",,"o","",0,"");
 Attack Counter = new Attack("Counter",0,"Fighting","Physical",100,20,"",,"","",0,"");
-Attack High Jump Kick = new Attack("High Jump Kick",85,"Fighting","Physical",90,20,"hurtSelf()",1,"s","",0,"");
 Attack Jump Kick = new Attack("Jump Kick",70,"Fighting","Physical",95,25,"hurtSelf()",1,"s","",0,"");
 Attack Seismic Toss = new Attack("Seismic Toss",0,"Fighting","Physical",100,20,"setDamage(selfLevel)",1,"o","",0,"");
 Attack Submission = new Attack("Submission",80,"Fighting","Physical",80,25,"recoil(0.25)",1,"s","",0,"");
