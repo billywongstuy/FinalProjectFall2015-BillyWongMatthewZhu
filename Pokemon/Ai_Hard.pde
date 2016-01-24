@@ -161,15 +161,20 @@ class AI_Hard extends AI{
       return damage;
       }
       boolean willDie(Poke opp){
-        if(calculateDamage(opp, yourPokemonOut.geta1()) >= opp.hp||
-           calculateDamage(opp, yourPokemonOut.geta2()) >= opp.hp||
-           calculateDamage(opp, yourPokemonOut.geta3()) >= opp.hp||
-           calculateDamage(opp, yourPokemonOut.geta4()) >= opp.hp){
+        int pokeIndex = null;
+        for(int a =0; a < PlayerTeam.length; a ++){
+          if(PlayerTeam[a].getClass() == yourPokemonOut.getClass()){
+            pokeIndex = a;
+          }
+        }
+        for(int b = 0; b < PlayerAttacks[pokeIndex].length; b ++){
+            if(calculateDamage(opp, PlayerAttacks[pokeIndex][b]) >= opp.hp){
              return true;
            }
            else{
              return false;
            }
+      }
       }
       boolean willKill(Poke yourPoke){
          if(calculateDamage(oppPokemonOut, yourPokemonOut.geta1()) >= yourPoke.hp||
