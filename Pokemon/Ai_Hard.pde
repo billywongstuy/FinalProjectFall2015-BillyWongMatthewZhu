@@ -161,7 +161,8 @@ class AI_Hard extends AI{
       return damage;
       }
       boolean willDie(Poke opp){
-        int pokeIndex = null;
+        boolean willDie = false;
+        int pokeIndex = 0;
         for(int a =0; a < PlayerTeam.length; a ++){
           if(PlayerTeam[a].getClass() == yourPokemonOut.getClass()){
             pokeIndex = a;
@@ -169,13 +170,13 @@ class AI_Hard extends AI{
         }
         for(int b = 0; b < PlayerAttacks[pokeIndex].length; b ++){
             if(calculateDamage(opp, PlayerAttacks[pokeIndex][b]) >= opp.hp){
-             return true;
+             willDie = true;
            }
-           else{
-             return false;
-           }
+           
+        }
+        return willDie;
       }
-      }
+
       boolean willKill(Poke yourPoke){
          if(calculateDamage(oppPokemonOut, yourPokemonOut.geta1()) >= yourPoke.hp||
            calculateDamage(oppPokemonOut, yourPokemonOut.geta2()) >= yourPoke.hp||
