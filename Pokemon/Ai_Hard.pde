@@ -87,7 +87,7 @@ class AI_Hard extends AI{
       }
     }
     int beginningSize = attacks.size();
-    ArrayList<Attack>Heals = new ArrayList<Attack>();
+   /* ArrayList<Attack>Heals = new ArrayList<Attack>();
     ArrayList<Attack>Stats = new ArrayList<Attack>();
     for(int a = 0; a <attacks.size(); a++){
       if((attacks.get(a).effect1.substring(0,3)).equals("hea")){
@@ -96,7 +96,7 @@ class AI_Hard extends AI{
       if((attacks.get(a).effect1.substring(0,3)).equals("rai")){
         Stats.add(attacks.get(a));
       }
-    }
+    }*/
     
     ArrayList<Attack>EffectiveMove = new ArrayList<Attack>();
     float strongestEffectiveness = 2;
@@ -111,10 +111,10 @@ class AI_Hard extends AI{
         strongestEffectiveness = checkBattleEffectiveness(attacks.get(i),yourPokemonOut);
       }
     }
-    if(oppPokemonOut.hp < (oppPokemonOut.health)/2){
+    /*if(oppPokemonOut.hp < (oppPokemonOut.health)/2){
       planAttack = Heals.get((int)(Math.random()*Heals.size()));
       return planAttack;
-    }
+    }*/
     if (EffectiveMove.size() > 0) {
       println("no supper effecrive");
       Attack HiDamage = EffectiveMove.get(0);
