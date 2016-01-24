@@ -20,15 +20,11 @@ class AI_Hard extends AI{
     //fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType2()) < 2){
      // return 1;
     //}
-    if(checkFullEffectiveness(currentAttackType,oppPokemonOut.getType1(),oppPokemonOut.getType2()) >=2){
-      return 1;
+    if(checkFullEffectiveness(currentAttackType,oppPokemonOut.getType1(),oppPokemonOut.getType2()) <2){
+      return 0;
     }
     
-    if(checkTypeEffectiveness(yourPreviousPoke.getType1(),oppPokemonOut) >= 2||
-    checkTypeEffectiveness(yourPreviousPoke.getType2(),oppPokemonOut) >= 2){
-      return 1;
-    }
-    else if(oppPokemonOut.speed > yourPokemonOut.speed){
+    else if(oppPokemonOut.speed > yourPokemonOut.speed && !willDie(oppPokemonOut)){
             if(willKill(yourPokemonOut)){
               return 0;
             }
@@ -91,6 +87,16 @@ class AI_Hard extends AI{
       }
     }
     int beginningSize = attacks.size();
+    ArrayList<Attack>Heals = new ArrayList<Attack>();
+    ArrayList<Attack>Stats = new ArrayList<Attack>();
+    for(int a = 0; a <attacks.size(); a++){
+      if((attacks.get(a).effect1.substring(0,3)).equals("hea")){
+        Heals.add(attacks.get(a));
+      }
+      if((attacks.get(a).effect1.substring(0,3)).equals("rai")){
+        Stats.add(attacks.get(a));
+      }
+    }
     
     ArrayList<Attack>EffectiveMove = new ArrayList<Attack>();
     float strongestEffectiveness = 2;
@@ -105,7 +111,10 @@ class AI_Hard extends AI{
         strongestEffectiveness = checkBattleEffectiveness(attacks.get(i),yourPokemonOut);
       }
     }
-    
+    if(oppPokemonOut.hp < (oppPokemonOut.health)/2){
+      planAttack = Heals.get((int)(Math.random()*Heals.size()));
+      return planAttack;
+    }
     if (EffectiveMove.size() > 0) {
       println("no supper effecrive");
       Attack HiDamage = EffectiveMove.get(0);
@@ -163,12 +172,12 @@ class AI_Hard extends AI{
       boolean willDie(Poke opp){
         boolean willDie = false;
         int pokeIndex = 0;
-        for(int a =0; a < PlayerTeam.length; a ++){
-          if(PlayerTeam[a].getClass() == yourPokemonOut.getClass()){
+        for(int a =0; a < pokemonStored; a ++){
+          if(PlayerTeam[a].getClass()== yourPokemonOut.getClass()){
             pokeIndex = a;
           }
         }
-        for(int b = 0; b < PlayerAttacks[pokeIndex].length; b ++){
+        for(int b = 0; b < attacksStored[pokeIndex]; b ++){
             if(calculateDamage(opp, PlayerAttacks[pokeIndex][b]) >= opp.hp){
              willDie = true;
            }
