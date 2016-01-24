@@ -27,33 +27,29 @@ abstract class AI {
  
   
   void storeAttack(){
-    for (int i = 0; i < PlayerTeam.length; i++) {
-      //if attack is none or null then immediately stop
+    //if attack is none or null then immediately stop
       //check if the pokemon matches the current pokemon out
       //if PlayerAttacks[i][3] != null stop
-      //if so check to see if yourAttack is in the PlayerAttacks[i][0-attacksStored]
-      //if not PlayerAttacks[i][attacksStored] = yourAttack
-      //attacksStored ++
-      if(yourAttack != null && yourAttack.name != "None"){
+      //if so check to see if yourAttack is in the PlayerAttacks[i][0-attacksStored[i]]
+      //if not PlayerAttacks[i][attacksStored[i]] = yourAttack
+      //attacksStored[i] ++
+      
+    
+    if(yourAttack != null && yourAttack != None){
+      for (int i = 0; i < pokemonStored; i++) {
         if(PlayerTeam[i].getClass()== yourPokemonOut.getClass()){
-            for(int a = 0; a < attacksStored.length; a ++){
-              if(PlayerAttacks[i][a] == null){
-                PlayerAttacks[i][attacksStored[a]] = yourAttack;
-                attacksStored[a] ++;
+          boolean hasMove = false;
+          if (PlayerAttacks[i][3] == null) {
+            for(int a = 0; a < attacksStored[i]; a ++){
+              if (PlayerAttacks[i][a] == yourAttack) {
+                hasMove = true;
               }
-              else{
-                boolean contains = false;
-                for(int j = 0; j < 4; j ++){
-                  if(yourAttack == PlayerAttacks[i][j]){
-                    contains = true;
-                  }
-                }
-                if(!contains){
-                  PlayerAttacks[i][attacksStored[i]] = yourAttack;       
-                  attacksStored[i] ++;
-                    }
-                }
             }
+            if (!hasMove) {
+              PlayerAttacks[i][attacksStored[i]] = yourAttack;
+              attacksStored[i]++;
+            }
+          }
         }
       }
     }
@@ -61,11 +57,15 @@ abstract class AI {
   
   void storePokemon() {
     if (PlayerTeam[2] == null) {
-      PlayerTeam[pokemonStored] = yourPokemonOut;
+      boolean alreadyStored = false;
       for (int i = 0; i < pokemonStored; i++) {
         if (PlayerTeam[i].getClass().equals(yourPokemonOut.getClass())) {
-          PlayerTeam[pokemonStored-1] = null;  
+          alreadyStored = true;
         }
+      }
+      if (!alreadyStored) {
+        PlayerTeam[pokemonStored] = yourPokemonOut;
+        pokemonStored++;
       }
     }
   }

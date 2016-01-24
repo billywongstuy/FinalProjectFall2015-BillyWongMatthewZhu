@@ -253,27 +253,38 @@ void switchYou() {
       }
     }
     else {
-     
+       
+      
       if (!yourPokemonOut.getStatus().equals("FNT")) {
         youSwitchedThisTurn = true;
         oppAttack = OppTrainer.chooseMove();
-      }            
+      }   
+      
+      
       yourPreviousPoke = yourPokemonOut;
       yourPokemonOut = yourTeam.get(partySlot);
+      
+      
+      
       yourHealthLost = yourPokemonOut.health - yourPokemonOut.hp;
       hpToShow = yourPokemonOut.hp;
       yourPoke = loadImage("Sprites/Back/" + yourPokemonOut.index+".PNG");
       
-      state = "youSendOut";  
       
-      if (yourAttack.name.equals("Explosion") || yourAttack.name.equals("Self-Destruct")) {
+      
+      state = "youSendOut";  
+     
+      
+      if (yourAttack != null && (yourAttack.name.equals("Explosion") || yourAttack.name.equals("Self-Destruct"))) {
         state = "oppSendOut";  
       }
-      if (oppAttack.name.equals("Explosion") || oppAttack.name.equals("Self-Destruct")) {
+      if (oppAttack != null && (oppAttack.name.equals("Explosion") || oppAttack.name.equals("Self-Destruct"))) {
         state = "oppSendOut";  
       }
+       
       
     }
+   
   }
   
 }
@@ -387,7 +398,7 @@ void youSendOut() {
     
     if (yourAttack.name.equals("Explosion") || yourAttack.name.equals("Self-Destruct")) {
       oppAttack = null; 
-      yourAttack = null;
+      //yourAttack = null;
     }
     
   }
@@ -1348,6 +1359,14 @@ void turnEvents() {
       }
       
       attackTransitionTime = 0;
+      
+      if (OppTrainer instanceof AI_Hard) {
+        ((AI_Hard)OppTrainer).collectInfo();  
+        println("Info taken");
+        println(Arrays.toString(OppTrainer.PlayerTeam));
+        println(Arrays.deepToString(OppTrainer.PlayerAttacks));
+      }
+            
             
     }
   }

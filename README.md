@@ -4,7 +4,6 @@
 
 # CURRENT BUGS: #
 -If an critical hit causes a Pokemon to faint, the last bit of text is skipped over and goes straight to faint
--Suicide attack does not cause user to faint if the target faints
 
 # NITPICKS #
 -Program currently uses a decent amount of memory since it loads image and prints text over and over
@@ -12,16 +11,15 @@
 
 # NEXT PLANS #
 -Program cpu usage fix
--Add multi hit attacks
 -Add flinching
 -Add healing
 -Work on Hard AI information storage
--Status appearance time
 
 # CHANGELOG #
 
 ## 1/23/16 ##
 -Fixed Explosion Bug
+-Worked on collect info method for Hard AI (Fixed bug for storePokemon and finished storeAttack)
 
 ## 1/22/16 ##
 -added StoreAttacks for AI

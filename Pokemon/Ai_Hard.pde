@@ -48,9 +48,7 @@ class AI_Hard extends AI{
           
   void collectInfo() {
     storePokemon();
-    storeAttack();
-    
-      
+    storeAttack();      
   }
         
       
