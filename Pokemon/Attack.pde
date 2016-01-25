@@ -81,16 +81,20 @@ class Attack {
     if (effect.substring(0,3).equals("low")) {
       int stat = Integer.parseInt(effect.substring(effect.indexOf("(")+1,effect.indexOf(",")));
       int lower = Integer.parseInt(effect.substring(effect.indexOf(",")+1,effect.indexOf(")")));
+      ary[0] = target.getName()+"'s " + getStat(stat);
+      ary[1] = "fell!";
+      if (lower >= 2) {
+        ary[1] = "greatly fell!";
+      }
       if (target.statStatus[stat] + lower >= -6) {
         target.statStatus[stat] -= lower;  
       }
       else if (target.statStatus[stat] == -5) {
         target.statStatus[stat] = -6;    
       }
-      ary[0] = target.getName()+"'s " + getStat(stat);
-      ary[1] = "fell!";
-      if (lower >= 2) {
-        ary[1] = "greatly fell!";
+      else if (target.statStatus[stat] == -6) {
+        ary[0] = "Nothing happened!";
+        ary[1] = "";
       }
     }
     if (effect.substring(0,3).equals("rai")) {
