@@ -90,7 +90,7 @@ abstract class Poke implements Cloneable{
       //println(name + " is fainted!");
       return 0;  
     }
-    else if (rand > attack.accuracy) {
+    else if (rand*multipliers[opp.statStatus[4]+6] > attack.accuracy*multipliers[statStatus[5]+6]) {
       attack.ppLeft--;
       attackMissed = true;  
       return 0;

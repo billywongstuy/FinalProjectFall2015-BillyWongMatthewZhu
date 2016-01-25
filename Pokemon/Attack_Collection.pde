@@ -59,8 +59,6 @@ Attack Low_Kick = new Attack("Low Kick",50,"Fighting","Physical",90,20,"flinch",
 Attack Rolling_Kick = new Attack("Rolling Kick",60,"Fighting","Physical",85,15,"flinch",0.3,"o","",0,"");
 Attack Fire_Punch = new Attack("Fire Punch",75,"Fire","Special",100,15,"burn",0.1,"o","",0,"");
 Attack Ember = new Attack("Ember",40,"Fire","Special",100,25,"burn",0.1,"o","",0,"");
-
-//change back to 0.3 and 120
 Attack Fire_Blast = new Attack("Fire Blast",120,"Fire","Special",85,5,"burn",0.3,"o","",0,"");
 Attack Fire_Spin = new Attack("Fire Spin",15,"Fire","Special",70,15,"trap(2,5)",1,"o","",0,"");
 Attack Flamethrower = new Attack("Flamethrower",95,"Fire","Special",100,15,"burn",0.1,"o","",0,"");
@@ -121,28 +119,27 @@ Attack Gust = new Attack("Gust",40,"Normal","Physical",100,35,"",0,"","",0,"");
 Attack Hyper_Beam = new Attack("Hyper Beam",150,"Normal","Physical",90,5,"",0,"","",0,"");
 Attack Swift = new Attack("Swift",60,"Normal","Physical",100,20,"",0,"","",0,"");
 Attack Tri_Attack = new Attack("Tri Attack",80,"Normal","Physical",100,10,"",0,"","",0,"");
-Attack Defense_Curl = new Attack("Defense Curl",0,"Normal","Status",100,40,"raiseStat(1,1)",1,"s","",0,"");
-Attack Double_Team = new Attack("Double Team",0,"Normal","Status",100,15,"raiseStat(4,1)",1,"s","",0,"");
+Attack Defense_Curl = new Attack("Defense Curl",0,"Normal","Status",400,40,"raiseStat(1,1)",1,"s","",0,"");
+Attack Double_Team = new Attack("Double Team",0,"Normal","Status",400,15,"raiseStat(4,1)",1,"s","",0,"");
 Attack Flash = new Attack("Flash",0,"Normal","Status",70,20,"lowerStat(5,1)",1,"o","",0,"");
 Attack Glare = new Attack("Glare",0,"Normal","Status",75,30,"paralyze",1,"o","",0,"");
 Attack Growl = new Attack("Growl",0,"Normal","Status",100,40,"lowerStat(0,1)",1,"o","",0,"");
-Attack Growth = new Attack("Growth",0,"Normal","Status",100,40,"raiseStat(2,1)",1,"s","",0,"");
-Attack Harden = new Attack("Harden",0,"Normal","Status",100,30,"raiseStat(1,1)",1,"s","",0,"");
-Attack Leer = new Attack("Leer",0,"Normal","Status",100,30,"lowerStat(1,1)",1,"o","",0,"");
+Attack Growth = new Attack("Growth",0,"Normal","Status",400,40,"raiseStat(2,1)",1,"s","",0,"");
+Attack Harden = new Attack("Harden",0,"Normal","Status",400,30,"raiseStat(1,1)",1,"s","",0,"");
+Attack Leer = new Attack("Leer",0,"Normal","Status",400,30,"lowerStat(1,1)",1,"o","",0,"");
 Attack Lovely_Kiss = new Attack("Lovely Kiss",0,"Normal","Status",75,10,"sleep",1,"o","",0,"");
-Attack Minimize = new Attack("Minimize",0,"Normal","Status",100,20,"raiseStat(4,2)",1,"s","",0,"");
-Attack Recover = new Attack("Recover",0,"Normal","Status",100,20,"heal(50)",1,"s","",0,"");
+Attack Minimize = new Attack("Minimize",0,"Normal","Status",400,20,"raiseStat(4,2)",1,"s","",0,"");
+Attack Recover = new Attack("Recover",0,"Normal","Status",400,20,"heal(50)",1,"s","",0,"");
 Attack Sand_Attack = new Attack("Sand Attack",0,"Normal","Status",100,15,"lowerStat(5,1)",1,"o","",0,"");
 Attack Screech = new Attack("Screech",0,"Normal","Status",85,40,"lowerStat(1,2)",1,"o","",0,"");
-Attack Sharpen = new Attack("Sharpen",0,"Normal","Status",100,30,"raiseStat(0,1)",1,"s","",0,"");
+Attack Sharpen = new Attack("Sharpen",0,"Normal","Status",400,30,"raiseStat(0,1)",1,"s","",0,"");
 Attack Sing = new Attack("Sing",0,"Normal","Status",55,15,"sleep",1,"o","",0,"");
 Attack Smokescreen = new Attack("Smokescreen",0,"Normal","Status",100,20,"lowerStat(5,1)",1,"o","",0,"");
-Attack Soft_Boiled = new Attack("Soft-Boiled",0,"Normal","Status",100,10,"heal(50)",1,"s","",0,"");
-Attack Splash = new Attack("Splash",0,"Normal","Status",100,40,"",0,"","",0,"");
+Attack Soft_Boiled = new Attack("Soft-Boiled",0,"Normal","Status",400,10,"heal(50)",1,"s","",0,"");
+Attack Splash = new Attack("Splash",0,"Normal","Status",400,40,"",0,"","",0,"");
 Attack Supersonic = new Attack("Supersonic",0,"Normal","Status",55,20,"confuse",1,"o","",0,"");
-Attack Swords_Dance = new Attack("Swords Dance",0,"Normal","Status",100,30,"raiseStat(0,2)",1,"s","",0,"");
+Attack Swords_Dance = new Attack("Swords Dance",0,"Normal","Status",400,30,"raiseStat(0,2)",1,"s","",0,"");
 Attack Tail_Whip = new Attack("Tail Whip",0,"Normal","Status",100,30,"lowerStat(1,1)",1,"o","",0,"");
-Attack Whirlwind = new Attack("Whirlwind",0,"Normal","Status",100,20,"",0,"","",0,"");
 Attack Poison_Sting = new Attack("Poison Sting",15,"Poison","Physical",100,35,"poisons",0.3,"o","",0,"");
 Attack Acid = new Attack("Acid",40,"Poison","Physical",100,30,"lowerStat(1,1)",0.1,"o","",0,"");
 Attack Sludge = new Attack("Sludge",65,"Poison","Physical",100,20,"poisons",0.3,"o","",0,"");
@@ -153,12 +150,12 @@ Attack PoisonPowder = new Attack("PoisonPowder",0,"Poison","Status",75,35,"poiso
 Attack Confusion = new Attack("Confusion",50,"Psychic","Special",100,25,"confuse",0.1,"o","",0,"");
 Attack Psybeam = new Attack("Psybeam",65,"Psychic","Special",100,20,"confuse",0.1,"o","",0,"");
 Attack Psychic = new Attack("Psychic",90,"Psychic","Special",100,10,"lowerStat(2,1)",0.3,"o","",0,"");
-Attack Agility = new Attack("Agility",0,"Psychic","Status",100,30,"raiseStat(3,2)",1,"s","",0,"");
-Attack Amnesia = new Attack("Amnesia",0,"Psychic","Status",100,20,"raiseStat(2,2)",1,"s","",0,"");
-Attack Barrier = new Attack("Barrier",0,"Psychic","Status",100,30,"raiseStat(1,2)",1,"s","",0,"");
+Attack Agility = new Attack("Agility",0,"Psychic","Status",400,30,"raiseStat(3,2)",1,"s","",0,"");
+Attack Amnesia = new Attack("Amnesia",0,"Psychic","Status",400,20,"raiseStat(2,2)",1,"s","",0,"");
+Attack Barrier = new Attack("Barrier",0,"Psychic","Status",400,30,"raiseStat(1,2)",1,"s","",0,"");
 Attack Hypnosis = new Attack("Hypnosis",0,"Psychic","Status",60,20,"sleep",1,"o","",0,"");
 Attack Kinesis = new Attack("Kinesis",0,"Psychic","Status",80,15,"lowerStat(5,1)",1,"o","",0,"");
-Attack Meditate = new Attack("Meditate",0,"Psychic","Status",100,40,"raiseStat(0,1)",1,"s","",0,"");
+Attack Meditate = new Attack("Meditate",0,"Psychic","Status",400,40,"raiseStat(0,1)",1,"s","",0,"");
 Attack Rock_Slide = new Attack("Rock Slide",75,"Rock","Physical",90,10,"flinch",0.3,"o","",0,"");
 Attack Rock_Throw = new Attack("Rock Throw",50,"Rock","Physical",65,15,"",0,"","",0,"");
 Attack Clamp = new Attack("Clamp",35,"Water","Physical",75,10,"trap(2,5)",1,"o","",0,"");
@@ -169,13 +166,15 @@ Attack BubbleBeam = new Attack("BubbleBeam",65,"Water","Special",100,20,"lowerSt
 Attack Hydro_Pump = new Attack("Hydro Pump",120,"Water","Special",80,5,"",0,"","",0,"");
 Attack Surf = new Attack("Surf",95,"Water","Special",100,15,"",0,"","",0,"");
 Attack Water_Gun = new Attack("Water Gun",40,"Water","Special",100,25,"",0,"","",0,"");
-Attack Withdraw = new Attack("Withdraw",0,"Water","Status",100,40,"raiseStat(1,1)",1,"s","",0,"");
+Attack Withdraw = new Attack("Withdraw",0,"Water","Status",400,40,"raiseStat(1,1)",1,"s","",0,"");
 
 //need to implement hurt self which is 1 hp
 Attack High_Jump_Kick = new Attack("High Jump Kick",85,"Fighting","Physical",90,20,"hurtSelf()",1,"s","",0,"");
 
 
 /*
+Attack Whirlwind = new Attack("Whirlwind",0,"Normal","Status",100,20,"",0,"","",0,"");
+
 Attack Night Shade = new Attack("Night Shade",0,"Ghost","Physical",100,15,"setDamage(selfLevel)",1,"o","",0,"");
 Attack Solar Beam = new Attack("Solar Beam",120,"Grass","Special",100,10,"",,"","",0,"");
 Attack Leech_Seed = new Attack("Leech Seed",0,"Grass","Status",90,10,"seed",1,"o","",0,"");
