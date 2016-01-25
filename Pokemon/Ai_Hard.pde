@@ -83,8 +83,8 @@ class AI_Hard extends AI{
       }
     }
     
-    for (int k = 0; k < status.size(); k++) {
-      if (!yourPokemonOut.getStatus().equals("") && status.get(k).effect1Target.equals("o") && !attacks.get(k).effect1.substring(0,3).equals("rai") && !attacks.get(k).effect1.substring(0,3).equals("low")) {
+    for (int k = 0; k < status.size(); k++) {     
+      if (!yourPokemonOut.getStatus().equals("") && status.get(k).effect1Target.equals("o") && !status.get(k).effect1.substring(0,3).equals("rai") && !status.get(k).effect1.substring(0,3).equals("low")) {
         status.remove(k);
         k--;
       }
@@ -111,10 +111,10 @@ class AI_Hard extends AI{
         }
       }
       planAttack = greatestDamage;
-      println(planAttack);
+      //println(planAttack);
     }
     
-    println(planAttack);
+    //println(planAttack);
     
     int random = (int)(Math.random()*2);
     println(random);
@@ -123,7 +123,7 @@ class AI_Hard extends AI{
       planAttack = status.get((int)(Math.random()*status.size()));    
     }
    
-   
+   //use strongest damage here
    //currently ok for need to heal, but what if you're below 50% and the attack does over 50% anyways (second part of if)
     if (status.size() > 0 && willAnyYourMovesCauseFaint() && oppPokemonOut.hp < (int)(oppPokemonOut.health/2)) {
       for (int i = 0; i < status.size(); i++) {
@@ -158,6 +158,21 @@ class AI_Hard extends AI{
     return damage;
   }
       
+  int yourStrongestDamage() {
+    int strongestDamage = 0;
+    int pokeOutIndex = 0;
+    for (int i = 0; i < pokemonStored; i++) {
+      if (PlayerTeam[i].getClass() == yourPokemonOut.getClass()) {
+        pokeOutIndex = i;    
+      }
+    }
+    for (int j = 0; j < attacksStored[pokeOutIndex]; j++) {
+      if (calculateDamage(oppPokemonOut,PlayerAttacks[pokeOutIndex][j]) > strongestDamage) {
+        strongestDamage = calculateDamage(oppPokemonOut,PlayerAttacks[pokeOutIndex][j]);
+      }
+    }  
+    return strongestDamage;
+  }
   
   boolean willDie(Attack a) {
     if (calculateDamage(oppPokemonOut,a) >= oppPokemonOut.hp) {
