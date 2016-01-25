@@ -22,9 +22,10 @@ class AI_Hard extends AI{
       }
       return 0;
     }   
-    else if(oppPokemonOut.speed < yourPokemonOut.speed && willAnyYourMovesCauseFaint()) {
+    else if(oppPokemonOut.speed < yourPokemonOut.speed && willAnyYourMovesCauseFaint() && !allLow() ) {
       return 1;
     }
+    else if(oppPokemonOut.speed > yourPokemonOut.speed && willDie(yourAttack) && 
     else{
       return 0;
     }
@@ -187,6 +188,18 @@ class AI_Hard extends AI{
     }
     return false;
   }
-      
+ boolean allLow(){
+   boolean low = true;
+   for(int a =0; a < AI_Team.size(); a ++){
+     if(AI_Team.get(a).hp > AI_Team.get(a).health * (3/10)){
+       low = false;
+     }
+   }
+   return low;
+ }
+ boolean hasHeal(){
+   boolean hasheal;
+   for(int z = 0; z < 4; z++){
+     if(
         
 }
