@@ -18,6 +18,9 @@ class AI_Hard extends AI{
         return 0;
       }
       else if (willAnyYourMovesCauseFaint()) {
+        if (hasHealMove() && yourStrongestDamage() < (int)(oppPokemonOut.health/2)) {
+          return 0;  
+        }
         return 1;  
       }
       return 0;
@@ -37,11 +40,16 @@ class AI_Hard extends AI{
   }
         
   //nextStep: make it so that it choose a Poke less likely to die or more likely to kill    
+    //choose the pokemon with the strongest attack on the opponent
+    //if it's not weak to opponent's type or one of the attacks
+  
+  
   Poke chooseNextPoke(){
     
     //add parts to check for weakness not to switch in
     ArrayList<Poke>canSwitchTo = new ArrayList<Poke>();
-    String currentAttackType = yourAttack.type;
+    ArrayList<Poke>notWeak = new ArrayList<Poke>();
+    
     for (int i = 0; i < AI_Team.size(); i++) {
       if (AI_Team.get(i) != oppPokemonOut && !AI_Team.get(i).getStatus().equals("FNT")) {
         canSwitchTo.add(AI_Team.get(i));  
@@ -50,16 +58,49 @@ class AI_Hard extends AI{
     if (canSwitchTo.size() == 0) {
       return null;  
     }
-    Poke chooseThis = canSwitchTo.get((int)(Math.random()*canSwitchTo.size()));
-    for(int a = 0; a < canSwitchTo.size(); a ++){
-      if (checkFullEffectiveness(currentAttackType,chooseThis.type1,chooseThis.type2) >= 2) {
-        chooseThis = canSwitchTo.get(a);        
+    Poke chooseThis;
+    
+    for (int j = 0; j < canSwitchTo.size(); j++) {
+      if (checkTypeEffectiveness(yourPokemonOut.type1,oppPokemonOut) <= 1 && checkTypeEffectiveness(yourPokemonOut.type2,oppPokemonOut) <= 1 && noAttackMovesSuperEffective()) {
+        notWeak.add(canSwitchTo.get(j));  
+      }
+    }
+    
+    ArrayList<Poke>toChooseFrom;
+    if (notWeak.size() > 0) {
+      toChooseFrom = notWeak;
+    }
+    else {
+      toChooseFrom = canSwitchTo;  
+    }
+    
+    //choose pokemon with strongest attack or type
+    
+    chooseThis = toChooseFrom.get((int)(Math.random()*canSwitchTo.size()));
+    for(int l = 0; l < toChooseFrom.size(); l++){
+      if (checkTypeEffectiveness(toChooseFrom.get(l).type1,yourPokemonOut) > 1 || checkTypeEffectiveness(toChooseFrom.get(l).type2,yourPokemonOut) > 1) {
+        chooseThis = canSwitchTo.get(l);        
       }              
     }
-    return chooseThis;     
+    
+    return chooseThis;
   }
        
 
+  boolean noAttackMovesSuperEffective() {
+    int pokeOutIndex = 0;
+    for (int i = 0; i < pokemonStored; i++) {
+      if (PlayerTeam[i].getClass() == yourPokemonOut.getClass()) {
+        pokeOutIndex = i;    
+      }
+    }
+    for (int j = 0; j < attacksStored[pokeOutIndex]; j++) {
+      if (checkTypeEffectiveness(PlayerAttacks[pokeOutIndex][j].type,oppPokemonOut) > 1) {
+        return false;  
+      }
+    }
+    return true;
+  }
               
   Attack chooseMove(){
     ArrayList<Attack>attacks = new ArrayList<Attack>();
@@ -210,9 +251,21 @@ class AI_Hard extends AI{
    }
    return low;
  }
- boolean hasHeal(){
-   boolean hasheal;
-   for(int z = 0; z < 4; z++){
-     if(
+ 
+ boolean hasHealMove(){
+    int pokeOutIndex = 0;
+    for (int i = 0; i < pokemonStored; i++) {
+      if (PlayerTeam[i].getClass() == yourPokemonOut.getClass()) {
+        pokeOutIndex = i;    
+      }
+    }
+    
+   for (int j = 0; j < attacksStored[pokeOutIndex]; j++) {
+     if (PlayerAttacks[pokeOutIndex][j].category.equals("Status") && PlayerAttacks[pokeOutIndex][j].effect1.substring(0,3).equals("hea")) {
+       return true;  
+     }
+   }
+   return false; 
+ }
         
 }
