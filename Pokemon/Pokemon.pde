@@ -1777,9 +1777,9 @@ int wait = 0;
 int choosePokePosition = 0;
 int choosePokeScreenPos = 0;
 int choosePokeArrowPos = 0;
-ArrayList<Poke>yTeam = new ArrayList<Poke>();
 Poke addBack1;
 Poke addBack2;
+Poke addBack3;
 
 //-------------------------------------
 //Setup CHOOSE POKEMON SCREEN
@@ -1791,9 +1791,9 @@ void setupChoosePokemonScreen() {
   textFont(font, 32);
   fill(0);
   int ycor = 1;
-  image(choosePokeArrow, 20, choosePokeArrowPos*32+52);
+  image(choosePokeArrow,220,choosePokeArrowPos*32+52);
   for (int i = choosePokeScreenPos; i < choosePokeScreenPos+10; i++) { 
-    text(Pokemons.get(i).name.toUpperCase(), 50, ycor*32+50);
+    text(Pokemons.get(i).name.toUpperCase(),250,ycor*32+50);
     ycor++;
   }
   if (wait == 1) {

@@ -78,7 +78,7 @@ abstract class Poke implements Cloneable{
   }
   
   int attack(Poke opp, Attack attack) {
-    println(this + " " + flinch);
+    //println(this + " " + flinch);
     attackEffects[0][0] = "";
     attackEffects[0][1] = "";
     attackEffects[1][0] = "";
@@ -122,7 +122,7 @@ abstract class Poke implements Cloneable{
         hitSelf = true;
         return 0;  
       }*/
-      println(this + " normal progression");
+      //println(this + " normal progression");
       hitSelf = false;
       turnParalyzed = false;
       frozen = false;
@@ -130,8 +130,8 @@ abstract class Poke implements Cloneable{
       flinch = false;
       attack.ppLeft--;
       int damage = opp.takeDamage(calculateDamage(opp, attack));
-      println(damage);
-      println(opp.hp);
+      //println(damage);
+      //println(opp.hp);
       if (attack.name.equals("Hyper Beam") && opp.hp > 0) {
         setRecharge = true;    
       }
