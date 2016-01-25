@@ -25,7 +25,6 @@ class AI_Hard extends AI{
     else if(oppPokemonOut.speed < yourPokemonOut.speed && willAnyYourMovesCauseFaint() && !allLow() ) {
       return 1;
     }
-    else if(oppPokemonOut.speed > yourPokemonOut.speed && willDie(yourAttack) && 
     else{
       return 0;
     }
@@ -92,10 +91,10 @@ class AI_Hard extends AI{
       if (status.get(k).effect1.substring(0,3).equals("hea") && oppPokemonOut.hp * 2 > oppPokemonOut.health) {
         status.remove(k);  
       }
-      if (status.get(k).effect1.substring(0,3).equals("rai") && oppPokemonOut.statStatus[Integer.parseInt(attacks.get(k).effect1.substring(attacks.get(k).effect1.indexOf("(")+1,attacks.get(k).effect1.indexOf(",")))] == 6) {
+      if (status.get(k).effect1.substring(0,3).equals("rai") && oppPokemonOut.statStatus[Integer.parseInt(status.get(k).effect1.substring(status.get(k).effect1.indexOf("(")+1,status.get(k).effect1.indexOf(",")))] == 6) {
         status.remove(k);  
       }
-      if (status.get(k).effect1.substring(0,3).equals("low") && yourPokemonOut.statStatus[Integer.parseInt(attacks.get(k).effect1.substring(attacks.get(k).effect1.indexOf("(")+1,attacks.get(k).effect1.indexOf(",")))] == -6) {
+      if (status.get(k).effect1.substring(0,3).equals("low") && yourPokemonOut.statStatus[Integer.parseInt(status.get(k).effect1.substring(status.get(k).effect1.indexOf("(")+1,status.get(k).effect1.indexOf(",")))] == -6) {
         status.remove(k);  
       }
     }
@@ -124,9 +123,8 @@ class AI_Hard extends AI{
       planAttack = status.get((int)(Math.random()*status.size()));    
     }
    
-   //use strongest damage here
-   //currently ok for need to heal, but what if you're below 50% and the attack does over 50% anyways (second part of if)
-    if (status.size() > 0 && willAnyYourMovesCauseFaint() && oppPokemonOut.hp < (int)(oppPokemonOut.health/2)) {
+   
+    if (status.size() > 0 && willAnyYourMovesCauseFaint() && yourStrongestDamage() < (int)(oppPokemonOut.health/2)) {
       for (int i = 0; i < status.size(); i++) {
         if (status.get(i).effect1.substring(0,3).equals("hea")) {
           return status.get(i);  
