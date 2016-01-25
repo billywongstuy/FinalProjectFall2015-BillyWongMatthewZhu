@@ -94,6 +94,9 @@ class AI_Hard extends AI{
       if (status.get(k).effect1.substring(0,3).equals("rai") && oppPokemonOut.statStatus[Integer.parseInt(attacks.get(k).effect1.substring(attacks.get(k).effect1.indexOf("(")+1,attacks.get(k).effect1.indexOf(",")))] == 6) {
         status.remove(k);  
       }
+      if (status.get(k).effect1.substring(0,3).equals("low") && yourPokemonOut.statStatus[Integer.parseInt(attacks.get(k).effect1.substring(attacks.get(k).effect1.indexOf("(")+1,attacks.get(k).effect1.indexOf(",")))] == -6) {
+        status.remove(k);  
+      }
     }
     
     int moveNumber = (int)(Math.random()*attacks.size());
