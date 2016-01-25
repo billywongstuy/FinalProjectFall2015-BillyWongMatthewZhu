@@ -117,6 +117,7 @@ class AI_Hard extends AI{
         }
       }
       planAttack = HiDamage;
+      println(planAttack + " is highest damage!");
       return planAttack;
     }
     
@@ -134,6 +135,7 @@ class AI_Hard extends AI{
         }
       }
     }
+    println(planAttack + " is ?");
     return planAttack;         
   }
 
@@ -175,6 +177,7 @@ class AI_Hard extends AI{
              return false;
            }
       }
+      return false;
       }
       boolean willKill(Poke yourPoke){
          if(calculateDamage(oppPokemonOut, yourPokemonOut.geta1()) >= yourPoke.hp||
