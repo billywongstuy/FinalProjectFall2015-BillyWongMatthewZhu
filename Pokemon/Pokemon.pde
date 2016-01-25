@@ -105,7 +105,7 @@ void setup() {
   //yourTeam.add(Pokemons.get(1));
   //yourTeam.add(Pokemons.get(0));
 
-
+  choosePokeScreen = loadImage("choosePokeTemplate.png");
   choosePokeArrow = loadImage("arrow.png");
 
   chooseOppScreen = loadImage("choose-level.png");
@@ -1790,14 +1790,18 @@ Poke addBack3;
 //----------------------------------
 
 void setupChoosePokemonScreen() {
+  //need to add stuff here that shows the current team and allows you to change?
+  
+  
   frameRate(30);
   background(255, 255, 255);
   textFont(font, 32);
   fill(0);
   int ycor = 1;
-  image(choosePokeArrow,220,choosePokeArrowPos*32+52);
+  image(choosePokeScreen,0,0);
+  image(choosePokeArrow,230,choosePokeArrowPos*32+42);
   for (int i = choosePokeScreenPos; i < choosePokeScreenPos+10; i++) { 
-    text(Pokemons.get(i).name.toUpperCase(),250,ycor*32+50);
+    text(Pokemons.get(i).name.toUpperCase(),260,ycor*32+40);
     ycor++;
   }
   if (wait == 1) {

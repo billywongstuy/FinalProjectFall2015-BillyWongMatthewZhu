@@ -9,17 +9,8 @@ class AI_Hard extends AI{
   }
               
   int chooseAction(){
-    //String currentAttackType = yourAttack.type;
-       
-    
-    //if(checkFullEffectiveness(currentAttackType,oppPokemonOut.getType1(),oppPokemonOut.getType2()) >=2){
-    //  return 1;
-    //}
-    
-    println(yourPreviousPoke);
-    
+    //should type advantage based switches happen?
     if(checkTypeEffectiveness(yourPreviousPoke.getType1(),oppPokemonOut) >= 2|| checkTypeEffectiveness(yourPreviousPoke.getType2(),oppPokemonOut) >= 2){
-      println("run away");
       return 1;
     }
     else if(oppPokemonOut.speed > yourPokemonOut.speed){
@@ -45,7 +36,7 @@ class AI_Hard extends AI{
     storeAttack();      
   }
         
-      
+  //nextStep: make it so that it choose a Poke less likely to die or more likely to kill    
   Poke chooseNextPoke(){
     
     //add parts to check for weakness not to switch in
@@ -126,9 +117,19 @@ class AI_Hard extends AI{
     println(random);
     println(random == 0);
     if (status.size() > 0 && !willKill(planAttack) &&  random == 0) {
-      println("choose an status");
       planAttack = status.get((int)(Math.random()*status.size()));    
     }
+   
+   
+   //currently ok for need to heal, but what if you're below 50% and the attack does over 50% anyways (second part of if)
+    if (status.size() > 0 && willAnyYourMovesCauseFaint() && oppPokemonOut.hp < (int)(oppPokemonOut.health/2)) {
+      for (int i = 0; i < status.size(); i++) {
+        if (status.get(i).effect1.substring(0,3).equals("hea")) {
+          return status.get(i);  
+        }
+      }
+    }
+   
     
     return planAttack;         
   }
