@@ -90,23 +90,27 @@ class Attack {
       ary[0] = target.getName()+"'s " + getStat(stat);
       ary[1] = "fell!";
       if (lower >= 2) {
-        ary[1] = "sharply fell!";
+        ary[1] = "greatly fell!";
       }
     }
     if (effect.substring(0,3).equals("rai")) {
       println("Raising");
       int stat = Integer.parseInt(effect.substring(effect.indexOf("(")+1,effect.indexOf(",")));
       int boost = Integer.parseInt(effect.substring(effect.indexOf(",")+1,effect.indexOf(")")));
+      ary[0] = target.getName()+"'s " + getStat(stat);
+      ary[1] = "rose!";
+      if (boost >= 2) {
+        ary[1] = "greatly rose!";
+      }
       if (target.statStatus[stat] + boost <= 6) {
         target.statStatus[stat] += boost;  
       }
       else if (target.statStatus[stat] == 5) {
-        target.statStatus[stat] = 6;    
+        target.statStatus[stat] = 6;        
       }
-      ary[0] = target.getName()+"'s " + getStat(stat);
-      ary[1] = "rose!";
-      if (boost >= 2) {
-        ary[1] = "sharply rose!";
+      else if (target.statStatus[stat] == 6) {
+        ary[0] = "Nothing happened!";
+        ary[1] = "";
       }
     }
     if (effect.substring(0,3).equals("bur") && Math.random() < effectChance && target.getStatus().equals("") && !target.type1.equals("Fire") && !target.type2.equals("Fire")) {
