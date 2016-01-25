@@ -1,6 +1,15 @@
 # FinalProjectFall2015-BillyWongMatthewZhu #
 
-
+# Directions to use #
+1) Go to Pokemon Folder and open Pokemon.pde
+2) Click the play button
+3) Use "z" for ok and "x" for cancel/go back and use the arrow keys to go up,left,right,down, with respect to the arrows
+4) Choose 3 pokemon to use for your team( You may scroll down for more since menu does not have a scroll bar)
+5) Choose an opponenet difficulty(Easy,Normal,Hard)
+6) "Fight" allows you to use one of four moves your pokemon has, press z to use it or x to go back to the previous menus.
+7) "Pkmn" allows you to swap pokemon, press z to choose the pokemon you wish to swap into or x to go back to the previous menu.
+8) Run and Item are not inplemented and therefore will not be used.
+9)To win, you need to defeat Professor Oak. 
 
 # CURRENT BUGS: #
 -If an critical hit causes a Pokemon to faint, the last bit of text is skipped over and goes straight to faint
@@ -20,6 +29,10 @@
 
 ## 1/24/16 ##
 -Added Pokemon selection screen
+-Fixed major bugs with AI_switching
+-Fixed major bugs with AI_attacking
+-AI now chooses when it is optimal to attack/heal/buff
+-AI no longer switches 24/7
 
 ## 1/23/16 ##
 -Fixed Explosion Bug\n
