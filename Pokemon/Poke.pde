@@ -107,7 +107,7 @@ abstract class Poke implements Cloneable{
       println(name + " is frozen and can't attack!");
       return 0;
     }
-    else if (status.equals("SLP")) {
+    else if (asleep) {
       println("asleep");
       return 0;
     }

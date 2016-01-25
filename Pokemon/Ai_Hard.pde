@@ -9,35 +9,29 @@ class AI_Hard extends AI{
   }
               
   int chooseAction(){
-    String currentAttackType = yourAttack.type;
+    //String currentAttackType = yourAttack.type;
+       
     
-    
-    //should check for attacks
-    
-    //if(fullEffectiveness(oppPokemonOut.getType1(),yourPokemonOut.getType1()) < 2||
-    //fullEffectiveness(oppPokemonOut.getType1(),yourPokemonOut.getType2()) < 2||
-    //fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType1()) < 2||
-    //fullEffectiveness(oppPokemonOut.getType2(),yourPokemonOut.getType2()) < 2){
-     // return 1;
+    //if(checkFullEffectiveness(currentAttackType,oppPokemonOut.getType1(),oppPokemonOut.getType2()) >=2){
+    //  return 1;
     //}
-    if(checkFullEffectiveness(currentAttackType,oppPokemonOut.getType1(),oppPokemonOut.getType2()) >=2){
-      return 1;
-    }
     
-    if(checkTypeEffectiveness(yourPreviousPoke.getType1(),oppPokemonOut) >= 2||
-    checkTypeEffectiveness(yourPreviousPoke.getType2(),oppPokemonOut) >= 2){
+    println(yourPreviousPoke);
+    
+    if(checkTypeEffectiveness(yourPreviousPoke.getType1(),oppPokemonOut) >= 2|| checkTypeEffectiveness(yourPreviousPoke.getType2(),oppPokemonOut) >= 2){
+      println("run away");
       return 1;
     }
     else if(oppPokemonOut.speed > yourPokemonOut.speed){
-            if(willKill(yourPokemonOut)){
-              return 0;
-            }
-            else{
-              return 1;
-            }
-    }
-    
-    else if(oppPokemonOut.speed < yourPokemonOut.speed && willDie(oppPokemonOut)) {
+      if (willKill(oppPokemonOut.a1) || willKill(oppPokemonOut.a2) || willKill(oppPokemonOut.a3) || willKill(oppPokemonOut.a4)){
+        return 0;
+      }
+      else if (willAnyYourMovesCauseFaint()) {
+        return 1;  
+      }
+      return 0;
+    }   
+    else if(oppPokemonOut.speed < yourPokemonOut.speed && willAnyYourMovesCauseFaint()) {
       return 1;
     }
     else{
@@ -78,6 +72,7 @@ class AI_Hard extends AI{
               
   Attack chooseMove(){
     ArrayList<Attack>attacks = new ArrayList<Attack>();
+    ArrayList<Attack>status = new ArrayList<Attack>();
     
     attacks.add(oppPokemonOut.a1);
     attacks.add(oppPokemonOut.a2);
@@ -90,106 +85,104 @@ class AI_Hard extends AI{
         y--;
       }
     }
-    int beginningSize = attacks.size();
     
-    ArrayList<Attack>EffectiveMove = new ArrayList<Attack>();
-    float strongestEffectiveness = 2;
+    for (int i = 0; i < attacks.size(); i++) {
+      if (attacks.get(i).category.equals("Status")) {
+        status.add(attacks.get(i));  
+      }
+    }
+    
+    for (int k = 0; k < status.size(); k++) {
+      if (!yourPokemonOut.getStatus().equals("") && status.get(k).effect1Target.equals("o") && !attacks.get(k).effect1.substring(0,3).equals("rai") && !attacks.get(k).effect1.substring(0,3).equals("low")) {
+        status.remove(k);
+        k--;
+      }
+      if (status.get(k).effect1.substring(0,3).equals("hea") && oppPokemonOut.hp * 2 > oppPokemonOut.health) {
+        status.remove(k);  
+      }
+      if (status.get(k).effect1.substring(0,3).equals("rai") && oppPokemonOut.statStatus[Integer.parseInt(attacks.get(k).effect1.substring(attacks.get(k).effect1.indexOf("(")+1,attacks.get(k).effect1.indexOf(",")))] == 6) {
+        status.remove(k);  
+      }
+    }
+    
     int moveNumber = (int)(Math.random()*attacks.size());
     Attack planAttack = attacks.get(moveNumber);
     
-    //check if the typeffectiveness of each attack >= strongestEffectiveness if so, add it to arraylist then set strongest
-    //at end remove any elements with effectiveness < strongest
-    for(int i = 0; i < attacks.size(); i ++){
-      if(checkBattleEffectiveness(attacks.get(i),yourPokemonOut) >= strongestEffectiveness){
-        EffectiveMove.add(attacks.get(i));
-        strongestEffectiveness = checkBattleEffectiveness(attacks.get(i),yourPokemonOut);
-      }
-    }
-    
-    if (EffectiveMove.size() > 0) {
-      println("no supper effecrive");
-      Attack HiDamage = EffectiveMove.get(0);
-      float greatestBase = EffectiveMove.get(0).getPower() * checkBattleEffectiveness(EffectiveMove.get(0),yourPokemonOut);
-      for(int j = 1; j < EffectiveMove.size(); j++){
-        if(EffectiveMove.get(j).getPower() * checkBattleEffectiveness(EffectiveMove.get(j),yourPokemonOut) > greatestBase){
-          HiDamage = EffectiveMove.get(j);
-          greatestBase = EffectiveMove.get(j).getPower() * checkBattleEffectiveness(EffectiveMove.get(j),yourPokemonOut);
+    if (attacks.size() > 0) {
+      Attack greatestDamage = attacks.get(0);
+      for(int j = 1; j < attacks.size(); j++){
+        if (calculateDamage(yourPokemonOut,attacks.get(j)) > calculateDamage(yourPokemonOut,greatestDamage)) {
+          greatestDamage = attacks.get(j);  
+          println("strongest changed");
         }
       }
-      planAttack = HiDamage;
-      println(planAttack + " is highest damage!");
-      return planAttack;
+      planAttack = greatestDamage;
+      println(planAttack);
     }
     
-    if(EffectiveMove.size() == 0){
-      planAttack = attacks.get(0);
-      float baseDamage = planAttack.getPower() * checkBattleEffectiveness(planAttack, yourPokemonOut); 
-      if(!yourPokemonOut.getStatus().equals("")){
-        for(int z = 0; z < attacks.size(); z++){
-          if(attacks.get(z).getPower() * checkBattleEffectiveness(attacks.get(z),yourPokemonOut) > baseDamage){
-            planAttack = attacks.get(z);
-          }
-          else{
-            attacks.remove(z);
-          }
-        }
-      }
+    println(planAttack);
+    
+    int random = (int)(Math.random()*2);
+    println(random);
+    println(random == 0);
+    if (status.size() > 0 && !willKill(planAttack) &&  random == 0) {
+      println("choose an status");
+      planAttack = status.get((int)(Math.random()*status.size()));    
     }
-    println(planAttack + " is ?");
+    
     return planAttack;         
   }
 
           
-        int calculateDamage(Poke opp, Attack attack) {
-          double baseDmg;
-          if (attack.getCategory().equals("Physical")) {
-            baseDmg = Math.floor(yourPokemonOut.checkSTAB(attack)*(Math.floor(Math.floor((2*yourPokemonOut.lv+10)*yourPokemonOut.atk*yourPokemonOut.burned()*multipliers[yourPokemonOut.statStatus[0]+6]*attack.getPower()/250)/(opp.getDef()*multipliers[opp.statStatus[1]+6]))+2.0));
-            }
-          else if (attack.getCategory().equals("Special")) {
-            baseDmg = Math.floor(yourPokemonOut.checkSTAB(attack)*(Math.floor(Math.floor((2*yourPokemonOut.lv+10)*yourPokemonOut.spec*multipliers[yourPokemonOut.statStatus[2]+6]*attack.getPower()/250)/(opp.getSpec()*multipliers[opp.statStatus[2]+6]))+2.0));
-            }
-          else {
-            baseDmg = 0;  
-            }
-          double random = (int)(Math.random()*16+85);
-          //println("Random:" + random);
-          double modifier = (random/100.0)*yourPokemonOut.effective(attack,opp.getType1(),opp.getType2()); //includes STAB(above), random, effectiveness, and random (included above)
-    
-          int damage = (int)(Math.floor(baseDmg*modifier));
-   
-          if (opp.hp < damage) {
-            return opp.hp;  
-            }
-      return damage;
+  int calculateDamage(Poke opp, Attack attack) {
+    double baseDmg;
+    if (attack.getCategory().equals("Physical")) {
+      baseDmg = Math.floor(yourPokemonOut.checkSTAB(attack)*(Math.floor(Math.floor((2*yourPokemonOut.lv+10)*yourPokemonOut.atk*yourPokemonOut.burned()*multipliers[yourPokemonOut.statStatus[0]+6]*attack.getPower()/250)/(opp.getDef()*multipliers[opp.statStatus[1]+6]))+2.0));
+    }
+    else if (attack.getCategory().equals("Special")) {
+      baseDmg = Math.floor(yourPokemonOut.checkSTAB(attack)*(Math.floor(Math.floor((2*yourPokemonOut.lv+10)*yourPokemonOut.spec*multipliers[yourPokemonOut.statStatus[2]+6]*attack.getPower()/250)/(opp.getSpec()*multipliers[opp.statStatus[2]+6]))+2.0));
+    }
+    else {
+      baseDmg = 0;  
+    }
+    double random = (int)(Math.random()*16+85);
+    double modifier = (random/100.0)*yourPokemonOut.effective(attack,opp.getType1(),opp.getType2()); //includes STAB(above), random, effectiveness, and random (included above)
+    int damage = (int)(Math.floor(baseDmg*modifier));
+    if (opp.hp < damage) {
+      return opp.hp;  
+    }
+    return damage;
+  }
+      
+  
+  boolean willDie(Attack a) {
+    if (calculateDamage(oppPokemonOut,a) >= oppPokemonOut.hp) {
+      return true;    
+    }
+    return false;
+  }
+  
+  boolean willAnyYourMovesCauseFaint() {
+    int pokeOutIndex = 0;
+    for (int i = 0; i < pokemonStored; i++) {
+      if (PlayerTeam[i].getClass() == yourPokemonOut.getClass()) {
+        pokeOutIndex = i;    
       }
-      boolean willDie(Poke opp){
-        int pokeIndex = 0;
-        for(int a =0; a < PlayerTeam.length; a ++){
-          if(PlayerTeam[a].getClass() == yourPokemonOut.getClass()){
-            pokeIndex = a;
-          }
-        }
-        for(int b = 0; b < PlayerAttacks[pokeIndex].length; b ++){
-            if(calculateDamage(opp, PlayerAttacks[pokeIndex][b]) >= opp.hp){
-             return true;
-           }
-           else{
-             return false;
-           }
+    }
+    for (int j = 0; j < attacksStored[pokeOutIndex]; j++) {
+      if (willDie(PlayerAttacks[pokeOutIndex][j])) {
+        return true;  
       }
-      return false;
-      }
-      boolean willKill(Poke yourPoke){
-         if(calculateDamage(oppPokemonOut, yourPokemonOut.geta1()) >= yourPoke.hp||
-           calculateDamage(oppPokemonOut, yourPokemonOut.geta2()) >= yourPoke.hp||
-           calculateDamage(oppPokemonOut, yourPokemonOut.geta3()) >= yourPoke.hp||
-           calculateDamage(oppPokemonOut, yourPokemonOut.geta4()) >= yourPoke.hp){
-             return true;
-           }
-           else{
-             return false;
-           }
-      }
+    }
+    return false;
+  }
+      
+  boolean willKill(Attack a){
+    if (calculateDamage(yourPokemonOut,a) >= yourPokemonOut.hp) {
+      return true;  
+    }
+    return false;
+  }
       
         
 }

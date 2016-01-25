@@ -59,7 +59,6 @@ class AI_Normal extends AI{
     }
     
     if (EffectiveMove.size() > 0) {
-      println("no supper effecrive");
       Attack HiDamage = EffectiveMove.get(0);
       float greatestBase = EffectiveMove.get(0).getPower() * checkBattleEffectiveness(EffectiveMove.get(0),yourPokemonOut);
       for(int j = 1; j < EffectiveMove.size(); j++){

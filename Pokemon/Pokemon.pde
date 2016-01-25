@@ -80,6 +80,7 @@ int yourHPLostThisTurn = 0;
 ArrayList<Poke>yourTeam = new ArrayList<Poke>();
 Poke yourPokemonOut;
 Poke yourPreviousPoke;
+Poke yourBeforeSwitchPoke;
 
 ArrayList<Poke>oppTeam = new ArrayList<Poke>();
 Poke oppPokemonOut;
@@ -258,7 +259,7 @@ void switchYou() {
         yourPokemonOut.statStatus[i] = 0;
       }
 
-      yourPreviousPoke = yourPokemonOut;
+      yourBeforeSwitchPoke = yourPokemonOut;
       yourPokemonOut = yourTeam.get(partySlot);
 
 
@@ -1374,11 +1375,14 @@ void turnEvents() {
 
       if (youSwitchedThisTurn) {
         yourAttack = None;
+        yourPreviousPoke = yourBeforeSwitchPoke;
       } 
       else {
         yourPreviousPoke = yourPokemonOut;
       }
 
+
+      println(yourPreviousPoke + "h");
 
       if (OppTrainer.chooseAction() == 1) {
         switchOpp();

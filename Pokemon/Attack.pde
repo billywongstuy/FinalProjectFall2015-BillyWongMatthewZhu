@@ -98,7 +98,6 @@ class Attack {
       }
     }
     if (effect.substring(0,3).equals("rai")) {
-      println("Raising");
       int stat = Integer.parseInt(effect.substring(effect.indexOf("(")+1,effect.indexOf(",")));
       int boost = Integer.parseInt(effect.substring(effect.indexOf(",")+1,effect.indexOf(")")));
       ary[0] = target.getName()+"'s " + getStat(stat);
