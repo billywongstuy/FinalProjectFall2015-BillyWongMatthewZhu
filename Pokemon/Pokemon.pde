@@ -236,14 +236,14 @@ void switchYou() {
 
   if (keyPressed && (key == 'z' || key == 'Z')) {
     if (yourTeam.get(partySlot) == yourPokemonOut) {
-      println(yourPokemonOut);
-      println(yourTeam.get(partySlot));
+      //println(yourPokemonOut);
+      //println(yourTeam.get(partySlot));
       if (yourPokemonOut.getStatus().equals("FNT")) {
-        println("No energy to battle!");  
+        //println("No energy to battle!");  
         state = "noEnergy";
       } else {
         state = "battling";
-        println("Currently battling!");
+        //println("Currently battling!");
       }
     } else {
 
@@ -336,31 +336,31 @@ void oppSendOut() {
       }
       //turnEvents();
     } else {
-      println("ack");
-      println(oppAttack);
+      //println("ack");
+      //println(oppAttack);
       //if (!oppAttack.name.equals("Explosion") && !oppAttack.name.equals("Self-Destruct")) {
       //  oppAttack = null;
       //}
     }
 
-    println("too");
+    //println("too");
 
     if (yourAttack.name.equals("Explosion") || yourAttack.name.equals("Self-Destruct")) {
       state = "youSendOut";
     }
 
-    println(oppAttack);
-    println("hegsgsg"); 
-    println(oppAttack.name.equals("Explosion") || oppAttack.name.equals("Self-Destruct"));
+    //println(oppAttack);
+    //println("hegsgsg"); 
+    //println(oppAttack.name.equals("Explosion") || oppAttack.name.equals("Self-Destruct"));
 
     if (oppAttack.name.equals("Explosion") || oppAttack.name.equals("Self-Destruct")) {
       println("lkji");
       state = "youSendOut";  
       oppAttack = null;
-      println("lol null");
+      //println("lol null");
     }
 
-    println("hesh");
+    //println("hesh");
   }
 }
 
@@ -380,10 +380,10 @@ void youSendOut() {
 
 
     if (youSwitchedThisTurn) {
-      println("here");
+      //println("here");
       state = "chooseMove";
       turnEvents();
-      println(state);
+      //println(state);
     }
 
 
@@ -513,7 +513,7 @@ void handleEndTurn() {
     }
   }
   if (state.equals("textEnd2")) {
-    println("entered-2");
+    //println("entered-2");
 
     if (slowerPoke.getStatus().equals("BRN")) {
       if (slowerPoke == yourPokemonOut) {
@@ -537,7 +537,7 @@ void handleEndTurn() {
       oppDropHealth();
     }
     
-    println("hastiness");
+    //println("hastiness");
 
     //println("reset everything");
   }
@@ -586,7 +586,7 @@ String nextState(Poke p) {
   Poke other = yourPokemonOut;
   int otherHealthLost = yourHealthLost;
 
-  println(p + " :" + Arrays.deepToString(p.attackEffects));
+  //println(p + " :" + Arrays.deepToString(p.attackEffects));
 
   if (p == yourPokemonOut) {
     a = yourAttack;
@@ -597,7 +597,7 @@ String nextState(Poke p) {
   if (state.equals("faintShowYou") && (oppAttack.name.equals("Explosion") || oppAttack.name.equals("Self-Destruct"))) {
     a = oppAttack; 
     p = oppPokemonOut;
-    println(oppHealthLost);
+    //println(oppHealthLost);
   }
 
   if (state.equals("yourStatusText")) {
@@ -666,7 +666,7 @@ String nextState(Poke p) {
       //println(yourPokemonOut.status);
     }
     if (p == oppPokemonOut) {
-      println("heroshsh");
+      //println("heroshsh");
       if (!state.equals("faintShowOpp") && !state.equals("faintShowYou")) {
         return "faintShowYou";
       }
@@ -926,7 +926,7 @@ void yourEffectivenessText() {
   if (state.equals("type-effect-you") && textShowTime <= 45) {
     //println("herg");
     if (yourAttack.getPower() == 0 || yourPokemonOut.attackMissed) {
-      println("increase");
+      //println("increase");
       textShowTime = 45;
     } else if (yourPokemonOut.attackEffectiveness == 0.5 || yourPokemonOut.attackEffectiveness == 0.25) {
       text("It's not very", 50, 475);
@@ -948,10 +948,10 @@ void yourEffectivenessText() {
      else {
      state = "turnEndDamage";  
      }*/
-    println("lololo");
+    //println("lololo");
     state = nextState(yourPokemonOut);
 
-    println("heya");
+    //println("heya");
 
     textShowTime = 0;  
     attackTransitionTime = 0;
@@ -1048,8 +1048,8 @@ void oppAttackText() {
       textShowTime++;
     } else {
       textShowTime = 0;
-      println("TY");
-      println(oppPokemonOut);
+      //println("TY");
+      //println(oppPokemonOut);
       state = nextState(oppPokemonOut);
     }
   } else if (oppPokemonOut.frozen) {
@@ -1382,7 +1382,7 @@ void turnEvents() {
 
       if (OppTrainer.chooseAction() == 1) {
         switchOpp();
-        println(state);
+        //println(state);
         oppAttack = None;
         speedWinner = yourPokemonOut;
         slowerPoke = oppPokemonOut;
@@ -1397,7 +1397,6 @@ void turnEvents() {
 
       if (oppAttack == null) {
         //println("here");
-
         oppAttack = OppTrainer.chooseMove();
       }
 
@@ -1409,7 +1408,8 @@ void turnEvents() {
       if (speedWinner == yourPokemonOut) {
         oppHPLostThisTurn = yourPokemonOut.attack(oppPokemonOut, yourAttack);
         yourHPLostThisTurn =  oppPokemonOut.attack(yourPokemonOut, oppAttack);
-      } else if (speedWinner == oppPokemonOut) {
+      } 
+      else if (speedWinner == oppPokemonOut) {
         yourHPLostThisTurn = oppPokemonOut.attack(yourPokemonOut, oppAttack);  
         oppHPLostThisTurn = yourPokemonOut.attack(oppPokemonOut, yourAttack);
       }
@@ -1528,7 +1528,7 @@ void oppDropHealth() {
   //  
   //}
   else{
-    println("next please");
+    //println("next please");
     if (oppPokemonOut.hp == 0) {
       oppPokemonOut.setStatus("FNT");  
     }
@@ -1590,7 +1590,7 @@ void yourDropHealth() {
     else if (state.equals("turn-p1")) {
       //state = "turn-p2"; 
       state = nextState(oppPokemonOut);
-      println("ho");
+      //println("ho");
     }
     else if (state.equals("turn-p2") && !(oppPokemonOut.attackEffectiveness == 0 || oppAttack.getPower() == 0)){
       //state = "turnEndDamage";
@@ -1601,7 +1601,7 @@ void yourDropHealth() {
     }
     else if (state.equals("textEnd2")) {
       state = "reset";
-      println("bhu");
+      //println("bhu");
     }
   }    
 }
@@ -1711,7 +1711,7 @@ void setupOptionScreen() {
     stateFlowCheck = true;
   }
   if (keyPressed && cArrowX == 482 && cArrowY == 450 && (key == 'z' || key == 'Z')) {
-    println("go");
+    //println("go");
     if (textShowTime > 15) {
       stateFlowCheck = true;
       textShowTime = 0;
@@ -1720,7 +1720,7 @@ void setupOptionScreen() {
       state = "choosePokeYou";
     } else {
       //perfect time for Go pokemon name
-      println(textShowTime + "LLLOO");
+      //println(textShowTime + "LLLOO");
       textShowTime++;
     }
   }
