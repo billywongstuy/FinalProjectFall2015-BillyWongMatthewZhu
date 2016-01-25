@@ -62,6 +62,7 @@ boolean stateFlowCheck = true;
 int slow = 0;
 int attackTransitionTime = 0;
 int textShowTime = 0;
+boolean healHappened = false;
 
 //String speedWinner;
 Poke speedWinner;     
@@ -254,6 +255,7 @@ void switchYou() {
         oppAttack = OppTrainer.chooseMove();
       }   
 
+      
 
       for (int i = 0; i < yourPokemonOut.statStatus.length; i++) {
         yourPokemonOut.statStatus[i] = 0;
@@ -999,7 +1001,6 @@ void oppEffectivenessText() {
 //---------------------------------
 
 void oppAttackText() {
-
   if (oppAttack == None) {
     if (state.equals("turn-p1")) {
       state = "turn-p2";
@@ -1053,7 +1054,8 @@ void oppAttackText() {
       //println(oppPokemonOut);
       state = nextState(oppPokemonOut);
     }
-  } else if (oppPokemonOut.frozen) {
+  } else if (oppPokemonOut.getStatus().equals("FRZ")) {
+    
     if (textShowTime < 45) {
       text("Enemy " + oppPokemonOut.getName()+"\'s", 50, 475);
       text("frozen!", 50, 535);
@@ -1175,7 +1177,7 @@ void yourAttackText() {
       textShowTime = 0;
       state = nextState(yourPokemonOut);
     }
-  } else if (yourPokemonOut.frozen) {
+  } else if (yourPokemonOut.getStatus().equals("FRZ")) {
     if (textShowTime < 45) {
       text(yourPokemonOut.getName()+"\'s", 50, 475);
       text("frozen!", 50, 535);
@@ -1438,21 +1440,24 @@ void yourStatusText() {
   if (yourPokemonOut.inflictStatusTarget != null && yourPokemonOut.inflictStatusTarget.status.equals("") && !yourPokemonOut.inflictStatus.equals("")) {
     yourPokemonOut.inflictStatusTarget.setStatus(yourPokemonOut.inflictStatus);
   }
-  if (yourPokemonOut.attackEffects[0][0].equals(yourPokemonOut.getName() + " drained")) {
+  if (yourPokemonOut.attackEffects[0][0].equals(yourPokemonOut.getName() + " drained") && !healHappened) {
     yourPokemonOut.hp += ((int)(oppHPLostThisTurn/2));
     if (yourPokemonOut.hp > yourPokemonOut.health) {
       yourPokemonOut.hp = yourPokemonOut.health;
     }
     yourHealthLost = yourPokemonOut.health - yourPokemonOut.hp;
     hpToShow = yourPokemonOut.hp;
+    healHappened = true;
   }
-  if (yourPokemonOut.attackEffects[0][0].equals(yourPokemonOut.getName() + " restored")) {
+  if (yourPokemonOut.attackEffects[0][0].equals(yourPokemonOut.getName() + " restored") && !healHappened) {
     yourPokemonOut.hp += ((int)(yourPokemonOut.health/2));
+    println("Healed " + (int)(yourPokemonOut.health/2));
     if (yourPokemonOut.hp > yourPokemonOut.health) {
       yourPokemonOut.hp = yourPokemonOut.health;
     }
     yourHealthLost = yourPokemonOut.health - yourPokemonOut.hp;
     hpToShow = yourPokemonOut.hp;
+    healHappened = true;
   }
 
   if (textShowTime < 45) {
@@ -1469,6 +1474,7 @@ void yourStatusText() {
      state = "turnEndDamage";  
      }*/
     state = nextState(yourPokemonOut);
+    healHappened = false;
   }
 }
 
@@ -1481,19 +1487,21 @@ void oppStatusText() {
   if (oppPokemonOut.inflictStatusTarget != null && oppPokemonOut.inflictStatusTarget.status.equals("") && !oppPokemonOut.inflictStatus.equals("")) {
     oppPokemonOut.inflictStatusTarget.setStatus(oppPokemonOut.inflictStatus);
   }
-  if (oppPokemonOut.attackEffects[0][0].equals(oppPokemonOut.getName() + " drained")) {
+  if (oppPokemonOut.attackEffects[0][0].equals(oppPokemonOut.getName() + " drained") && !healHappened) {
     oppPokemonOut.hp += ((int)(yourHPLostThisTurn/2));
     if (oppPokemonOut.hp > oppPokemonOut.health) {
       oppPokemonOut.hp = oppPokemonOut.health;
     }
     oppHealthLost = oppPokemonOut.health - oppPokemonOut.hp;
+    healHappened = true;
   }
-  if (oppPokemonOut.attackEffects[0][0].equals(oppPokemonOut.getName() + " restored")) {
+  if (oppPokemonOut.attackEffects[0][0].equals(oppPokemonOut.getName() + " restored") && !healHappened) {
     oppPokemonOut.hp += ((int)(oppPokemonOut.health/2));
     if (oppPokemonOut.hp > oppPokemonOut.health) {
       oppPokemonOut.hp = oppPokemonOut.health;
     }
     oppHealthLost = oppPokemonOut.health - oppPokemonOut.hp;
+    healHappened = true;
   }
 
   if (textShowTime < 45) {
@@ -1510,6 +1518,7 @@ void oppStatusText() {
      state = "turnEndDamage";  
      }*/
     state = nextState(oppPokemonOut);
+    healHappened = false;
   }
 }
 
@@ -1833,6 +1842,16 @@ void setupChoosePokemonScreen() {
     Pokemons.add(addBack1);
     Pokemons.add(addBack2);
     state = "chooseOpp";
+  }
+  
+  text("Slot 1: ",50,450);
+  text("Slot 2: ",50,500);
+  
+  if (addBack1 != null) {
+    text(addBack1.getName(),300,450);    
+  }
+  if (addBack2 != null) {
+    text(addBack2.getName(),300,500);   
   }
 }
 
