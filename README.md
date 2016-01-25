@@ -7,7 +7,9 @@
 
 3) Use "z" for ok and "x" for cancel/go back and use the arrow keys to go up,left,right,down, with respect to the arrows
 
-4) Choose 3 pokemon to use for your team( You may scroll down using the arrow keys for more since menu does not have a scroll bar)
+4) Choose 3 pokemon to use for your team(You may scroll down using the arrow keys for more since menu does not have a scroll bar)
+
+4.5) If you make a mistake when choosing Pokemon, close the window and repeat steps 2-4.
 
 5) Choose an opponent difficulty (Easy,Normal,Hard)
 
@@ -23,6 +25,12 @@
 # CURRENT BUGS #
 -If an critical hit causes a Pokemon to faint, the last bit of text is skipped over and goes straight to faint
 
+-Some attack text may displayed during wrong times
+
+-A white rectangle may appear during the switch screen
+
+-When you click Pkmn to switch, it immediately says the Pokemon is battling in the switch screen
+
 # NITPICKS #
 Program currently uses a decent amount of memory since it loads image and prints text over and over
 
@@ -33,6 +41,9 @@ Program cpu usage fix
 Work on Hard AI 
 
 # CHANGELOG #
+
+## 1/25/16 ##
+-Adjustments to Hard AI
 
 
 ## 1/24/16 ##
