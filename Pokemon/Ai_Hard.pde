@@ -83,6 +83,12 @@ class AI_Hard extends AI{
       }              
     }
     
+    
+    //Poke withStrongestAttack;
+    //for (int k = 0; k < AI_Team.size(); k++) {
+      
+    //}
+    
     return chooseThis;
   }
        

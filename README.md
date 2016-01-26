@@ -1,6 +1,15 @@
 # FinalProjectFall2015-BillyWongMatthewZhu #
 
 # Directions to use #
+
+## Controls: ##
+Z: Known as A, used to go to the next screen/confirm
+
+X: Known as B, the back button
+
+Up/Down/Left/Right: Navigation
+
+
 1) Go to Pokemon Folder and open Pokemon.pde
 
 2) Click the play button
@@ -33,6 +42,8 @@
 
 # NITPICKS #
 Program currently uses a decent amount of memory since it loads image and prints text over and over
+
+Text may go off the screen a bit
 
 
 # NEXT PLANS #
