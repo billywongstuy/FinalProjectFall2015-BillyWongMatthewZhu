@@ -261,7 +261,7 @@ class AI_Hard extends AI{
     }
     
    for (int j = 0; j < attacksStored[pokeOutIndex]; j++) {
-     if (PlayerAttacks[pokeOutIndex][j].category.equals("Status") && PlayerAttacks[pokeOutIndex][j].effect1.substring(0,3).equals("hea")) {
+     if (PlayerAttacks[pokeOutIndex][j].category.equals("Status") && PlayerAttacks[pokeOutIndex][j].effect1.substring(0,3).equals("hea") && PlayerAttacks[pokeOutIndex][j].ppLeft > 0) {
        return true;  
      }
    }

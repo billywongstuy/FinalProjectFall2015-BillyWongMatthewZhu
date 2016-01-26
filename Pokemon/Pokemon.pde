@@ -445,9 +445,18 @@ void displayTeamInfo() {
 //-------------------------------
 
 void chooseOppDiff() {
-  Poke first = Venusaur;
-  Poke second = Charizard;
-  Poke third = Blastoise;
+  //Poke first = Venusaur;
+  //Poke second = Charizard;
+  //Poke third = Blastoise;
+  int random = (int)(Math.random()*Pokemons.size());
+  Poke first = (Poke)(Pokemons.get(random).clone());
+  Pokemons.remove(random);
+  random = (int)(Math.random()*Pokemons.size());
+  Poke second = (Poke)(Pokemons.get(random).clone());
+  Pokemons.remove(random);
+  random = (int)(Math.random()*Pokemons.size());
+  Poke third = (Poke)(Pokemons.get(random).clone());
+  
   if (oppLevel == 1) {
     OppTrainer = new AI_Easy(first, second, third, "prof.oak");
   } else if (oppLevel == 2) {

@@ -151,6 +151,7 @@ Poke Mewtwo = new Mewtwo();
 Poke Mew = new Mew();
 
 
+
 ArrayList<Poke>Pokemons = new ArrayList<Poke>();
 void setupPokeSet() {
   Pokemons.add(new Venusaur());

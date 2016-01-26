@@ -16,7 +16,7 @@ abstract class Poke implements Cloneable{
   Attack a2;
   Attack a3;
   Attack a4;
-  private boolean attackCrit;
+  private boolean attackCrit = false;
   private boolean attackMissed = false;
   private float attackEffectiveness = 1;
   private boolean turnParalyzed;
@@ -32,7 +32,7 @@ abstract class Poke implements Cloneable{
   int sleepTurns = 0;
   boolean recharge = false;
   boolean setRecharge = false;
-  int attackHits;
+  int attackHits = 1;
   String inflictStatus = "";
   Poke inflictStatusTarget;
   
